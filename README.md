@@ -1,6 +1,6 @@
 # BabyPod
 
-This repository is for the hardware and initial setup. For the CircuitPython code that runs on the hardware, see the [`babypod-software`](../babypod-software/) repository.
+This repository is for the hardware and initial setup. For the CircuitPython code that runs on the hardware, see the [`babypod-software`](/skjdghsdjgsdj/babypod-software) repository.
 
 ## What is it?
 
