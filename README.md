@@ -106,12 +106,12 @@ If you're editing `BabyPod.scad`, your system needs these two fonts installed to
 
 The easiest way to do this is:
 
-1. Press and hold the Boot button, briefly press Reset, and then release the Boot button. This puts the board in a bootloader mode.
+1. [Download CircuitPython 9](https://circuitpython.org/downloads) for your specific board. Get the `.bin` version, not `.uf2`.
 2. Connect the Feather to your computer via USB C.
-3. In Google Chrome, go to [Adafruit's ESPTool](https://adafruit.github.io/Adafruit_WebSerial_ESPTool/).
+3. Press and hold the Boot button, briefly press Reset, and then release the Boot button. This puts the board in a bootloader mode.
+4. In Google Chrome, go to [Adafruit's ESPTool](https://adafruit.github.io/Adafruit_WebSerial_ESPTool/).
 4. Click "Connect" and select the Feather. The device's name will vary, but ultimately you should see a successful connection message.
-5. [Download CircuitPython 9](https://circuitpython.org/downloads) for your specific board. Get the `.bin` version, not `.uf2`.
-6. In ESPTool, click Erase and wait about 15 seconds until you get a success message.
+5. Click Erase and wait about 15 seconds until you get a success message.
 7. Click the first "Choose a file..." button and select the `.bin` CircuitPython image you downloaded, then click "Program."
 8. When prompted to do so, press the Reset button on the Feather. A few moments later, a drive named `CIRCUITPY` should mount itself on your computer.
 
