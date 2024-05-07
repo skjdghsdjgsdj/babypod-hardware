@@ -79,7 +79,7 @@ SCREW_SHAFT_DIAMETER = 2;
 
 POWER_BUTTON_Y = ROTARY_ENCODER_Y + ROTARY_ENCODER_DIAMETER / 2 + 9.5;
 
-USE_TEXT_INLAYS = true;
+USE_TEXT_INLAYS = false;
 
 module rotary_encoder() {
 	rotate([180, 0, 270])
@@ -415,8 +415,8 @@ module top_case_inlays() {
 translate([0, DEPTH / 2 - 0.1 / 2, 0])
 cube([WIDTH, 0.1, HEIGHT]);*/
 
-%components();
-bottom_case();
+//%components();
+//bottom_case();
 
 if (USE_TEXT_INLAYS) {
 	difference() {

@@ -84,13 +84,13 @@ You can print the enclosure in either one or two colors. Whichever you choose:
 
 ### One color
 
-One single color is easiest. Print `Faceplate.stl` upside-down (top of the faceplate facing the bed) and `Enclosure.stl` as-is.
+One single color is easiest. Print `Faceplate, no inlays.stl` upside-down (top of the faceplate facing the bed) and `Bottom case.stl` as-is.
 
 ### Two colors
 
 In two colors, you get a text inlay that says "BabyPod" and an icon for the power button. Printing in two colors requires a printer that supports multiple filaments or [clever use of GCODE](https://old.reddit.com/r/prusa3d/comments/nt3oau/2_colors_on_the_same_layer/h0q4s6e/).
 
-Print `Faceplate.stl` and `Text inlays.stl` as a multipart object upside-down (top of the faceplate and inlays facing the bed) and `Enclosure.stl` as-is.
+Print `Faceplate, with inlays.stl` and `Faceplate inlays.stl` as a multipart object upside-down (top of the faceplate and inlays facing the bed) and `Bottom case.stl` as-is.
 
 If you're editing `BabyPod.scad`, your system needs these two fonts installed too:
 
