@@ -122,9 +122,9 @@ Create a plain text file that looks like this. Strings must be double-quoted.
 ```
 CIRCUITPY_WIFI_SSID_DEFER="..."
 CIRCUITPY_WIFI_PASSWORD_DEFER="..."
-CIRCUITPY_WIFI_CHANNEL=0
-BABYBUDDY_URL="..."
-BABYBUDDY_TOKEN="..."
+CIRCUITPY_WIFI_INITIAL_CHANNEL=0
+BABYBUDDY_BASE_URL="..."
+BABYBUDDY_AUTH_TOKEN="..."
 ```
 
 Populate it as follows:
@@ -133,9 +133,9 @@ Populate it as follows:
 | -------- | ----- |
 | `CIRCUITPY_WIFI_SSID_DEFER` | Your Wi-Fi network's SSID (name) |
 | `CIRCUITPY_WIFI_PASSWORD_DEFER` | Your Wi-Fi network's password |
-| `CIRCUITPY_WIFI_CHANNEL` | The 2.4 GHz channel number of your Wi-Fi network. If you have _only one_ Wi-Fi access point and its channel number never changes, you can set this for a faster startup. Otherwise, or if you want to be safer, leave this set to 0 for auto. |
-| `BABYBUDDY_URL` | Baby Buddy's URL, including a trailing slash; for example, `http://10.1.2.3:1234/` |
-| `BABYBUDDY_TOKEN` | Your authorization token for Baby Buddy's API. You can generate one by logging into Baby Buddy, clicking your username and going to Settings. |
+| `CIRCUITPY_WIFI_INITIAL_CHANNEL` | The 2.4 GHz channel number of your Wi-Fi network. If you have _only one_ Wi-Fi access point and its channel number never changes, you can set this for a faster startup. Otherwise, or if you want to be safer, leave this set to 0 for auto. |
+| `BABYBUDDY_BASE_URL` | Baby Buddy's API endpointn URL, including a trailing slash and `/api/`; for example, `http://10.1.2.3:1234/api/` |
+| `BABYBUDDY_AUTH_TOKEN` | Your authorization token for Baby Buddy's API. You can generate one by logging into Baby Buddy, clicking your username and going to Settings. |
 
 Name it `settings.toml` and copy it to the root of the `CIRCUITPY` drive. Be sure your operating system didn't add a hidden `.txt` extension.
 
