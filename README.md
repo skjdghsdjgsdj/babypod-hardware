@@ -39,7 +39,7 @@ You can mix and match a few parts, but here's a table if you just want to pick e
 | [Small Enclosed Piezo w/Wires](https://www.adafruit.com/product/1740) | 1 |
 | [Hook-up Wire Spool Set - 22AWG Solid Core - 6 x 25 ft](https://www.adafruit.com/product/1311) | 1 |
 | [M2.5 button-head machine screws](https://www.amazon.com/dp/B0BC9294PD) | 1 set | These have a tiny hex head so be sure you have a driver |
-| [M2.5 countersunk flat-head self-tapping screws](https://www.amazon.com/dp/B09DB5SMCZ) | 1 set |
+| [M2 countersunk flat-head self-tapping screws](https://www.amazon.com/dp/B09DB5SMCZ) | 1 set |
 | PLA or PETG 3D printing filament | Varies | You might want a bright color so you can find BabyPod quickly |
 | 1.75mm transparent 3D printing filament | ~6mm | You'll cut a piece of this, not actually print with it |
 | Solder and soldering iron | 
