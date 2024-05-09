@@ -224,6 +224,7 @@ You'll wire up the power button similar to how you'd wire an electrical switch i
 ![](docs/img/encoder-mounted.jpg)
 12. Screw the top cover into place. Be careful not to loosen the wires looped around the power switch screws. Use the countersunk self-tapping screws. Press the power button, and after a few seconds, you should see this!
 ![](docs/img/done.jpg)
+13. Take a tiny bit, about 5mm, of the 1.75mm transparent filament and shove it in the hole by the USB port. It will act as a light pipe to the charge LED on the Feather (ideally) or the user-controllable LED (well, useful at some point).
 
 ## Troubleshooting
 
