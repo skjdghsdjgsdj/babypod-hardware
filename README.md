@@ -66,7 +66,7 @@ You don't need the _exact_ Feather above, but it works. If you want to use a [di
 * It MUST be compliant with [Adafruit's specifications for a Feather's physical dimensions and hole locations](https://learn.adafruit.com/adafruit-feather/feather-specification), although the bottom-right hole isn't needed.
 * It SHOULD have an onboard battery monitor that measures battery charge _percentage_, not just battery _voltage_. Boards with a LC709203 or MAX17048 chip work. If you pick a Feather without one of those two chips, then get an [Adafruit LC709203F LiPoly / LiIon Fuel Gauge and Battery Monitor](https://www.adafruit.com/product/4712). The assembly instructions note how to integrate it.
 
-Another Feather that works is [Unexpected Maker's Feather ESP32-S3](https://www.adafruit.com/product/5399) which is a bit more expensive and will require the "fuel gauge" above, further adding to the cost.
+Another Feather that works is [Unexpected Maker's Feather ESP32-S3](https://www.adafruit.com/product/5399) which is a bit more expensive and will require the "fuel gauge" above, further adding to the cost. On the plus side, it has a STEMMA QT port on the side so you don't need to strip a cable, and its charge LED aligns with the 3D printed model. Its build of CircuitPython also does allow reading from the `VBUS` pin so BabyPod will know its charging vs. on battery state.
 
 #### Other part variations
 
