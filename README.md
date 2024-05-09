@@ -233,23 +233,23 @@ You'll wire up the power button similar to how you'd wire an electrical switch i
 ### Power-related
 
 - Check the power switch. Yes it sounds obvious, but not only will the BabyPod be off, but the Feather doesn't show up on USB either when the power is off.
-- Is the battery charged? Leave a known good USB C cable plugged into the Feather for a few hours.
-- Does the board stay on even when the power switch is off? The wires came off the screws holding the switch in place or are loose on the Feather's `GND` and `EN` pins.
+- Is the battery charged? The battery is 2500mAh and the Feather's charging speed means it can take five hours to fully charge from 0%. The BabyPod will charge even when off. You can verify by checking the charge LED on the Feather, if yours has one.
+- Does the board stay on even when the power switch is off? The wires came off the screws holding the switch in place or are loose on the Feather's `GND` and `EN` pins. When you screw down or remove the faceplate, if the screws aren't tight enough, the wires can slip off the screws pretty easily.
 - Is the battery plugged into the Feather completely? If you're using a fuel gauge, is the battery fully plugged into that and a separate JST cable going from the fuel gauge's other port to the Feather?
 - Did you use an Adafruit battery and Adafruit Feather? If you didn't, then you may have reversed the battery polarity and destroyed the Feather. Smoke may have been another clue.
 
 ### Software-related
 
-- Did you install CircuitPython 9 and load all the code, including the relevant libraries?
+- Did you install CircuitPython 9 and load all the code, including the relevant libraries? Have you tried an older version of CircuitPython (still 9.x.x) in case there was a breaking change?
 - Is the code crashing? [Connect to a serial console and watch the output.](https://learn.adafruit.com/welcome-to-circuitpython/kattni-connecting-to-the-serial-console) Note the code disables the auto-reload when you write a file which is different from CircuitPython's default operation. In a serial console, you can press `Ctrl-C` to stop the code and then `Ctrl-D` to reboot which will capture all the output from the moment it boots up. If you're using macOS, then [tio](https://formulae.brew.sh/formula/tio) makes it easy to use serial consoles in the terminal; the device is `/dev/tty.usbmodem*`.
 - Does the menu show up but you get various errors when you actually try to _do_ something, like recording a feeding or changing? Your `settings.toml` is probably wrong, either for the Wi-Fi credentials, Wi-Fi channel if you specified one, or Baby Buddy's URL or authorization token. The serial console should help you here.
-- Are you using a recent version of Baby Buddy? Or perhaps your version is _too_ new and there's an API-breaking change?
+- Are you using a recent version of Baby Buddy for your server? Or perhaps your version is _too_ new and there's an API-breaking change?
 
 ### Other things to check
 
 - Is the LCD contrast adjusted? There's a [potentiometer on the back of the LCD backpack](https://learn.adafruit.com/i2c-spi-lcd-backpack?view=all) you can turn with a small flathead screwdriver. Carefully leave all the components wired together, but unscrew the faceplate, then the rotary encoder, then the LCD, and carefully lever the latter outside the case. While the Feather is on and the code is running, slowly adjust the potentiometer until it looks better.
 - Did you put enough electrical tape between the LCD board and the backpack so they don't short?
-- Are all the connections to the screw terminals good and tight? Give them a gentle tug. Especially check the connections on the `GND` terminal because there could be _three_ and it's hard to get them all locked down.
+- Are all the connections to the screw terminals on the Feather good and tight? Give them a gentle tug. Especially check the connections on the `GND` terminal because there could be _three_ and it's hard to get them all locked down.
 - Are the solder connections good? Are any insufficient, or maybe two adjacent pins are bridged together accidentally?
 - Did you miss any solder points when mounting the click wheel to the rotary encoder board?
 - Did you solder the correct headers for the LCD and its backpack? Re-read that section because you're supposed to skip a few pins.
