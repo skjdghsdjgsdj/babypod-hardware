@@ -139,6 +139,12 @@ Populate it as follows:
 | `BABYBUDDY_BASE_URL` | Baby Buddy's API endpointn URL, including a trailing slash and `/api/`; for example, `http://10.1.2.3:1234/api/` |
 | `BABYBUDDY_AUTH_TOKEN` | Your authorization token for Baby Buddy's API. You can generate one by logging into Baby Buddy, clicking your username and going to Settings. |
 
+Optionally, you can add the following as well:
+| Variable | Value |
+| -------- | ----- |
+| `BACKLIGHT_COLOR_FULL` | `int` representing the backlight color at full brightness, like `0xFF0000` for bright red; white is the default |
+| `BACKLIGHT_COLOR_DIM` | `int` representing the backlight color when dimmed, like `0x660000` for a dimmer red; gray is the default | 
+
 Name it `settings.toml` and copy it to the root of the `CIRCUITPY` drive. Be sure your operating system didn't add a hidden `.txt` extension.
 
 ### Copy the code
