@@ -86,6 +86,8 @@ You can print the enclosure in either one or two colors. Whichever you choose:
 
 One single color is easiest. Print `Faceplate, no inlays.stl` upside-down (top of the faceplate facing the bed) and `Bottom case.stl` as-is.
 
+Alternatively, instead of printing `Faceplate, no inlays.stl`, you can print `Faceplate, with inlays.stl`, still upside-down, and the printer will bridge over the text and power icon. But, if you want text and the icon, two-color printing will look nicer than just bridging.
+
 ### Two colors
 
 In two colors, you get a text inlay that says "BabyPod" and an icon for the power button. Printing in two colors requires a printer that supports multiple filaments or [clever use of GCODE](https://old.reddit.com/r/prusa3d/comments/nt3oau/2_colors_on_the_same_layer/h0q4s6e/).
