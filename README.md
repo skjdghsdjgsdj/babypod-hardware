@@ -204,7 +204,7 @@ You'll wire up the power button similar to how you'd wire an electrical switch i
 ![](docs/img/battery.jpg)
 2. Remove the protective paper covering the adhesive on the piezo and press-fit it into its circular spot. Make sure the hole in the piezo is facing up. Orient the piezo such that the wires are at the three-o-clock position. Be careful: the piezo has very thin wires and attempting to move it later could rip them off.
 ![](docs/img/piezo.jpg)
-3. If you're using the LiPo fuel gauge because you're using a Feather without a battery monitor, screw it into the four closely-spaced standoffs, plug the battery into it, and plug the JST cable it came with into the other port. Also plug the LCD'd STEMMA QT cable into the fuel gauge and then another STEMMA QT cable into the other port.
+3. If you're using the LiPo fuel gauge because you're using a Feather without a battery monitor, screw it into the four closely-spaced standoffs, plug the battery into it, and plug the JST cable it came with into the other port. Also plug the LCD's STEMMA QT cable into the fuel gauge and then another STEMMA QT cable into the other port.
 4. Mount the LCD assembly. The top-left of the LCD sits on a little notch and doesn't take a screw. Use 6mm screws for the other corners.
 ![](docs/img/lcd.jpg)
 5. Plug the STEMMA QT cable from the LCD into the left side of the rotary encoder when viewed from below, or if you're using a fuel gauge, use the STEMMA QT cable from that.
@@ -233,7 +233,7 @@ You'll wire up the power button similar to how you'd wire an electrical switch i
 ### Power-related
 
 - Check the power switch. Yes it sounds obvious, but not only will the BabyPod be off, but the Feather doesn't show up on USB either when the power is off.
-- Is the battery charged? The battery is 2500mAh and the Feather's charging speed means it can take five hours to fully charge from 0%. The BabyPod will charge even when off. You can verify by checking the charge LED on the Feather, if yours has one.
+- Is the battery charged? The battery is 2500mAh and the Feather's charging speed means it can take a long time to fully charge from 0%. Different Feathers charge at different speeds. The BabyPod will charge even when off. You can verify by checking the charge LED on the Feather, if yours has one.
 - Does the board stay on even when the power switch is off? The wires came off the screws holding the switch in place or are loose on the Feather's `GND` and `EN` pins. When you screw down or remove the faceplate, if the screws aren't tight enough, the wires can slip off the screws pretty easily.
 - Is the battery plugged into the Feather completely? If you're using a fuel gauge, is the battery fully plugged into that and a separate JST cable going from the fuel gauge's other port to the Feather?
 - Did you use an Adafruit battery and Adafruit Feather? If you didn't, then you may have reversed the battery polarity and destroyed the Feather. Smoke may have been another clue.
