@@ -12,6 +12,11 @@ rtc_standoffs = [
 	[59.25, 20.3, 2.45]
 ];
 
+microsd_standoffs = [
+	[27.55, -2.4, 2.45],
+	[47.85, -2.4, 2.45]
+];
+
 module feather() {
 	translate([0, 22.85, -4])
 	rotate([180, 0, 0])
@@ -44,7 +49,7 @@ module nav_switch() {
 }
 
 module battery() {
-	translate([4, 22.85 / 2 - 17 / 2, -19])
+	translate([4, 22.85 / 2 - 17 / 2, -20])
 	cube([36, 17, 7.8]);
 }
 
@@ -60,22 +65,31 @@ module piezo() {
 	cylinder(d = 13, h = 3, $fn = 36);
 }
 
+module microsd() {
+	translate([25, 17.9, -8.5])
+	rotate([180, 0, 0])
+	import("4682 Micro SD Breakout.stl");
+}
+
 module components() {
 	color("#ff99ff") piezo();
 	color("#ffaaaa") rtc();
 	color("#ffff99") feather();
 	color("#88ff88") nav_switch();
 	color("blue") battery();
+	color("orange") microsd();
 }
 
 module enclosure() {
+	microsd_standoff_height = 6.5;
+		
 	render()
 	difference() {
 		hull() {
 			for (x = [0, 65]) {
 				for (y = [-4, 22.85 + 4]) {
-					translate([x, y, -19])
-					cylinder(d = 5, h = 19, $fn = 36);
+					translate([x, y, -20])
+					cylinder(d = 5, h = 20, $fn = 36);
 				}
 			}
 		}
@@ -83,11 +97,17 @@ module enclosure() {
 		hull() {
 			for (x = [2, 63]) {
 				for (y = [-2, 22.85 + 2]) {
-					translate([x, y, -19])
-					cylinder(d = 5, h = 17, $fn = 36);
+					translate([x, y, -20])
+					cylinder(d = 5, h = 18, $fn = 36);
 				}
 			}
 		}
+		
+		translate([33, -6.5, -12.5])
+		cube([12, 2, 2]);
+		
+		translate([24, -5.5, -28.5])
+		cube([27.5, 1, 20]);	
 		
 		translate([44.45, 22.85 / 2, -10])
 		cylinder(d = 1.5, h = 30, $fn = 20);
@@ -114,8 +134,8 @@ module enclosure() {
 		
 		nav_switch_retainer(0.5);
 	
-		translate([53 - 13.2 / 2, 22.85 + 5.5 - 3.2, -19])
-		cube([13.2, 3.2, 17]);
+		translate([53 - 13.2 / 2, 22.85 + 5.5 - 3.2, -20])
+		cube([13.2, 3.2, 18]);
 		
 		USB_C_WIDTH = 9.7;
 		USB_C_DEPTH = 4;
@@ -142,8 +162,8 @@ module enclosure() {
 			inset = 1;
 			for (x = [-2.5 + inset, 65 + 2.5 - inset - 5]) {
 				for (y = [-6.5 + inset, 22.85 + 4 + 2.5 - inset - 5]) {
-					translate([x, y, -19])
-					cube([5, 5, 19]);
+					translate([x, y, -20])
+					cube([5, 5, 20]);
 				}
 			}
 		}
@@ -158,6 +178,9 @@ module enclosure() {
 		
 		translate([53 - 13.2 / 2, 22.85 + 5.5 - 3.2, -14])
 		cube([13.2, 3.2, 12]);
+		
+		translate([53 - 8 / 2, 22.85 + 5.5 - 4.2, -14])
+		cube([8, 1, 12]);
 	}
 	
 	rtc_standoff_height = 12;
@@ -171,6 +194,19 @@ module enclosure() {
 		difference() {
 			cylinder(d = inner_diameter + 2.5, h = rtc_standoff_height, $fn = 36);
 			cylinder(d = inner_diameter, h = rtc_standoff_height, $fn = 36);
+		}
+	}
+	
+	for (location = microsd_standoffs) {
+		x = location[0];
+		y = location[1];
+		inner_diameter = location[2];
+		
+		translate([x, y, -microsd_standoff_height - 2])
+		render()
+		difference() {
+			cylinder(d = inner_diameter + 2, h = microsd_standoff_height, $fn = 36);
+			cylinder(d = inner_diameter, h = microsd_standoff_height, $fn = 36);
 		}
 	}
 	
@@ -199,8 +235,8 @@ module nav_switch_retainer(extra_height = 0) {
 			cube([1, 22, 7.5]);
 			
 			for (y = [22.85 / 2 - 11.25, 22.85 / 2 + 11 - 3.25]) {
-				translate([46, y, -9.5])
-				cube([51.75 - 46, 3.5, 4]);
+				translate([46, y, -7.1])
+				cube([51.75 - 46, 3.5, 1.5]);
 			}
 		}
 	
@@ -219,7 +255,7 @@ module screws() {
 	inset = 4;
 	for (x = [-2.5 + inset, 65 + 2.5 - inset]) {
 		for (y = [-6.5 + inset, 22.85 + 4 + 2.5 - inset]) {
-			translate([x, y, -19 - 2])
+			translate([x, y, -20 - 2])
 			screw();
 		}
 	}
@@ -243,7 +279,7 @@ module backplate() {
 		hull() {
 			for (x = [0, 65]) {
 				for (y = [-4, 22.85 + 4]) {
-					translate([x, y, -21])
+					translate([x, y, -22])
 					cylinder(d = 5, h = 2, $fn = 36);
 				}
 			}
@@ -254,17 +290,17 @@ module backplate() {
 	
 	render()
 	difference() {
-		translate([2, 22.85 / 2 - 17 / 2 - 2, -19])
-		cube([40, 21, 7.8]);
+		translate([3, 22.85 / 2 - 17 / 2 - 1, -20])
+		cube([38, 19, 5]);
 		
 		battery();
 	
-		translate([2, 22.85 / 2 - 17 / 2 - 2, -19])
-		cube([6, 6, 7.8]);
+		translate([2, 22.85 / 2 - 17 / 2 - 2, -20])
+		cube([6, 6, 5]);
 	}
 }
 
-nav_switch_retainer();
-//enclosure();
+//nav_switch_retainer();
+enclosure();
 //backplate();
 //components();
