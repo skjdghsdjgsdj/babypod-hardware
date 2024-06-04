@@ -112,7 +112,7 @@ module enclosure() {
 		translate([44.45, 22.85 / 2, -10])
 		cylinder(d = 1.5, h = 30, $fn = 20);
 		
-		translate([57.5, 22.85 / 2, -2])
+		translate([58.5, 22.85 / 2, -2])
 		cylinder(d1 = 9, d2 = 13, h = 2, $fn = 36);
 	
 		hull() {
@@ -235,8 +235,8 @@ module nav_switch_retainer(extra_height = 0) {
 			cube([1, 22, 7.5]);
 			
 			for (y = [22.85 / 2 - 11.25, 22.85 / 2 + 11 - 2.75]) {
-				translate([46, y, -9.5])
-				cube([51.75 - 46, 3, 3.9]);
+				translate([46, y, -7.1])
+				cube([51.75 - 46, 3, 1.5]);
 			}
 		}
 	
