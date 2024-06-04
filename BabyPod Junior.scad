@@ -18,7 +18,7 @@ microsd_standoffs = [
 ];
 
 module feather() {
-	translate([0, 22.85, -4])
+	translate([0, 22.85, -4.5])
 	rotate([180, 0, 0])
 	import("5691 ESP32 S3 Reverse TFT Feather.stl");
 }
@@ -66,7 +66,7 @@ module piezo() {
 }
 
 module microsd() {
-	translate([25, 17.9, -8.5])
+	translate([25, 17.9, -9])
 	rotate([180, 0, 0])
 	import("4682 Micro SD Breakout.stl");
 }
@@ -81,7 +81,7 @@ module components() {
 }
 
 module enclosure() {
-	microsd_standoff_height = 6.5;
+	microsd_standoff_height = 7;
 		
 	render()
 	difference() {
@@ -103,17 +103,17 @@ module enclosure() {
 			}
 		}
 		
-		translate([33, -6.5, -12.5])
+		translate([33, -6.5, -13])
 		cube([12, 2, 2]);
 		
 		translate([24, -5.5, -28.5])
-		cube([27.5, 1, 20]);	
+		cube([27.5, 1, 20]);
 		
 		translate([44.45, 22.85 / 2, -10])
 		cylinder(d = 1.5, h = 30, $fn = 20);
 		
-		translate([58, 22.85 / 2, -2])
-		cylinder(d1 = 7.5, d2 = 11.5, h = 2, $fn = 36);
+		translate([57.5, 22.85 / 2, -2])
+		cylinder(d1 = 9, d2 = 13, h = 2, $fn = 36);
 	
 		hull() {
 			translate([12.3, 4, -2])
@@ -132,7 +132,7 @@ module enclosure() {
 			cylinder(d = inner_diameter, h = 1.5, $fn = 36);
 		}
 		
-		nav_switch_retainer(0.5);
+		nav_switch_retainer(1);
 	
 		translate([53 - 13.2 / 2, 22.85 + 5.5 - 3.2, -20])
 		cube([13.2, 3.2, 18]);
@@ -140,7 +140,7 @@ module enclosure() {
 		USB_C_WIDTH = 9.7;
 		USB_C_DEPTH = 4;
 
-		translate([-3, 22.85 / 2, -7.2])
+		translate([-3, 22.85 / 2, -7.7])
 		rotate([90, 0, 90])
 		union() {
 			for (x = [-1, 1]) {
@@ -152,7 +152,7 @@ module enclosure() {
 			cube([USB_C_WIDTH - USB_C_DEPTH, USB_C_DEPTH, 5], center = true);
 		}
 	
-		translate([-5, 22.85 / 2 + 9.5, -7.2])
+		translate([-5, 22.85 / 2 + 9.5, -7.7])
 		rotate([90, 0, 60])
 		cylinder(d = 1.9, h = 15, $fn = 20);
 	}
@@ -210,7 +210,7 @@ module enclosure() {
 		}
 	}
 	
-	feather_standoff_height = 2;
+	feather_standoff_height = 2.5;
 	for (location = feather_standoffs) {
 		x = location[0];
 		y = location[1];
@@ -234,9 +234,9 @@ module nav_switch_retainer(extra_height = 0) {
 			translate([51.75, 22.85 / 2 - 22 / 2, -9.5])
 			cube([1, 22, 7.5]);
 			
-			for (y = [22.85 / 2 - 11.25, 22.85 / 2 + 11 - 3.25]) {
-				translate([46, y, -7.1])
-				cube([51.75 - 46, 3.5, 1.5]);
+			for (y = [22.85 / 2 - 11.25, 22.85 / 2 + 11 - 2.75]) {
+				translate([46, y, -9.5])
+				cube([51.75 - 46, 3, 3.9]);
 			}
 		}
 	
@@ -291,12 +291,12 @@ module backplate() {
 	render()
 	difference() {
 		translate([3, 22.85 / 2 - 17 / 2 - 1, -20])
-		cube([38, 19, 5]);
+		cube([38, 19, 6]);
 		
 		battery();
 	
 		translate([2, 22.85 / 2 - 17 / 2 - 2, -20])
-		cube([6, 6, 5]);
+		cube([6, 6, 6]);
 	}
 }
 
