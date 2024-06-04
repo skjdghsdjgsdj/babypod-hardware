@@ -49,7 +49,7 @@ module nav_switch() {
 }
 
 module battery() {
-	translate([4, 22.85 / 2 - 17 / 2, -20])
+	translate([4, 22.85 / 2 - 17 / 2, -21])
 	cube([36, 17, 7.8]);
 }
 
@@ -286,6 +286,7 @@ module backplate() {
 		}
 		
 		screws();
+		battery();
 	}
 	
 	render()
