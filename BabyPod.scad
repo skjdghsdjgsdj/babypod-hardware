@@ -34,11 +34,11 @@ ROTARY_ENCODER_DIAMETER = 35;
 FEATHER_DEPTH = 22.86;
 FEATHER_WIDTH = 52.33;
 FEATHER_HEIGHT = 6.53;
-FEATHER_X = ROTARY_ENCODER_X - FEATHER_DEPTH / 2;
+FEATHER_X = ROTARY_ENCODER_X - FEATHER_DEPTH / 2;	
 FEATHER_Y_DELTA = 0.2;
 FEATHER_Y = SURFACE + FEATHER_Y_DELTA;
-FEATHER_Z = FEATHER_HEIGHT + SURFACE + 1;
-FEATHER_USB_C_Z_DELTA = -2.7;
+FEATHER_Z = SURFACE + 2;
+FEATHER_USB_C_Z_DELTA = 3.1;
 
 BATTERY_WIDTH = 60.3;
 BATTERY_DEPTH = 49.8;
@@ -48,7 +48,7 @@ FUEL_GAUGE_WIDTH = 25.4;
 FUEL_GAUGE_DEPTH = 20.32;
 FUEL_GAUGE_HEIGHT = 6.37;
 
-BATTERY_X = FEATHER_X - BATTERY_WIDTH - FUEL_GAUGE_WIDTH - 7;
+BATTERY_X = SURFACE;
 BATTERY_Y = DEPTH / 2 - BATTERY_DEPTH / 2;
 
 FUEL_GAUGE_X = BATTERY_X + BATTERY_WIDTH + 2.5;
@@ -87,13 +87,14 @@ module rotary_encoder() {
 }
 
 module feather() {
-	import("Unexpected Maker Feather S3.stl");
+	translate([0.75, 0, 0])
+	import("5303 Feather ESP32-S2.stl");
 	
-	translate([5.9, -1.9, -8.7])
+	/*translate([5.9, -1.9, -8.7])
 	cube([2.54 * 16, 6.2, 8.7]);
 	
 	translate([15.8, 18.6, -8.7])
-	cube([2.54 * 12, 6.2, 8.7]);
+	cube([2.54 * 12, 6.2, 8.7]);*/
 }
 
 module fuel_gauge() {
@@ -126,10 +127,18 @@ module piezo() {
 	cylinder(d = PIEZO_DIAMETER, h = PIEZO_HEIGHT, $fn = 36);
 }
 
+module adalogger() {
+	import("2922 FeatherWing Adalogger.stl");
+}
+
 module components() {
-	translate([FEATHER_X, FEATHER_Y, FEATHER_Z])
-	rotate([180, 0, 90])
+	translate([FEATHER_X + FEATHER_DEPTH, FEATHER_Y, FEATHER_Z])
+	rotate([0, 0, 90])
 	feather();
+	
+	translate([FEATHER_X + FEATHER_DEPTH, FEATHER_Y, FEATHER_Z + 8.6 + 1.6])
+	rotate([0, 0, 90])
+	adalogger();
 	
 	translate([PIEZO_X, PIEZO_Y, PIEZO_Z])
 	piezo();
@@ -247,16 +256,17 @@ module bottom_case() {
 	
 	// Feather standoffs
 	feather_deltas = [
-		[2.54, 3.3],
-		[FEATHER_DEPTH - 2.54, 3.3],
-		[FEATHER_DEPTH - 2.54, FEATHER_WIDTH - 3.3]
+		[2.54, 3.3, 2.45],
+		[FEATHER_DEPTH - 2.54, 3.3, 2.45],
+		[1.9, FEATHER_WIDTH - 3.3, 1.95],
+		[FEATHER_DEPTH - 1.9, FEATHER_WIDTH - 3.3, 1.95]
 	];
 	for (delta = feather_deltas) {
 		translate([delta[0] + FEATHER_X, delta[1] + FEATHER_Y, 0])
 		render()
 		difference() {
-			cylinder(d = 3.5, h = FEATHER_Z - 1, $fn = 36);
-			cylinder(d = 2.5, h = FEATHER_Z - 1, $fn = 36);
+			cylinder(d = 3.5, h = FEATHER_Z, $fn = 36);
+			cylinder(d = feather_deltas[2], h = FEATHER_Z, $fn = 36);
 		}
 	}
 	
@@ -415,10 +425,10 @@ module top_case_inlays() {
 translate([0, DEPTH / 2 - 0.1 / 2, 0])
 cube([WIDTH, 0.1, HEIGHT]);*/
 
-//%components();
-//bottom_case();
+components();
+%bottom_case();
 
-if (USE_TEXT_INLAYS) {
+/*if (USE_TEXT_INLAYS) {
 	difference() {
 		top_case();
 		top_case_inlays();
@@ -429,4 +439,4 @@ if (USE_TEXT_INLAYS) {
 }
 else {
 	top_case();
-}
+}*/

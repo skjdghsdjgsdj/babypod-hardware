@@ -7,14 +7,9 @@ feather_standoffs = [
 	[48.25, 21, 1.95]
 ];
 
-rtc_standoffs = [
-	[59.25, 2.5, 2.45],
-	[59.25, 20.3, 2.45]
-];
-
 microsd_standoffs = [
-	[27.55, -2.4, 2.45],
-	[47.85, -2.4, 2.45]
+	[41.55, -4.5, 2.45],
+	[61.85, -4.5, 2.45]
 ];
 
 module feather() {
@@ -25,11 +20,10 @@ module feather() {
 
 module nav_switch() {
 	translate([58, 22.85 / 2, -3])
-	rotate([0, 0, 90])
 	union() {
 		// base
-		translate([-5, -5, -3.15])
-		cube([10, 10, 3.15]);
+		translate([-5 - 1.25, -5 - 1.25, -3.15])
+		cube([12.5, 12.5, 3.15]);
 		
 		// joystick base
 		cylinder(d = 6.5, h = 5.8 - 3.15);
@@ -49,13 +43,13 @@ module nav_switch() {
 }
 
 module battery() {
-	translate([4, 22.85 / 2 - 17 / 2, -21])
+	translate([1, 22.85 / 2 - 17 / 2, -21])
 	cube([36, 17, 7.8]);
 }
 
 module rtc() {
-	translate([44, 22.85, -15.5])
-	rotate([0, 0, -90])
+	translate([69, 22.85, -20])
+	rotate([90, 0, -90])
 	import("3013 DS3231 RTC.stl");
 }
 
@@ -66,7 +60,7 @@ module piezo() {
 }
 
 module microsd() {
-	translate([25, 17.9, -9])
+	translate([39, 17.9, -16])
 	rotate([180, 0, 0])
 	import("4682 Micro SD Breakout.stl");
 }
@@ -74,19 +68,36 @@ module microsd() {
 module components() {
 	color("#ff99ff") piezo();
 	color("#ffaaaa") rtc();
+	color("blue") battery();
 	color("#ffff99") feather();
 	color("#88ff88") nav_switch();
-	color("blue") battery();
-	color("orange") microsd();
+	color("#ffff55") microsd();
 }
 
 module enclosure() {
-	microsd_standoff_height = 7;
+	translate([58, 22.85 / 2, -5])
+	render()
+	difference() {
+		translate([-14 / 2, -14 / 2, -2])
+		cube([14, 14, 5]);
 		
+		translate([-12 / 2, -12 / 2, -2])
+		cube([12, 12, 5]);
+	}
+	
+	for (y_delta = [-1, 1]) {
+		translate([58, 22.85 / 2 + (y_delta * 8.5), -7])
+		render()
+		difference() {
+			cylinder(d = 4, h = 5, $fn = 36);
+			cylinder(d = 2.45, h = 5, $fn = 36);
+		}
+	}
+
 	render()
 	difference() {
 		hull() {
-			for (x = [0, 65]) {
+			for (x = [0, 72]) {
 				for (y = [-4, 22.85 + 4]) {
 					translate([x, y, -20])
 					cylinder(d = 5, h = 20, $fn = 36);
@@ -95,7 +106,7 @@ module enclosure() {
 		}
 		
 		hull() {
-			for (x = [2, 63]) {
+			for (x = [2, 70]) {
 				for (y = [-2, 22.85 + 2]) {
 					translate([x, y, -20])
 					cylinder(d = 5, h = 18, $fn = 36);
@@ -103,17 +114,19 @@ module enclosure() {
 			}
 		}
 		
-		translate([33, -6.5, -13])
+		translate([47, -6.5, -20])
 		cube([12, 2, 2]);
 		
-		translate([24, -5.5, -28.5])
-		cube([27.5, 1, 20]);
+		translate([38, -5.5, -28.5])
+		cube([27.5, 1, 13]);
 		
 		translate([44.45, 22.85 / 2, -10])
 		cylinder(d = 1.5, h = 30, $fn = 20);
 		
-		translate([58.5, 22.85 / 2, -2])
+		translate([58, 22.85 / 2, -2])
 		cylinder(d1 = 9, d2 = 13, h = 2, $fn = 36);
+		
+		arrow_inlays();
 	
 		hull() {
 			translate([12.3, 4, -2])
@@ -160,7 +173,7 @@ module enclosure() {
 	difference() {
 		union() {
 			inset = 1;
-			for (x = [-2.5 + inset, 65 + 2.5 - inset - 5]) {
+			for (x = [-2.5 + inset, 72 + 2.5 - inset - 5]) {
 				for (y = [-6.5 + inset, 22.85 + 4 + 2.5 - inset - 5]) {
 					translate([x, y, -20])
 					cube([5, 5, 20]);
@@ -181,32 +194,31 @@ module enclosure() {
 		
 		translate([53 - 8 / 2, 22.85 + 5.5 - 4.2, -14])
 		cube([8, 1, 12]);
-	}
-	
-	rtc_standoff_height = 12;
-	for (location = rtc_standoffs) {
-		x = location[0];
-		y = location[1];
-		inner_diameter = location[2];
-		
-		translate([x, y, -rtc_standoff_height - 2])
-		render()
-		difference() {
-			cylinder(d = inner_diameter + 2.5, h = rtc_standoff_height, $fn = 36);
-			cylinder(d = inner_diameter, h = rtc_standoff_height, $fn = 36);
-		}
-	}
+	}	
 	
 	for (location = microsd_standoffs) {
 		x = location[0];
 		y = location[1];
 		inner_diameter = location[2];
 		
-		translate([x, y, -microsd_standoff_height - 2])
+		translate([x, y, -8])
+		hull() {
+			cube([0.01, 0.01, 0.01]);
+			
+			union() {
+				translate([0, 2, -5])
+				cylinder(d = 4, h = 0.01, $fn = 36);
+
+				translate([-2, 0 ,-5])
+				cube([4, 2, 0.01]);
+			}
+		}
+		
+		translate([x, y + 2, -6 - 10])
 		render()
 		difference() {
-			cylinder(d = inner_diameter + 2, h = microsd_standoff_height, $fn = 36);
-			cylinder(d = inner_diameter, h = microsd_standoff_height, $fn = 36);
+			cylinder(d = 4, h = 3, $fn = 36);
+			cylinder(d = inner_diameter, h = 3, $fn = 36);
 		}
 	}
 	
@@ -223,37 +235,40 @@ module enclosure() {
 			cylinder(d = inner_diameter, h = feather_standoff_height, $fn = 36);
 		}
 	}
+	
+	render()
+	difference() {
+		translate([66.5, 22.85 / 2 - 27 / 2, -15])
+		cube([2, 27, 15]);
+		
+		translate([67.5, 22.85 / 2 - 23.5 / 2, -15])
+		cube([1, 23.5, 15]);
+		
+		translate([66.5, 22.85 / 2 - 21 / 2, -15])
+		cube([1, 21, 15]);
+	}
 }
 
 module nav_switch_retainer(extra_height = 0) {
+	render()
 	difference() {
-		union() {
-			translate([51.75, 22.85 / 2 - 8 / 2, -9.5 - extra_height])
-			cube([15, 8, 3 + extra_height]);
-			
-			translate([51.75, 22.85 / 2 - 22 / 2, -9.5])
-			cube([1, 22, 7.5]);
-			
-			for (y = [22.85 / 2 - 11.25, 22.85 / 2 + 11 - 2.75]) {
-				translate([46, y, -7.1])
-				cube([51.75 - 46, 3, 1.5]);
+		hull() {
+			for (y_delta = [-1, 1]) {
+				translate([58, 22.85 / 2 + (y_delta * 8.5), -8.5])
+				cylinder(d = 6, h = 1.5, $fn = 36);
 			}
 		}
-	
-		for (location = feather_standoffs) {
-			x = location[0];
-			y = location[1];
-			inner_diameter = location[2];
-			
-			translate([x, y, -20])
-			cylinder(d = inner_diameter, h = 20, $fn = 36);
+		
+		for (y_delta = [-1, 1]) {
+				translate([58, 22.85 / 2 + (y_delta * 8.5), -8.5])
+				cylinder(d = 2.6, h = 1.5, $fn = 36);
 		}
 	}
 }
 
 module screws() {
 	inset = 4;
-	for (x = [-2.5 + inset, 65 + 2.5 - inset]) {
+	for (x = [-2.5 + inset, 72 + 2.5 - inset]) {
 		for (y = [-6.5 + inset, 22.85 + 4 + 2.5 - inset]) {
 			translate([x, y, -20 - 2])
 			screw();
@@ -277,7 +292,7 @@ module backplate() {
 	render()
 	difference() {
 		hull() {
-			for (x = [0, 65]) {
+			for (x = [0, 72]) {
 				for (y = [-4, 22.85 + 4]) {
 					translate([x, y, -22])
 					cylinder(d = 5, h = 2, $fn = 36);
@@ -287,21 +302,39 @@ module backplate() {
 		
 		screws();
 		battery();
+			
+		translate([47, -6.5, -22])
+		cube([12, 3, 2]);
 	}
 	
 	render()
 	difference() {
-		translate([3, 22.85 / 2 - 17 / 2 - 1, -20])
+		translate([0, 22.85 / 2 - 17 / 2 - 1, -20])
 		cube([38, 19, 6]);
 		
 		battery();
 	
-		translate([2, 22.85 / 2 - 17 / 2 - 2, -20])
+		translate([0, 22.85 / 2 - 17 / 2 - 2, -20])
 		cube([6, 6, 6]);
 	}
 }
 
+module arrow_inlays() {
+	for (angle = [0, 90, 180, 270]) {
+		translate([58, 22.85 / 2, 0])
+		rotate([0, 0, angle])
+		translate([0, 9, -0.4])
+		linear_extrude(0.4)
+		polygon([
+			[0, 2],
+			[2, 0],
+			[-2, 0]
+		]);
+	}
+}
+
 //nav_switch_retainer();
-enclosure();
-//backplate();
+//arrow_inlays();
+//enclosure();
+backplate();
 //components();
