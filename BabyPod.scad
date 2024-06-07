@@ -44,16 +44,8 @@ BATTERY_WIDTH = 60.3;
 BATTERY_DEPTH = 49.8;
 BATTERY_HEIGHT = 7.4;
 
-FUEL_GAUGE_WIDTH = 25.4;
-FUEL_GAUGE_DEPTH = 20.32;
-FUEL_GAUGE_HEIGHT = 6.37;
-
-BATTERY_X = SURFACE;
+BATTERY_X = LCD_WIDTH - BATTERY_WIDTH - 5;
 BATTERY_Y = DEPTH / 2 - BATTERY_DEPTH / 2;
-
-FUEL_GAUGE_X = BATTERY_X + BATTERY_WIDTH + 2.5;
-FUEL_GAUGE_Y = SURFACE + 15;
-FUEL_GAUGE_Z = SURFACE + 1 + FUEL_GAUGE_HEIGHT;
 
 USB_C_WIDTH = 9.4;
 USB_C_DEPTH = 4;
@@ -62,9 +54,6 @@ CHARGE_LED_HOLE_DIAMETER = 1.9; // just big enough to shove in 1.75mm filament p
 
 PIEZO_DIAMETER = 13;
 PIEZO_HEIGHT = 3.3;
-PIEZO_X = BATTERY_WIDTH + BATTERY_X + PIEZO_DIAMETER / 2 + 5;
-PIEZO_Y = DEPTH - PIEZO_DIAMETER / 2 - SURFACE - 5;;
-PIEZO_Z = SURFACE;
 	
 BOTTOM_CASE_SCREW_HOLE_WIDTH_DEPTH = 5;
 BOTTOM_CASE_SCREW_HOLE_SQUARE_HEIGHT = 1;
@@ -89,17 +78,6 @@ module rotary_encoder() {
 module feather() {
 	translate([0.75, 0, 0])
 	import("5303 Feather ESP32-S2.stl");
-	
-	/*translate([5.9, -1.9, -8.7])
-	cube([2.54 * 16, 6.2, 8.7]);
-	
-	translate([15.8, 18.6, -8.7])
-	cube([2.54 * 12, 6.2, 8.7]);*/
-}
-
-module fuel_gauge() {
-	rotate([0, 0, -90])
-	import("4712 LC709203F.stl");
 }
 
 module lcd_backpack() {
@@ -128,6 +106,7 @@ module piezo() {
 }
 
 module adalogger() {
+	translate([0.75, 0, 0])
 	import("2922 FeatherWing Adalogger.stl");
 }
 
@@ -140,15 +119,8 @@ module components() {
 	rotate([0, 0, 90])
 	adalogger();
 	
-	translate([PIEZO_X, PIEZO_Y, PIEZO_Z])
-	piezo();
-	
 	translate([BATTERY_X, BATTERY_Y, SURFACE])
 	battery();
-	
-	translate([FUEL_GAUGE_X, FUEL_GAUGE_Y, FUEL_GAUGE_Z])
-	rotate([180, 0, 0])
-	fuel_gauge();
 	
 	translate([LCD_STACK_X, LCD_STACK_Y, LCD_STACK_Z])
 	lcd_stack();
@@ -197,6 +169,11 @@ module bottom_case() {
 		])
 		rotate([90, 0, 0])
 		cylinder(d = CHARGE_LED_HOLE_DIAMETER, h = SURFACE, $fn = 36);
+		
+		// piezo hole
+		translate([WIDTH - SURFACE, DEPTH / 2, SURFACE + PIEZO_DIAMETER / 2])
+		rotate([90, 0, 90])
+		cylinder(d = 2, h = SURFACE, $fn = 36);
 	}
 	
 	// LCD standoffs
@@ -239,21 +216,6 @@ module bottom_case() {
 		}
 	}
 	
-	// fuel gauge standoffs
-	translate([FUEL_GAUGE_X, FUEL_GAUGE_Y, 0])
-	union() {
-		for (x = [2.54, FUEL_GAUGE_DEPTH - 2.54]) {
-			for (y = [2.54, FUEL_GAUGE_WIDTH - 2.54]) {
-				translate([x, y, 0])
-				render()
-				difference() {
-					cylinder(d = 3.6, h = FUEL_GAUGE_Z - 1.6, $fn = 36);
-					cylinder(d = 2.5, h = FUEL_GAUGE_Z - 1.6, $fn = 36);
-				}
-			}
-		}
-	}
-	
 	// Feather standoffs
 	feather_deltas = [
 		[2.54, 3.3, 2.45],
@@ -271,18 +233,18 @@ module bottom_case() {
 	}
 	
 	// piezo retainer
-	translate([PIEZO_X, PIEZO_Y, SURFACE])
 	render()
 	difference() {
-		cylinder(d = PIEZO_DIAMETER + 0.2 + 2, h = PIEZO_HEIGHT, $fn = 72);
-		cylinder(d = PIEZO_DIAMETER + 0.2, h = PIEZO_HEIGHT, $fn = 72);
+		translate([WIDTH - SURFACE * 2 - PIEZO_HEIGHT, DEPTH / 2 - PIEZO_DIAMETER / 2 - SURFACE, 0])
+		cube([PIEZO_HEIGHT + SURFACE, PIEZO_DIAMETER + SURFACE * 2, HEIGHT - 6]);
 		
-		for (angle = [0, 45, 90, 135]) {
-			translate([0, 0, PIEZO_HEIGHT / 2])
-			rotate([0, 0, angle])
-			cube([PIEZO_DIAMETER + 0.2 + 2, 2, PIEZO_HEIGHT], center = true);
-		}
+		translate([WIDTH - SURFACE - PIEZO_HEIGHT, DEPTH / 2 - PIEZO_DIAMETER / 2, 0])
+		cube([PIEZO_HEIGHT, PIEZO_DIAMETER, HEIGHT - 6]);
+		
+		translate([WIDTH - SURFACE * 2 - PIEZO_HEIGHT, DEPTH / 2 - PIEZO_DIAMETER / 2 + SURFACE, 0])
+		cube([SURFACE, PIEZO_DIAMETER - SURFACE * 2, HEIGHT - 6]);
 	}
+	
 	
 	// battery retainer
 	translate([BATTERY_X - 2, BATTERY_Y - 2, SURFACE])
@@ -394,7 +356,7 @@ module top_case() {
 		
 	// standoffs for power button
 	translate([ROTARY_ENCODER_X, POWER_BUTTON_Y])
-	rotate([0, 0, -10])
+	rotate([0, 0, -15])
 	union() {
 		for (x_delta = [-1, 1]) {
 			translate([(18.5 / 2) * x_delta, 0, HEIGHT - 4.3])
@@ -425,8 +387,8 @@ module top_case_inlays() {
 translate([0, DEPTH / 2 - 0.1 / 2, 0])
 cube([WIDTH, 0.1, HEIGHT]);*/
 
-components();
-%bottom_case();
+//components();
+bottom_case();
 
 /*if (USE_TEXT_INLAYS) {
 	difference() {
