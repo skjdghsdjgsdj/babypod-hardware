@@ -29,7 +29,7 @@ ROTARY_ENCODER_Z_INSET = 0;
 ROTARY_ENCODER_X = SURFACE + 1 + LCD_WIDTH + 1 + ROTARY_ENCODER_WIDTH / 2;
 ROTARY_ENCODER_Y = DEPTH / 2;
 ROTARY_ENCODER_Z = HEIGHT - ROTARY_ENCODER_PCB_TO_DIAL_HEIGHT - ROTARY_ENCODER_Z_INSET;
-ROTARY_ENCODER_DIAMETER = 35;
+ROTARY_ENCODER_DIAMETER = 34;
 
 FEATHER_DEPTH = 22.86;
 FEATHER_WIDTH = 52.33;
@@ -68,7 +68,7 @@ SCREW_SHAFT_DIAMETER = 2;
 
 POWER_BUTTON_Y = ROTARY_ENCODER_Y + ROTARY_ENCODER_DIAMETER / 2 + 9.5;
 
-USE_TEXT_INLAYS = false;
+USE_TEXT_INLAYS = true;
 
 module rotary_encoder() {
 	rotate([180, 0, 270])
@@ -326,6 +326,30 @@ module screws() {
 
 module top_case() {
 	render()
+	translate([SURFACE, SURFACE, HEIGHT - SURFACE])
+	difference() {
+		// main retainer ring
+		cube([WIDTH - SURFACE * 2, DEPTH - SURFACE * 2, SURFACE]);
+		
+		translate([1, 1, 0])
+		cube([WIDTH - SURFACE * 2 - 2, DEPTH - SURFACE * 2 - 2, SURFACE]);
+		
+		// cutouts for corners
+		for (y = [0, DEPTH - SURFACE * 2 - 5]) {
+			for (x = [0, WIDTH - SURFACE * 2 - 15]) {
+				translate([x, y, 0])
+				cube([15, 5, SURFACE]);
+			}
+		
+			// cutouts for screw holes
+			for (screw_x = SCREW_X_COORDS) {
+				translate([screw_x - SURFACE - 1, y, 0])
+				cube([BOTTOM_CASE_SCREW_HOLE_WIDTH_DEPTH + 2, 5, SURFACE]);
+			}
+		}
+	}
+
+	render()
 	difference() {
 		translate([0, 0, HEIGHT])
 		rounded_cube(WIDTH, DEPTH, SURFACE, CASE_RADIUS);
@@ -374,10 +398,10 @@ module top_case_inlays() {
 	linear_extrude(0.4)
 	union() {
 		translate([ROTARY_ENCODER_X - 8, POWER_BUTTON_Y])
-		text("⏻", font = "SF Compact Rounded:style=Bold", size = 6, halign = "right", valign = "center", $fn = 36);
+		text("⏻", font = "SF Compact Rounded:style=Bold", size = 5, halign = "right", valign = "center", $fn = 36);
 		
-		translate([LCD_STACK_X + LCD_WIDTH / 2, DEPTH / 2 + VIEWABLE_DEPTH / 2 + SURFACE + 1])
-		text("BabyPod", font = "Chalkboard", size = 8, halign = "center", valign = "bottom", $fn = 36);
+		translate([LCD_STACK_X + LCD_WIDTH / 2, DEPTH / 2 + VIEWABLE_DEPTH / 2 + SURFACE + 0.5])
+		text("BabyPod", font = "SignPainter", size = 9, halign = "center", valign = "bottom", $fn = 36);
 	}
 }
 
@@ -390,7 +414,7 @@ cube([WIDTH, 0.1, HEIGHT]);*/
 //components();
 bottom_case();
 
-/*if (USE_TEXT_INLAYS) {
+if (USE_TEXT_INLAYS) {
 	difference() {
 		top_case();
 		top_case_inlays();
@@ -401,4 +425,4 @@ bottom_case();
 }
 else {
 	top_case();
-}*/
+}
