@@ -25,7 +25,7 @@ ROTARY_ENCODER_WIDTH = 40.7;
 ROTARY_ENCODER_DEPTH = 35.56;
 ROTARY_ENCODER_HEIGHT = 10.33;
 ROTARY_ENCODER_PCB_TO_DIAL_HEIGHT = 2.5;
-ROTARY_ENCODER_Z_INSET = 0;
+ROTARY_ENCODER_Z_INSET = -2.2;
 ROTARY_ENCODER_X = SURFACE + 1 + LCD_WIDTH + 1 + ROTARY_ENCODER_WIDTH / 2;
 ROTARY_ENCODER_Y = DEPTH / 2;
 ROTARY_ENCODER_Z = HEIGHT - ROTARY_ENCODER_PCB_TO_DIAL_HEIGHT - ROTARY_ENCODER_Z_INSET;
@@ -38,7 +38,7 @@ FEATHER_X = ROTARY_ENCODER_X - FEATHER_DEPTH / 2;
 FEATHER_Y_DELTA = -1.5;
 FEATHER_Y = SURFACE + FEATHER_Y_DELTA;
 FEATHER_Z = SURFACE + 2;
-FEATHER_USB_C_Z_DELTA = 3.1;
+FEATHER_USB_C_Z_DELTA = 3.3;
 
 BATTERY_WIDTH = 60.3;
 BATTERY_DEPTH = 49.8;
@@ -52,15 +52,15 @@ USB_C_DEPTH = 4;
 
 CHARGE_LED_HOLE_DIAMETER = 1.9; // just big enough to shove in 1.75mm filament piece
 
-PIEZO_DIAMETER = 13;
-PIEZO_HEIGHT = 3.3;
+PIEZO_DIAMETER = 13.3;
+PIEZO_HEIGHT = 3.5;
 PIEZO_RETAINER_Z_DELTA = 10;
 PIEZO_RETAINER_SURFACE = 1;
 	
 BOTTOM_CASE_SCREW_HOLE_WIDTH_DEPTH = 5;
 BOTTOM_CASE_SCREW_HOLE_SQUARE_HEIGHT = 1;
 
-SCREW_X_COORDS = [8, WIDTH / 2 - BOTTOM_CASE_SCREW_HOLE_WIDTH_DEPTH / 2, WIDTH - 8 - BOTTOM_CASE_SCREW_HOLE_WIDTH_DEPTH];
+SCREW_X_COORDS = [5, WIDTH / 2 - BOTTOM_CASE_SCREW_HOLE_WIDTH_DEPTH / 2, WIDTH - 5 - BOTTOM_CASE_SCREW_HOLE_WIDTH_DEPTH];
 SCREW_Y_COORDS = [SURFACE, DEPTH - BOTTOM_CASE_SCREW_HOLE_WIDTH_DEPTH - SURFACE];
 
 SCREW_HEIGHT = 6.3;
@@ -69,6 +69,9 @@ SCREW_HEAD_HEIGHT = 1.7;
 SCREW_SHAFT_DIAMETER = 2;
 
 POWER_BUTTON_Y = ROTARY_ENCODER_Y + ROTARY_ENCODER_DIAMETER / 2 + 9.5;
+POWER_BUTTON_SCREW_SPACING = 18.5;
+POWER_BUTTON_DEPTH = 8.2;
+POWER_BUTTON_BASE_HEIGHT = 4.4;
 
 USE_TEXT_INLAYS = true;
 
@@ -111,6 +114,7 @@ module battery() { // 2500mAh
 }
 
 module piezo() {
+	rotate([90, 0, 90])
 	cylinder(d = PIEZO_DIAMETER, h = PIEZO_HEIGHT, $fn = 36);
 }
 
@@ -126,7 +130,7 @@ module components() {
 	feather();
 	
 	color("orange")
-	translate([FEATHER_X + FEATHER_DEPTH, FEATHER_Y, FEATHER_Z + 8.6 + 1.6])
+	translate([FEATHER_X + FEATHER_DEPTH, FEATHER_Y, FEATHER_Z + 11 + 1.6])
 	rotate([0, 0, 90])
 	adalogger();
 	
@@ -137,6 +141,10 @@ module components() {
 	color("#99ff99")
 	translate([LCD_STACK_X, LCD_STACK_Y, LCD_STACK_Z])
 	lcd_stack();
+	
+	color("red")
+	translate([WIDTH - SURFACE - PIEZO_HEIGHT, DEPTH / 2, PIEZO_DIAMETER / 2 + SURFACE])
+	piezo();
 
 	color("#ffbbff")
 	translate([ROTARY_ENCODER_X, ROTARY_ENCODER_Y, ROTARY_ENCODER_Z])
@@ -197,8 +205,8 @@ module bottom_case() {
 		}
 		
 		// Feather notch to support PCB inset
-		translate([FEATHER_X - 4 / 2, SURFACE / 2, FEATHER_Z - 1])
-		cube([FEATHER_DEPTH + 4, SURFACE / 2, HEIGHT - 12]);
+		translate([FEATHER_X - 2 / 2, SURFACE / 2, FEATHER_Z - 1])
+		cube([FEATHER_DEPTH + 2, SURFACE / 2, HEIGHT - 3 - SURFACE]);
 	}
 	
 	// LCD standoffs
@@ -281,13 +289,17 @@ module bottom_case() {
 	// piezo retainer
 	render()
 	difference() {
-		translate([WIDTH - PIEZO_RETAINER_SURFACE * 2 - PIEZO_HEIGHT, DEPTH / 2 - PIEZO_DIAMETER / 2 - PIEZO_RETAINER_SURFACE, 0])
+		translate([
+			WIDTH - PIEZO_RETAINER_SURFACE * 2 - PIEZO_HEIGHT - PIEZO_RETAINER_SURFACE,
+			DEPTH / 2 - PIEZO_DIAMETER / 2 - PIEZO_RETAINER_SURFACE,
+			0
+		])
 		cube([PIEZO_HEIGHT + PIEZO_RETAINER_SURFACE, PIEZO_DIAMETER + PIEZO_RETAINER_SURFACE * 2, HEIGHT - PIEZO_RETAINER_Z_DELTA]);
 		
-		translate([WIDTH - PIEZO_RETAINER_SURFACE - PIEZO_HEIGHT, DEPTH / 2 - PIEZO_DIAMETER / 2, 0])
-		cube([PIEZO_HEIGHT, PIEZO_DIAMETER, HEIGHT - PIEZO_RETAINER_Z_DELTA]);
+		translate([WIDTH - PIEZO_RETAINER_SURFACE * 2 - PIEZO_HEIGHT, DEPTH / 2 - PIEZO_DIAMETER / 2, 0])
+		cube([PIEZO_HEIGHT + PIEZO_RETAINER_SURFACE, PIEZO_DIAMETER, HEIGHT - PIEZO_RETAINER_Z_DELTA]);
 		
-		translate([WIDTH - PIEZO_RETAINER_SURFACE * 2 - PIEZO_HEIGHT, DEPTH / 2 - PIEZO_DIAMETER / 2 + PIEZO_RETAINER_SURFACE * 2, 0])
+		translate([WIDTH - PIEZO_RETAINER_SURFACE * 3 - PIEZO_HEIGHT, DEPTH / 2 - PIEZO_DIAMETER / 2 + PIEZO_RETAINER_SURFACE * 2, 0])
 		cube([PIEZO_RETAINER_SURFACE, PIEZO_DIAMETER - PIEZO_RETAINER_SURFACE * 4, HEIGHT - PIEZO_RETAINER_Z_DELTA]);
 	}	
 	
@@ -334,6 +346,25 @@ module bottom_case() {
 		
 		screws();
 	}
+	
+	width = POWER_BUTTON_SCREW_SPACING + 7;
+	render()
+	difference() {
+		hull() {
+			translate([ROTARY_ENCODER_X - 10 / 2, DEPTH - SURFACE, HEIGHT - POWER_BUTTON_BASE_HEIGHT - 3 - 8])
+			cube([10, 0.01, 0.01]);
+		
+			translate([ROTARY_ENCODER_X - width / 2, 0, HEIGHT - POWER_BUTTON_BASE_HEIGHT - 3])
+			
+			translate([0, DEPTH - POWER_BUTTON_DEPTH - SURFACE - 3 / 2, 0])
+			cube([width, POWER_BUTTON_DEPTH + 3, 3]);
+		}
+			
+		for (x = [-POWER_BUTTON_SCREW_SPACING / 2, POWER_BUTTON_SCREW_SPACING / 2]) {
+			translate([x + ROTARY_ENCODER_X, POWER_BUTTON_Y, HEIGHT - POWER_BUTTON_BASE_HEIGHT - 5])
+			cylinder(d = 2.45, h = 5, $fn = 36);
+		}
+	}
 }
 
 module usb_c() {
@@ -377,13 +408,12 @@ module top_case() {
 		cube([WIDTH - SURFACE * 2, DEPTH - SURFACE * 2, SURFACE]);
 		
 		translate([1, 1, 0])
-		cube([WIDTH - SURFACE * 2 - 2, DEPTH - SURFACE * 2 - 2, SURFACE]);
+		cube([WIDTH - SURFACE * 2, DEPTH - SURFACE * 2 - 2, SURFACE]);
 		
-		// cutouts for corners
 		for (y = [0, DEPTH - SURFACE * 2 - 5]) {
-			for (x = [0, WIDTH - SURFACE * 2 - 15]) {
+			for (x = [0, WIDTH - SURFACE * 2 - 35]) {
 				translate([x, y, 0])
-				cube([15, 5, SURFACE]);
+				cube([35, 5, SURFACE]);
 			}
 		
 			// cutouts for screw holes
@@ -422,20 +452,6 @@ module top_case() {
 		
 		screws();
 	}
-		
-	// standoffs for power button
-	translate([ROTARY_ENCODER_X, POWER_BUTTON_Y])
-	rotate([0, 0, -15])
-	union() {
-		for (x_delta = [-1, 1]) {
-			translate([(18.5 / 2) * x_delta, 0, HEIGHT - 4.3])
-			render()
-			difference() {
-				cylinder(d = 4, h = 4.3, $fn = 36);
-				cylinder(d = 2.45, h = 4.3, $fn = 36);
-			}
-		}
-	}
 }
 
 module top_case_inlays() {
@@ -452,22 +468,18 @@ module top_case_inlays() {
 
 //color("red") screws();
 
-/*color("red")
-translate([0, DEPTH / 2 - 0.1 / 2, 0])
-cube([WIDTH, 0.1, HEIGHT]);*/
-
 //components();
-bottom_case();
+//bottom_case();
 
-/*if (USE_TEXT_INLAYS) {
+if (USE_TEXT_INLAYS) {
 	difference() {
 		top_case();
 		top_case_inlays();
 	}
 
-	color("red")
-	top_case_inlays();
+	//color("red")
+	//top_case_inlays();
 }
 else {
 	top_case();
-}*/
+}
