@@ -35,7 +35,7 @@ FEATHER_DEPTH = 22.86;
 FEATHER_WIDTH = 52.33;
 FEATHER_HEIGHT = 6.53;
 FEATHER_X = ROTARY_ENCODER_X - FEATHER_DEPTH / 2;	
-FEATHER_Y_DELTA = 0.2;
+FEATHER_Y_DELTA = -1.5;
 FEATHER_Y = SURFACE + FEATHER_Y_DELTA;
 FEATHER_Z = SURFACE + 2;
 FEATHER_USB_C_Z_DELTA = 3.1;
@@ -54,6 +54,8 @@ CHARGE_LED_HOLE_DIAMETER = 1.9; // just big enough to shove in 1.75mm filament p
 
 PIEZO_DIAMETER = 13;
 PIEZO_HEIGHT = 3.3;
+PIEZO_RETAINER_Z_DELTA = 10;
+PIEZO_RETAINER_SURFACE = 1;
 	
 BOTTOM_CASE_SCREW_HOLE_WIDTH_DEPTH = 5;
 BOTTOM_CASE_SCREW_HOLE_SQUARE_HEIGHT = 1;
@@ -69,6 +71,13 @@ SCREW_SHAFT_DIAMETER = 2;
 POWER_BUTTON_Y = ROTARY_ENCODER_Y + ROTARY_ENCODER_DIAMETER / 2 + 9.5;
 
 USE_TEXT_INLAYS = true;
+
+FEATHER_STANDOFF_DELTAS = [
+	[2.54, 3.3, 2.45],
+	[FEATHER_DEPTH - 2.54, 3.3, 2.45],
+	[1.9, FEATHER_WIDTH - 3.3, 1.95],
+	[FEATHER_DEPTH - 1.9, FEATHER_WIDTH - 3.3, 1.95]
+];
 
 module rotary_encoder() {
 	rotate([180, 0, 270])
@@ -111,20 +120,25 @@ module adalogger() {
 }
 
 module components() {
+	color("yellow")
 	translate([FEATHER_X + FEATHER_DEPTH, FEATHER_Y, FEATHER_Z])
 	rotate([0, 0, 90])
 	feather();
 	
+	color("orange")
 	translate([FEATHER_X + FEATHER_DEPTH, FEATHER_Y, FEATHER_Z + 8.6 + 1.6])
 	rotate([0, 0, 90])
 	adalogger();
 	
+	color("#66aaff")
 	translate([BATTERY_X, BATTERY_Y, SURFACE])
 	battery();
 	
+	color("#99ff99")
 	translate([LCD_STACK_X, LCD_STACK_Y, LCD_STACK_Z])
 	lcd_stack();
 
+	color("#ffbbff")
 	translate([ROTARY_ENCODER_X, ROTARY_ENCODER_Y, ROTARY_ENCODER_Z])
 	rotary_encoder();
 }
@@ -157,8 +171,9 @@ module bottom_case() {
 		union() {
 			usb_c();
 			
-			translate([0, SURFACE, 0])
-			cube([USB_C_WIDTH + 3, SURFACE, USB_C_DEPTH + 3], center = true);
+			// Unexpected Maker's Feather PCB protrusion (not needed for Adafruit Feathers)
+			//translate([0, SURFACE, 0])
+			//cube([USB_C_WIDTH + 3, SURFACE, USB_C_DEPTH + 3], center = true);
 		}
 		
 		// hole for charge LED, sized to fit 1.75mm filament
@@ -174,6 +189,16 @@ module bottom_case() {
 		translate([WIDTH - SURFACE, DEPTH / 2, SURFACE + PIEZO_DIAMETER / 2])
 		rotate([90, 0, 90])
 		cylinder(d = 2, h = SURFACE, $fn = 36);
+	
+		// Feather standoffs extra screw depth
+		for (delta = FEATHER_STANDOFF_DELTAS) {
+			translate([delta[0] + FEATHER_X, delta[1] + FEATHER_Y, SURFACE / 2])
+			cylinder(d = delta[2], h = FEATHER_Z - SURFACE / 2, $fn = 36);
+		}
+		
+		// Feather notch to support PCB inset
+		translate([FEATHER_X - 4 / 2, SURFACE / 2, FEATHER_Z - 1])
+		cube([FEATHER_DEPTH + 4, SURFACE / 2, HEIGHT - 12]);
 	}
 	
 	// LCD standoffs
@@ -187,7 +212,7 @@ module bottom_case() {
 		render()
 		difference() {
 			cylinder(h = LCD_STACK_Z + 4.1, d = 5, $fn = 36);
-			cylinder(h = LCD_STACK_Z + 4.1, d = 2.5, $fn = 36);
+			cylinder(h = LCD_STACK_Z + 4.1, d = 2.45, $fn = 36);
 		}
 	}
 	
@@ -202,49 +227,69 @@ module bottom_case() {
 	// rotary encoder standoffs
 	translate([ROTARY_ENCODER_X, ROTARY_ENCODER_Y, 0])
 	union() {
-		for (x = [2.54, ROTARY_ENCODER_WIDTH - 2.54]) {
-			for (y = [2.54, ROTARY_ENCODER_DEPTH - 2.54]) {
-				x = x - ROTARY_ENCODER_WIDTH / 2;
-				y = y - ROTARY_ENCODER_DEPTH / 2;
-				translate([x, y, 0])
-				render()
-				difference() {
-					cylinder(d = 4.5, h = ROTARY_ENCODER_Z - 1.6, $fn = 36);
-					cylinder(d = 2.5, h = ROTARY_ENCODER_Z - 1.6, $fn = 36);
-				}
+		x = 2.54;
+		for (y = [2.54, ROTARY_ENCODER_DEPTH - 2.54]) {
+			x = x - ROTARY_ENCODER_WIDTH / 2;
+			y = y - ROTARY_ENCODER_DEPTH / 2;
+			translate([x, y, 0])
+			render()
+			difference() {
+				cylinder(d = 4.5, h = ROTARY_ENCODER_Z - 1.6, $fn = 36);
+				cylinder(d = 2.45, h = ROTARY_ENCODER_Z - 1.6, $fn = 36);
 			}
 		}
 	}
 	
+	local_x = ROTARY_ENCODER_WIDTH - 2.54 - ROTARY_ENCODER_WIDTH / 2;
+	for (local_y = [2.54, ROTARY_ENCODER_DEPTH - 2.54]) {
+		x = ROTARY_ENCODER_X + local_x;
+		y = ROTARY_ENCODER_Y + local_y - ROTARY_ENCODER_DEPTH / 2;
+		z = ROTARY_ENCODER_Z - 3 - 1.6;
+		
+		render()
+		translate([x, y, z])
+		difference() {
+			cylinder(d = 4.5, h = 3, $fn = 36);	
+			cylinder(d = 2.45, h = 3, $fn = 36);
+		}
+		
+		render()
+		difference() {
+			hull() {			
+				translate([x - 4.5 / 2, y - 4.5 / 2, z - 1])
+				cube([WIDTH - x + SURFACE, 4.5, 1]);
+				
+				translate([WIDTH - SURFACE, y, z - 8])
+				cube([0.01, 0.01, 0.01]);
+			}
+			
+			translate([x, y, z - 1])
+			cylinder(d = 2.45, h = 3, $fn = 36);
+		}
+	}
+	
 	// Feather standoffs
-	feather_deltas = [
-		[2.54, 3.3, 2.45],
-		[FEATHER_DEPTH - 2.54, 3.3, 2.45],
-		[1.9, FEATHER_WIDTH - 3.3, 1.95],
-		[FEATHER_DEPTH - 1.9, FEATHER_WIDTH - 3.3, 1.95]
-	];
-	for (delta = feather_deltas) {
+	for (delta = FEATHER_STANDOFF_DELTAS) {
 		translate([delta[0] + FEATHER_X, delta[1] + FEATHER_Y, 0])
 		render()
 		difference() {
-			cylinder(d = 3.5, h = FEATHER_Z, $fn = 36);
-			cylinder(d = feather_deltas[2], h = FEATHER_Z, $fn = 36);
+			cylinder(d = delta[2] + 1.5, h = FEATHER_Z, $fn = 36);
+			cylinder(d = delta[2], h = FEATHER_Z, $fn = 36);
 		}
 	}
 	
 	// piezo retainer
 	render()
 	difference() {
-		translate([WIDTH - SURFACE * 2 - PIEZO_HEIGHT, DEPTH / 2 - PIEZO_DIAMETER / 2 - SURFACE, 0])
-		cube([PIEZO_HEIGHT + SURFACE, PIEZO_DIAMETER + SURFACE * 2, HEIGHT - 6]);
+		translate([WIDTH - PIEZO_RETAINER_SURFACE * 2 - PIEZO_HEIGHT, DEPTH / 2 - PIEZO_DIAMETER / 2 - PIEZO_RETAINER_SURFACE, 0])
+		cube([PIEZO_HEIGHT + PIEZO_RETAINER_SURFACE, PIEZO_DIAMETER + PIEZO_RETAINER_SURFACE * 2, HEIGHT - PIEZO_RETAINER_Z_DELTA]);
 		
-		translate([WIDTH - SURFACE - PIEZO_HEIGHT, DEPTH / 2 - PIEZO_DIAMETER / 2, 0])
-		cube([PIEZO_HEIGHT, PIEZO_DIAMETER, HEIGHT - 6]);
+		translate([WIDTH - PIEZO_RETAINER_SURFACE - PIEZO_HEIGHT, DEPTH / 2 - PIEZO_DIAMETER / 2, 0])
+		cube([PIEZO_HEIGHT, PIEZO_DIAMETER, HEIGHT - PIEZO_RETAINER_Z_DELTA]);
 		
-		translate([WIDTH - SURFACE * 2 - PIEZO_HEIGHT, DEPTH / 2 - PIEZO_DIAMETER / 2 + SURFACE, 0])
-		cube([SURFACE, PIEZO_DIAMETER - SURFACE * 2, HEIGHT - 6]);
-	}
-	
+		translate([WIDTH - PIEZO_RETAINER_SURFACE * 2 - PIEZO_HEIGHT, DEPTH / 2 - PIEZO_DIAMETER / 2 + PIEZO_RETAINER_SURFACE * 2, 0])
+		cube([PIEZO_RETAINER_SURFACE, PIEZO_DIAMETER - PIEZO_RETAINER_SURFACE * 4, HEIGHT - PIEZO_RETAINER_Z_DELTA]);
+	}	
 	
 	// battery retainer
 	translate([BATTERY_X - 2, BATTERY_Y - 2, SURFACE])
@@ -279,7 +324,7 @@ module bottom_case() {
 						translate([
 							BOTTOM_CASE_SCREW_HOLE_WIDTH_DEPTH / 2 - 1 / 2,
 							y == SURFACE ? 0 : BOTTOM_CASE_SCREW_HOLE_WIDTH_DEPTH,
-							HEIGHT - SURFACE - BOTTOM_CASE_SCREW_HOLE_WIDTH_DEPTH - BOTTOM_CASE_SCREW_HOLE_SQUARE_HEIGHT
+							HEIGHT - SURFACE - BOTTOM_CASE_SCREW_HOLE_WIDTH_DEPTH - BOTTOM_CASE_SCREW_HOLE_SQUARE_HEIGHT + 1
 						])
 						cube([1, 0.001, 0.001]);
 					}
@@ -387,7 +432,7 @@ module top_case() {
 			render()
 			difference() {
 				cylinder(d = 4, h = 4.3, $fn = 36);
-				cylinder(d = 2.5, h = 4.3, $fn = 36);
+				cylinder(d = 2.45, h = 4.3, $fn = 36);
 			}
 		}
 	}
@@ -414,7 +459,7 @@ cube([WIDTH, 0.1, HEIGHT]);*/
 //components();
 bottom_case();
 
-if (USE_TEXT_INLAYS) {
+/*if (USE_TEXT_INLAYS) {
 	difference() {
 		top_case();
 		top_case_inlays();
@@ -425,4 +470,4 @@ if (USE_TEXT_INLAYS) {
 }
 else {
 	top_case();
-}
+}*/
