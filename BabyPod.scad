@@ -4,7 +4,7 @@ SURFACE = 2;
 
 WIDTH = 145;
 DEPTH = 68;
-HEIGHT = 28;
+HEIGHT = 30;
 
 LCD_WIDTH = 98;
 LCD_DEPTH = 60;
@@ -25,7 +25,7 @@ ROTARY_ENCODER_WIDTH = 40.7;
 ROTARY_ENCODER_DEPTH = 35.56;
 ROTARY_ENCODER_HEIGHT = 10.33;
 ROTARY_ENCODER_PCB_TO_DIAL_HEIGHT = 2.5;
-ROTARY_ENCODER_Z_INSET = -2.2;
+ROTARY_ENCODER_Z_INSET = -1.2;
 ROTARY_ENCODER_X = SURFACE + 1 + LCD_WIDTH + 1 + ROTARY_ENCODER_WIDTH / 2;
 ROTARY_ENCODER_Y = DEPTH / 2;
 ROTARY_ENCODER_Z = HEIGHT - ROTARY_ENCODER_PCB_TO_DIAL_HEIGHT - ROTARY_ENCODER_Z_INSET;
@@ -60,7 +60,11 @@ PIEZO_RETAINER_SURFACE = 1;
 BOTTOM_CASE_SCREW_HOLE_WIDTH_DEPTH = 5;
 BOTTOM_CASE_SCREW_HOLE_SQUARE_HEIGHT = 1;
 
-SCREW_X_COORDS = [5, WIDTH / 2 - BOTTOM_CASE_SCREW_HOLE_WIDTH_DEPTH / 2, WIDTH - 5 - BOTTOM_CASE_SCREW_HOLE_WIDTH_DEPTH];
+SCREW_X_COORDS = [
+	SURFACE,
+	WIDTH / 2 - BOTTOM_CASE_SCREW_HOLE_WIDTH_DEPTH / 2,
+	WIDTH - SURFACE - BOTTOM_CASE_SCREW_HOLE_WIDTH_DEPTH
+];
 SCREW_Y_COORDS = [SURFACE, DEPTH - BOTTOM_CASE_SCREW_HOLE_WIDTH_DEPTH - SURFACE];
 
 SCREW_HEIGHT = 6.3;
@@ -176,13 +180,7 @@ module bottom_case() {
 		
 		// USB C hole
 		translate([FEATHER_X + FEATHER_DEPTH / 2, 0, FEATHER_Z + FEATHER_USB_C_Z_DELTA])
-		union() {
-			usb_c();
-			
-			// Unexpected Maker's Feather PCB protrusion (not needed for Adafruit Feathers)
-			//translate([0, SURFACE, 0])
-			//cube([USB_C_WIDTH + 3, SURFACE, USB_C_DEPTH + 3], center = true);
-		}
+		usb_c();
 		
 		// hole for charge LED, sized to fit 1.75mm filament
 		translate([
@@ -206,7 +204,7 @@ module bottom_case() {
 		
 		// Feather notch to support PCB inset
 		translate([FEATHER_X - 2 / 2, SURFACE / 2, FEATHER_Z - 1])
-		cube([FEATHER_DEPTH + 2, SURFACE / 2, HEIGHT - 3 - SURFACE]);
+		cube([FEATHER_DEPTH + 2, SURFACE / 2, HEIGHT - SURFACE]);
 	}
 	
 	// LCD standoffs
@@ -429,6 +427,20 @@ module top_case() {
 		translate([0, 0, HEIGHT])
 		rounded_cube(WIDTH, DEPTH, SURFACE, CASE_RADIUS);
 		
+		// divots for rotary encoder screw heads
+		for (x = [
+			ROTARY_ENCODER_X + ROTARY_ENCODER_WIDTH / 2 - 2.54,
+			ROTARY_ENCODER_X - ROTARY_ENCODER_WIDTH / 2 + 2.54
+		]) {
+			for (y = [
+				ROTARY_ENCODER_Y + ROTARY_ENCODER_DEPTH / 2 - 2.54,
+				ROTARY_ENCODER_Y - ROTARY_ENCODER_DEPTH / 2 + 2.54
+			]) {
+				translate([x, y, HEIGHT])
+				cylinder(d = 4.5, h = SURFACE - 0.4, $fn = 36);
+			}
+		}
+		
 		// cutout for rotary encoder
 		translate([ROTARY_ENCODER_X, ROTARY_ENCODER_Y, HEIGHT])
 		cylinder(d1 = ROTARY_ENCODER_DIAMETER + 0.5, d2 = ROTARY_ENCODER_DIAMETER + 5, h = SURFACE, $fn = 72);
@@ -468,8 +480,8 @@ module top_case_inlays() {
 
 //color("red") screws();
 
-//components();
-//bottom_case();
+components();
+bottom_case();
 
 if (USE_TEXT_INLAYS) {
 	difference() {
@@ -477,8 +489,8 @@ if (USE_TEXT_INLAYS) {
 		top_case_inlays();
 	}
 
-	//color("red")
-	//top_case_inlays();
+	color("red")
+	top_case_inlays();
 }
 else {
 	top_case();
