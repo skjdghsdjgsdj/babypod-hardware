@@ -10,6 +10,7 @@ BATTERY_WIDTH = 60.3;
 BATTERY_DEPTH = 49.8;
 BATTERY_HEIGHT = 7.4;
 BATTERY_X_DELTA = 1;
+BATTERY_RETAINER_SURFACE = 2;
 
 USB_C_WIDTH = 9.4;
 USB_C_DEPTH = 4;
@@ -341,16 +342,71 @@ module baseplate() {
 		translate([0, -1, 0])
 		cube([PIEZO_DIAMETER + SURFACE, 2, PIEZO_HEIGHT]);
 	}
+
+	translate([LCD_BOARD_WIDTH, LCD_BOARD_DEPTH - RTC_WIDTH + RTC_Y_DELTA, 0])
+	rotate([0, 0, 90])
+	for (x = [0.1 * 25.4, RTC_WIDTH - 0.1 * 25.4]) {
+		for (y = [0.1 * 25.4, RTC_DEPTH - 0.1 * 25.4]) {
+			translate([x, y, 0])
+			baseplate_standoff(BREAKOUTS_STANDOFF_HEIGHT, 2.9);
+		}
+	}
+	
+	translate([LCD_BOARD_WIDTH - FLASH_WIDTH, 0, 0])
+	for (x = [0.1 * 25.4, FLASH_WIDTH - 0.1 * 25.4]) {
+		translate([x, 0.1 * 25.4, 0])
+		baseplate_standoff(BREAKOUTS_STANDOFF_HEIGHT, 2.4);
+	}
+	
+	translate([feather_x(), FEATHER_Y_DELTA, 0])
+	for (x = [0.1 * 25.4, FEATHER_DEPTH - 0.1 * 25.4]) {
+		translate([-FEATHER_DEPTH + x, 0.1 * 25.4, 0])
+		baseplate_standoff(FEATHER_Z_DELTA, 2.4);
+	}
+	
+	translate([feather_x(), FEATHER_Y_DELTA, 0])
+	for (x = [0.075 * 25.4, FEATHER_DEPTH - 0.0725 * 25.4]) {
+		translate([-FEATHER_DEPTH + x, FEATHER_WIDTH - 2.525, 0])
+		baseplate_standoff(FEATHER_Z_DELTA, 1.9);
+	}
+	
+	translate([
+		LCD_BOARD_WIDTH - BATTERY_WIDTH - RTC_WIDTH + BATTERY_X_DELTA,
+		LCD_BOARD_DEPTH / 2 - BATTERY_DEPTH / 2,
+		0
+	])
+	render()
+	difference() {
+		translate([-BATTERY_RETAINER_SURFACE, -BATTERY_RETAINER_SURFACE, 0])
+		cube([BATTERY_WIDTH + BATTERY_RETAINER_SURFACE * 2, BATTERY_DEPTH + BATTERY_RETAINER_SURFACE * 2, BATTERY_HEIGHT]);
+		
+		cube([BATTERY_WIDTH, BATTERY_DEPTH, BATTERY_HEIGHT]);
+		
+		for (x = [-BATTERY_RETAINER_SURFACE, BATTERY_WIDTH - 10 + BATTERY_RETAINER_SURFACE]) {
+			for (y = [-BATTERY_RETAINER_SURFACE, BATTERY_DEPTH - 10 + BATTERY_RETAINER_SURFACE]) {
+				translate([x, y, 0])
+				cube([10, 10, BATTERY_HEIGHT]);
+			}
+		}
+	}
 }
 
-lcd();
+module baseplate_standoff(height, inner_diameter) {
+	render()
+	difference() {
+		cylinder(d = inner_diameter + 2, h = height, $fn = 36);
+		cylinder(d = inner_diameter, h = height, $fn = 36);
+	}
+}
+
+/*lcd();
 rotary_encoder();
+piezo();
+rtc();
+flash();
+%case();
 feather();
 battery();
-flash();
-rtc();
-piezo();
-%case();
-text_inlays();
+text_inlays();*/
 
 baseplate();
