@@ -4,6 +4,8 @@ CASE_RADIUS = 3;
 CASE_EXTRA_WIDTH = 2.5;
 CASE_EXTRA_DEPTH = 2.5;
 
+BASEPLATE_RETAINER_HEIGHT = 5;
+
 ROTARY_ENCODER_DIAMETER = 34;
 
 BATTERY_WIDTH = 60.3;
@@ -24,7 +26,7 @@ PIEZO_HEIGHT = 3.3;
 SCREW_HEIGHT = 6.3;
 SCREW_HEAD_DIAMETER = 4.1;
 SCREW_HEAD_HEIGHT = 1.7;
-SCREW_SHAFT_DIAMETER = 2;
+SCREW_SHAFT_DIAMETER = 1.8;
 
 ROTARY_ENCODER_WIDTH = 35.56;
 ROTARY_ENCODER_DEPTH = 40.64;
@@ -63,6 +65,7 @@ RTC_Y_DELTA = -8;
 FLASH_WIDTH = 0.85 * 25.4;
 FLASH_DEPTH = 0.7 * 25.4;
 FLASH_PCB_HEIGHT = 1.6;
+FLASH_Y_DELTA = 1;
 
 BREAKOUTS_STANDOFF_HEIGHT = 4;
 
@@ -73,6 +76,8 @@ function usb_c_x() = feather_x() - FEATHER_DEPTH / 2;
 function usb_c_z() = FEATHER_Z_DELTA + FEATHER_PCB_HEIGHT + USB_C_Z_DELTA;
 function piezo_x() = LCD_BOARD_WIDTH - FLASH_WIDTH / 2;
 function piezo_y() = PIEZO_DIAMETER / 2 + SURFACE;
+function components_total_width() = LCD_BOARD_WIDTH + ROTARY_ENCODER_DEPTH + ROTARY_ENCODER_X_DELTA;
+function components_total_height() = lcd_total_height() + LCD_Z_DELTA;
 
 module lcd() {
 	// reference design: https://cdn.sparkfun.com/assets/learn_tutorials/7/8/9/SerLCD_Qwiic_20x4_Dimensions_Top_Down.pdf
@@ -186,7 +191,7 @@ module piezo() {
 
 module flash() {
 	// reference design: https://learn.adafruit.com/assets/98990
-	translate([LCD_BOARD_WIDTH - FLASH_WIDTH, 0, BREAKOUTS_STANDOFF_HEIGHT])
+	translate([LCD_BOARD_WIDTH - FLASH_WIDTH, FLASH_Y_DELTA, BREAKOUTS_STANDOFF_HEIGHT])
 	render()
 	difference() {
 		cube([FLASH_WIDTH, FLASH_DEPTH, FLASH_PCB_HEIGHT]);
@@ -234,10 +239,22 @@ module screw() {
 	cylinder(d2 = SCREW_HEAD_DIAMETER, d1 = SCREW_SHAFT_DIAMETER, h = SCREW_HEAD_HEIGHT, $fn = 20);
 }
 
-function components_total_width() = LCD_BOARD_WIDTH + ROTARY_ENCODER_DEPTH + ROTARY_ENCODER_X_DELTA;
-function components_total_height() = lcd_total_height() + LCD_Z_DELTA;
-
 module case() {
+	for (x = [0.1 * 25.4, LCD_BOARD_WIDTH - 0.1 * 25.4]) {
+		for (y = [0.1 * 25.4, LCD_BOARD_DEPTH - 0.1 * 25.4]) {
+			translate([x, y, 0])
+			case_standoff(LCD_Z_DELTA - LCD_BOARD_HEIGHT, 2.4);
+		}
+	}
+	
+	translate([rotary_encoder_x(), LCD_BOARD_DEPTH / 2 - ROTARY_ENCODER_WIDTH / 2, 0])
+	for (x = [0.1 * 25.4, ROTARY_ENCODER_DEPTH - 0.1 * 25.4]) {
+		for (y = [0.1 * 25.4, ROTARY_ENCODER_WIDTH - 0.1 * 25.4]) {
+			translate([x, y, 0])
+			case_standoff(ROTARY_ENCODER_Z_DELTA + LCD_Z_DELTA - 5, 2.4);
+		}
+	}
+
 	render()
 	difference() {
 		translate([-SURFACE - CASE_EXTRA_WIDTH / 2, -SURFACE - CASE_EXTRA_DEPTH / 2, 0])
@@ -283,6 +300,8 @@ module case() {
 		translate([usb_c_x() + USB_C_WIDTH / 2 + 1.5, 0, usb_c_z()])
 		rotate([90, 0, 20])
 		cylinder(d = CHARGE_LED_HOLE_DIAMETER, h = 10, $fn = 36);
+		
+		screws();
 	}
 }
 
@@ -293,7 +312,7 @@ module text_inlays() {
 		components_total_height() + SURFACE - 0.5
 	])
 	linear_extrude(0.5)
-	text("BabyPod", size = 8, font = "SignPainter", halign = "center", valign = "center", $fn = 100);
+	text("BabyPod", size = 9, font = "SignPainter", halign = "center", valign = "center", $fn = 100);
 }
 
 module baseplate() {
@@ -317,7 +336,7 @@ module baseplate() {
 		rounded_cube(
 			components_total_width() + CASE_EXTRA_WIDTH,
 			LCD_BOARD_DEPTH + CASE_EXTRA_DEPTH,
-			4,
+			BASEPLATE_RETAINER_HEIGHT,
 			CASE_RADIUS
 		);
 		
@@ -325,12 +344,14 @@ module baseplate() {
 		rounded_cube(
 			components_total_width() + CASE_EXTRA_WIDTH - SURFACE * 2,
 			LCD_BOARD_DEPTH + CASE_EXTRA_DEPTH - SURFACE * 2,
-			4,
+			BASEPLATE_RETAINER_HEIGHT,
 			CASE_RADIUS
 		);
 		
 		translate([feather_x() - FEATHER_DEPTH - 5 / 2, -CASE_EXTRA_DEPTH / 2, 0])
-		cube([FEATHER_DEPTH + 5, SURFACE, 4]);
+		cube([FEATHER_DEPTH + 5, SURFACE, BASEPLATE_RETAINER_HEIGHT]);
+		
+		screws();
 	}
 	
 	translate([piezo_x(), piezo_y(), 0])
@@ -352,7 +373,7 @@ module baseplate() {
 		}
 	}
 	
-	translate([LCD_BOARD_WIDTH - FLASH_WIDTH, 0, 0])
+	translate([LCD_BOARD_WIDTH - FLASH_WIDTH, FLASH_Y_DELTA, 0])
 	for (x = [0.1 * 25.4, FLASH_WIDTH - 0.1 * 25.4]) {
 		translate([x, 0.1 * 25.4, 0])
 		baseplate_standoff(BREAKOUTS_STANDOFF_HEIGHT, 2.4);
@@ -391,7 +412,16 @@ module baseplate() {
 	}
 }
 
+module case_standoff(height, inner_diameter) {
+	translate([0, 0, components_total_height() - height])
+	standoff(height, inner_diameter);
+}
+			
 module baseplate_standoff(height, inner_diameter) {
+	standoff(height, inner_diameter);
+}
+
+module standoff(height, inner_diameter) {
 	render()
 	difference() {
 		cylinder(d = inner_diameter + 2, h = height, $fn = 36);
@@ -399,14 +429,29 @@ module baseplate_standoff(height, inner_diameter) {
 	}
 }
 
-/*lcd();
-rotary_encoder();
-piezo();
+module screws() {
+	for (x = [3, components_total_width() / 2, components_total_width() - 3]) {
+		translate([x, SCREW_HEIGHT - CASE_EXTRA_WIDTH / 2 - SURFACE, BASEPLATE_RETAINER_HEIGHT / 2])
+		rotate([90, 0, 0])
+		screw();
+	}
+	
+	for (x = [3, components_total_width() / 2, components_total_width() - 3]) {
+		translate([x, LCD_BOARD_DEPTH + CASE_EXTRA_WIDTH / 2 - SCREW_HEIGHT + SURFACE + 0.01, BASEPLATE_RETAINER_HEIGHT / 2])
+		rotate([270, 0, 0])
+		screw();
+	}
+}
+
+/*piezo();
 rtc();
 flash();
-%case();
 feather();
 battery();
-text_inlays();*/
+lcd();
+rotary_encoder();
+*/
 
-baseplate();
+text_inlays();
+//case();
+//baseplate();
