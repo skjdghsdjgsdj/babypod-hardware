@@ -13,6 +13,7 @@ BATTERY_X_DELTA = 1;
 
 USB_C_WIDTH = 9.4;
 USB_C_DEPTH = 4;
+USB_C_Z_DELTA = 1.6;
 
 CHARGE_LED_HOLE_DIAMETER = 1.9; // just big enough to shove in 1.75mm filament piece
 
@@ -64,11 +65,16 @@ FLASH_PCB_HEIGHT = 1.6;
 
 BREAKOUTS_STANDOFF_HEIGHT = 4;
 
+function feather_x() = rotary_encoder_x() + FEATHER_DEPTH / 2 + ROTARY_ENCODER_DEPTH / 2;
 function lcd_total_height() = LCD_BOARD_HEIGHT + LCD_DISPLAY_HEIGHT;
 function rotary_encoder_x() = LCD_BOARD_WIDTH + ROTARY_ENCODER_X_DELTA;
+function usb_c_x() = feather_x() - FEATHER_DEPTH / 2;
+function usb_c_z() = FEATHER_Z_DELTA + FEATHER_PCB_HEIGHT + USB_C_Z_DELTA;
+function piezo_x() = LCD_BOARD_WIDTH - FLASH_WIDTH / 2;
+function piezo_y() = PIEZO_DIAMETER / 2 + SURFACE;
 
 module lcd() {
-	// design reference: https://cdn.sparkfun.com/assets/learn_tutorials/7/8/9/SerLCD_Qwiic_20x4_Dimensions_Top_Down.pdf
+	// reference design: https://cdn.sparkfun.com/assets/learn_tutorials/7/8/9/SerLCD_Qwiic_20x4_Dimensions_Top_Down.pdf
 	render()
 	translate([0, 0, LCD_Z_DELTA])
 	color("#cc4444")
@@ -130,7 +136,7 @@ module header(pin_count, total_height = 13, protrusion_height = 3.5) {
 }
 
 module feather() {
-	translate([rotary_encoder_x() + FEATHER_DEPTH / 2 + ROTARY_ENCODER_DEPTH / 2, FEATHER_Y_DELTA, FEATHER_Z_DELTA])
+	translate([feather_x(), FEATHER_Y_DELTA, FEATHER_Z_DELTA])
 	rotate([0, 0, 90])
 	union() {
 		import("components/adafruit/5323 Feather ESP32-S3.stl");
@@ -147,7 +153,11 @@ module feather() {
 }
 
 module battery() { // 2500mAh
-	translate([LCD_BOARD_WIDTH - BATTERY_WIDTH - RTC_WIDTH + BATTERY_X_DELTA, LCD_BOARD_DEPTH / 2 - BATTERY_DEPTH / 2, 0])
+	translate([
+		LCD_BOARD_WIDTH - BATTERY_WIDTH - RTC_WIDTH + BATTERY_X_DELTA,
+		LCD_BOARD_DEPTH / 2 - BATTERY_DEPTH / 2,
+		0
+	])
 	cube([BATTERY_WIDTH, BATTERY_DEPTH, BATTERY_HEIGHT]);
 }
 
@@ -169,8 +179,7 @@ module rtc() {
 }
 
 module piezo() {
-	translate([rotary_encoder_x() + ROTARY_ENCODER_DEPTH / 2, LCD_BOARD_DEPTH, (lcd_total_height() + LCD_Z_DELTA) / 2])
-	rotate([90, 0, 0])
+	translate([piezo_x(), piezo_y(), 0])
 	cylinder(d = PIEZO_DIAMETER, h = PIEZO_HEIGHT, $fn = 36);
 }
 
@@ -200,7 +209,11 @@ module rounded_cube(width, depth, height, radius) {
 }
 
 module usb_c() {
-	translate([0, SURFACE, 0])
+	translate([
+		usb_c_x(),
+		-CASE_EXTRA_DEPTH / 2,
+		usb_c_z()
+	])
 	rotate([90, 0, 0])
 	union() {		
 		for (x = [-1, 1]) {
@@ -242,7 +255,11 @@ module case() {
 			CASE_RADIUS
 		);
 		
-		translate([LCD_BOARD_WIDTH / 2 - LCD_VIEWABLE_WIDTH / 2, LCD_BOARD_DEPTH / 2 - LCD_VIEWABLE_DEPTH / 2, components_total_height()])
+		translate([
+			LCD_BOARD_WIDTH / 2 - LCD_VIEWABLE_WIDTH / 2,
+			LCD_BOARD_DEPTH / 2 - LCD_VIEWABLE_DEPTH / 2,
+			components_total_height()
+		])
 		hull() {
 			cube([LCD_VIEWABLE_WIDTH, LCD_VIEWABLE_DEPTH, 0.01]);
 			
@@ -259,6 +276,12 @@ module case() {
 		}
 		
 		text_inlays();
+		
+		usb_c();
+		
+		translate([usb_c_x() + USB_C_WIDTH / 2 + 1.5, 0, usb_c_z()])
+		rotate([90, 0, 20])
+		cylinder(d = CHARGE_LED_HOLE_DIAMETER, h = 10, $fn = 36);
 	}
 }
 
@@ -272,6 +295,48 @@ module text_inlays() {
 	text("BabyPod", size = 8, font = "SignPainter", halign = "center", valign = "center", $fn = 100);
 }
 
+module baseplate() {
+	translate([-SURFACE - CASE_EXTRA_WIDTH / 2, -SURFACE - CASE_EXTRA_DEPTH / 2, -SURFACE])
+	rounded_cube(
+		components_total_width() + SURFACE * 2 + CASE_EXTRA_WIDTH,
+		LCD_BOARD_DEPTH + SURFACE * 2 + CASE_EXTRA_DEPTH,
+		SURFACE,
+		CASE_RADIUS
+	);
+	
+	render()
+	difference() {
+		translate([-CASE_EXTRA_WIDTH / 2, -CASE_EXTRA_DEPTH / 2, 0])
+		rounded_cube(
+			components_total_width() + CASE_EXTRA_WIDTH,
+			LCD_BOARD_DEPTH + CASE_EXTRA_DEPTH,
+			4,
+			CASE_RADIUS
+		);
+		
+		translate([-CASE_EXTRA_WIDTH / 2 + SURFACE, -CASE_EXTRA_DEPTH / 2 + SURFACE, 0])
+		rounded_cube(
+			components_total_width() + CASE_EXTRA_WIDTH - SURFACE * 2,
+			LCD_BOARD_DEPTH + CASE_EXTRA_DEPTH - SURFACE * 2,
+			4,
+			CASE_RADIUS
+		);
+		
+		translate([feather_x() - FEATHER_DEPTH - 5 / 2, -CASE_EXTRA_DEPTH / 2, 0])
+		cube([FEATHER_DEPTH + 5, SURFACE, 4]);
+	}
+	
+	translate([piezo_x(), piezo_y(), 0])
+	render()
+	difference() {
+		cylinder(d = PIEZO_DIAMETER + SURFACE * 2, h = PIEZO_HEIGHT, $fn = 36);
+		cylinder(d = PIEZO_DIAMETER, h = PIEZO_HEIGHT, $fn = 36);
+		
+		translate([0, -1, 0])
+		cube([PIEZO_DIAMETER + SURFACE, 2, PIEZO_HEIGHT]);
+	}
+}
+
 lcd();
 rotary_encoder();
 feather();
@@ -280,5 +345,6 @@ flash();
 rtc();
 piezo();
 %case();
+text_inlays();
 
-color("red") text_inlays();
+baseplate();
