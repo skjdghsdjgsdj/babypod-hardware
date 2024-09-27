@@ -296,13 +296,19 @@ module text_inlays() {
 }
 
 module baseplate() {
-	translate([-SURFACE - CASE_EXTRA_WIDTH / 2, -SURFACE - CASE_EXTRA_DEPTH / 2, -SURFACE])
-	rounded_cube(
-		components_total_width() + SURFACE * 2 + CASE_EXTRA_WIDTH,
-		LCD_BOARD_DEPTH + SURFACE * 2 + CASE_EXTRA_DEPTH,
-		SURFACE,
-		CASE_RADIUS
-	);
+	render()
+	difference() {
+		translate([-SURFACE - CASE_EXTRA_WIDTH / 2, -SURFACE - CASE_EXTRA_DEPTH / 2, -SURFACE])
+		rounded_cube(
+			components_total_width() + SURFACE * 2 + CASE_EXTRA_WIDTH,
+			LCD_BOARD_DEPTH + SURFACE * 2 + CASE_EXTRA_DEPTH,
+			SURFACE,
+			CASE_RADIUS
+		);
+		
+		translate([piezo_x(), piezo_y(), -SURFACE])
+		cylinder(d = 2, h = SURFACE, $fn = 36);
+	}
 	
 	render()
 	difference() {
