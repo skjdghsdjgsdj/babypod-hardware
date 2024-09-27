@@ -34,7 +34,7 @@ ROTARY_ENCODER_PCB_HEIGHT = 1.6;
 ROTARY_ENCODER_X_DELTA = -3;
 ROTARY_ENCODER_Z_DELTA = -3;
 
-LCD_Z_DELTA = 11;
+LCD_Z_DELTA = 13;
 
 LCD_BOARD_WIDTH = 3.85 * 25.4;
 LCD_BOARD_DEPTH = 2.37 * 25.4;
@@ -243,7 +243,7 @@ module case() {
 	for (x = [0.1 * 25.4, LCD_BOARD_WIDTH - 0.1 * 25.4]) {
 		for (y = [0.1 * 25.4, LCD_BOARD_DEPTH - 0.1 * 25.4]) {
 			translate([x, y, 0])
-			case_standoff(LCD_Z_DELTA - LCD_BOARD_HEIGHT, 2.4);
+			case_standoff(LCD_Z_DELTA - LCD_BOARD_HEIGHT - 2, 2.4);
 		}
 	}
 	
@@ -251,7 +251,7 @@ module case() {
 	for (x = [0.1 * 25.4, ROTARY_ENCODER_DEPTH - 0.1 * 25.4]) {
 		for (y = [0.1 * 25.4, ROTARY_ENCODER_WIDTH - 0.1 * 25.4]) {
 			translate([x, y, 0])
-			case_standoff(ROTARY_ENCODER_Z_DELTA + LCD_Z_DELTA - 5, 2.4);
+			case_standoff(ROTARY_ENCODER_Z_DELTA + LCD_Z_DELTA - 3, 2.4);
 		}
 	}
 
@@ -302,6 +302,12 @@ module case() {
 		cylinder(d = CHARGE_LED_HOLE_DIAMETER, h = 10, $fn = 36);
 		
 		screws();
+		
+		translate([-CASE_EXTRA_WIDTH / 2 - SURFACE, LCD_BOARD_DEPTH / 2 - 10 / 2, 0])
+		cube([SURFACE / 2, 10, 0.5]);
+		
+		translate([components_total_width() + CASE_EXTRA_WIDTH / 2 + SURFACE / 2, LCD_BOARD_DEPTH / 2 - 10 / 2, 0])
+		cube([SURFACE / 2, 10, 0.5]);
 	}
 }
 
@@ -312,7 +318,7 @@ module text_inlays() {
 		components_total_height() + SURFACE - 0.5
 	])
 	linear_extrude(0.5)
-	text("BabyPod", size = 9, font = "SignPainter", halign = "center", valign = "center", $fn = 100);
+	text("BabyPod", size = 10.5, font = "SignPainter", halign = "center", valign = "center", $fn = 100);
 }
 
 module baseplate() {
@@ -443,15 +449,15 @@ module screws() {
 	}
 }
 
-/*piezo();
+/*
+piezo();
 rtc();
 flash();
 feather();
 battery();
-lcd();
 rotary_encoder();
+lcd();
 */
-
 text_inlays();
 //case();
 //baseplate();
