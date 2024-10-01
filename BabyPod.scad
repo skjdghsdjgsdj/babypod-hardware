@@ -251,7 +251,7 @@ module case() {
 	for (x = [0.1 * 25.4, ROTARY_ENCODER_DEPTH - 0.1 * 25.4]) {
 		for (y = [0.1 * 25.4, ROTARY_ENCODER_WIDTH - 0.1 * 25.4]) {
 			translate([x, y, 0])
-			case_standoff(ROTARY_ENCODER_Z_DELTA + LCD_Z_DELTA - 3, 2.4);
+			case_standoff(LCD_Z_DELTA - 10.1, 2.4);
 		}
 	}
 
@@ -455,9 +455,10 @@ rtc();
 flash();
 feather();
 battery();
-rotary_encoder();
 lcd();
+rotary_encoder();
 */
-text_inlays();
-//case();
+
+//text_inlays();
+case();
 //baseplate();
