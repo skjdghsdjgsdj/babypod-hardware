@@ -17,7 +17,7 @@ Why use BabyPod instead of just your phone or something else, or even Baby Buddy
 
 To build a BabyPod, you 3D print some parts, stuff it with some electronics with easy soldering, and load the software.
 
-### Parts, tools, and software needed
+### Parts, tools, and supplies needed
 
 Here's what you need to build a BabyPod. Prices are USD at the time of authoring and you can possibly find parts cheaper elsewhere, but this is to give you a nominal idea of how much the project costs.
 
@@ -74,6 +74,8 @@ You can print the enclosure in either one or two colors. Whichever you choose:
 * 0.2mm layer height is best. You can probably print taller layers, but it'll lower the resolution of the USB C ports and light pipe guide.
 * If you set the bottom infill pattern to "Archimedian Chords" on both parts, it'll look prettier. Same if you use PETG and print on a textured plate.
 
+If you're editing `BabyPod.scad`, your system needs the font "SignPainter" installed.
+
 ### One color
 
 Print `Case.stl` upside-down and `Baseplate.stl` as-is.
@@ -84,7 +86,27 @@ Printing in two colors requires a printer that supports multiple filaments or [c
 
 Print `Case.stl` and `Faceplate inlays.stl` as a multipart object upside-down (top of the faceplate and inlays facing the bed) and `Bottom case.stl` as-is.
 
-If you're editing `BabyPod.scad`, your system needs the font "SignPainter" installed.
+## Layout
+
+Here is where everything fits in the enclosure. The perimeter of each part has holes for self-tapping countersunk M2x4 screws and line up once you press the two parts together. If they don't line up, something between the two parts is in the way, like a wire.
+
+### `Case.stl`
+
+![Case](docs/img/case.png)
+
+* The red board is the LCD module. It is held in place to its standoffs with four M2.5x6 screws.
+* The rotary encoder is obvious. It uses four M2.5x4 screws. Note the position of the pins on the left side.
+* The hole for the USB C port on the Feather is visible. Next to it is a hole for the 1.75mm transparent filament to act as a light pipe to the charge LED on the Feather.
+
+### `Baseplate.stl`
+
+![Case](docs/img/baseplate.png)
+
+* The blue rectangle is the battery. The cable will exit by the bottom-left. It is press fit.
+* The green board is the RTC. The vertical orientation doesn't matter. It uses four M3x4 screws. The battery faces up and the STEMMA QT ports face down.
+* The yellow board is the Flash SD board. The components face up and the flat surface faces down. It uses two M2.5x4 screws.
+* The bottom white board is the Feather and on top, held in place by the short headers, is the FeatherWing proto. The Feather is screwed in using two M2.5x4 screws in the front near the USB C port, and in the back (hard to see in the picture) the smaller holes of the Feather use two M2x4 screws. The screws hold just the Feather itself in place. They don't go through both the Feather and the FeatherWing Proto.
+* The piezo is the red circle underneath the yellow Flash SD board. It is press fit like the battery. The hole in the piezo faces down and the wires exit through the hole in the circle.
 
 ## Assembly
 
@@ -99,7 +121,7 @@ If you're editing `BabyPod.scad`, your system needs the font "SignPainter" insta
 5. Click "Connect" and select the Feather. The device's name will vary, but ultimately you should see a successful connection message.
 6. Click Erase and wait about 15 seconds until you get a success message.
 7. Click the first "Choose a file..." button and select the `.bin` CircuitPython image you downloaded, then click "Program."
-8. When prompted to do so, press the Reset button on the Feather. A few moments later, a drive named `CIRCUITPY` should mount itself on your computer.
+8. When prompted to do so, press the Reset button on the Feather. A few moments later, a drive named `CIRCUITPY` should mount itself on your computer. Keep the Feather plugged in.
 
 ### Load the BabyPod software
 
@@ -117,20 +139,19 @@ Even though there isn't much to copy, it might take a few minutes.
 
 ### Soldering
 
-Before soldering, orient yourself to where everything mounts to the 3D printed parts. You want to use just enough wire to reach, but
-not too much excess or you won't be able to fit everything inside the enclosure.
+Before soldering, orient yourself to where everything mounts to the 3D printed parts. You want to use just enough wire to reach each connection point, but not too much excess or you won't be able to fit everything inside the enclosure.
 
-It may help to keep [Adafruit's pinout documentation of the Feather](https://learn.adafruit.com/adafruit-esp32-s3-feather/pinouts) open while you're soldering. Pay very close attention to soldering wires to the FeatherWing proto. Always be aware of which side has the shorter or longer header, and if you're looking at it upside down or rightside up. Triple check which pin you're soldering to before you actually do it!
+It may help to keep [Adafruit's pinout documentation of the Feather](https://learn.adafruit.com/adafruit-esp32-s3-feather/pinouts) open while you're soldering. Pay very close attention to soldering wires to the FeatherWing proto. Always be aware of which side has the shorter or longer header, and if you're looking at it upside down or right-side up. Triple check which pin you're soldering to before you actually do it!
 
 There are a few important points to keep in mind when using the FeatherWing Proto:
 
-* Look at the [pinout](https://learn.adafruit.com/featherwing-proto-and-doubler/proto-pinout). The headers get soldered to the outermost set of pins in the white bordered areas.
-* The leftmost column of pins that has a white border around it is the 3.3V bus. You can use any of those solder points to get 3.3V power.
-* Similarly, the column of pins immediately to the right of the 3.3V bus are all ground pins. Solder to any of them for a ground connection.
+* Look at the [pinout](https://learn.adafruit.com/featherwing-proto-and-doubler/proto-pinout). The headers get soldered to the outermost set of pins in the white bordered areas. The white printed area faces up.
+* The leftmost column of pins that has a white border around it is the +3.3V bus. You can use any of those solder points to get +3.3V power.
+* Similarly, the column of pins immediately to the right of the +3.3V bus are all ground pins. Solder to any of them for a ground connection.
 * The rows of pins immediately below the top header and immediately above the bottom header share connections with the Feather's underlying pins. For example, the top-right pin goes to `SDA` via the male header into the Feather's female header, and the pin on the FeatherWing immediately below that one is shared with that pin, so it too goes with `SDA`.
-* The pins between the headers in the middle of the board aren't connected to anything and are meant for prototyping, hence the name of the product. More pointedly, they *do not connect to the Feather and you should not solder to them for assembling the BabyPod!*
+* The pins between the headers in the middle of the board aren't connected to anything and are meant for prototyping, hence the name of the product. That is, they *do not connect to the Feather and you should not solder to them for assembling the BabyPod!*
 
-Many of the devices ship with headers included. Don't solder those!
+Many of the boards ship with headers included. Don't solder those!
 
 #### Solder rotary encoder
 
@@ -139,7 +160,7 @@ Solder the rotary encoder dial to its breakout board. It only fits one way. Be c
 #### Solder headers
 
 1. Solder the short female headers to the top of the Feather (i.e., the side with all the components on it).
-2. [Solder the short male headers to the bottom of the FeatherWing Proto.](https://learn.adafruit.com/featherwing-proto-and-doubler/assembly). The printed text on the FeatherWing must be on top and the headers on the bottom.
+2. [Solder the short male headers to the bottom of the FeatherWing Proto.](https://learn.adafruit.com/featherwing-proto-and-doubler/assembly). The printed text on the FeatherWing must be on top and the long pins of the headers and their plastic retainer on the bottom.
 
 #### Solder connections to the FeatherWing Proto
 
@@ -177,7 +198,7 @@ The plugs on STEMMA QT cables only fit one way. Don't use a lot of force or you 
 7. Put the CR1220 battery into the RTC; note the polarity. Screw the RTC into place with four M3x4 screws with the battery facing up. The direction doesn't matter.
 8. Screw the Feather into place with the USB C port facing towards the cutout in the case and the female headers facing up. Use two M2.5x4 screws for the larger holes and two M2x4 screws for the smaller ones.
 9. Plug the 50mm STEMMA QT cable into the Feather's port and into the nearest port on the RTC, then connect the STEMMA QT cable from the assembled case with the rotary encoder into the other port on the RTC.
-10. Press the battery into its retainer with the cable by the bottom-left, assuming the Feather's USB C port is facing you. Don't plug in the battery into the Feather yet.
+10. Press the battery into its retainer with the cable by the bottom-left, assuming the Feather's USB C port is facing you. Don't plug in the battery's cable into the Feather yet.
 11. Press the FeatherWing Proto into the Feather's female headers. Be careful the pins are aligned and you're not off-by-one.
 
 ### Testing before final assembly
@@ -188,10 +209,11 @@ At this point, you should have all the connections made, except the battery. You
 
 If the test passed, continue on:
 
-1. Plug the battery into the Feather. It will boot up the BabyPod, so be careful as the Feather and other components are now live.
-2. Carefully press together the two 3D printed parts, being sure to align the USB C hole to the Feather.
-3. Screw them together with the countersunk self-tapping M2 screws. Be especially careful not to overtighten!
-4. Shove the little bit of transparent 1.75mm filament into the hole next to the USB C connector until it is flush with the outside of the case. It acts as a light pipe for the Feather's charge LED.
+1. Unplug the USB C cable from the Feather.
+2. Plug the battery into the Feather. It will boot up the BabyPod, so be careful as the Feather and other components are now live.
+3. Carefully press together the two 3D printed parts, being sure to align the USB C hole to the Feather.
+4. Screw them together with the countersunk self-tapping M2 screws. Be especially careful not to overtighten!
+5. Shove the little bit of transparent 1.75mm filament into the hole next to the USB C connector until it is flush with the outside of the case. It acts as a light pipe for the Feather's charge LED.
 
 ## Troubleshooting
 
@@ -213,4 +235,6 @@ If the test passed, continue on:
 
 - Is the LCD contrast adjusted? The Sparkfun LCD contrast is adjusted through code.
 - When plugging in a USB C cable, is it snapping fully into the port on the Feather, or is the enclosure preventing it from going all the way in?
+- Does your USB C cable support both data and power? Test it with another device to be sure.
 - Are all the relevant STEMMA QT connections in use? Every available STEMMA QT port (or QWIIC in the case of the LCD) should be in use. Technically speaking the order of the connections doesn't matter, but do be sure everything is connected in a chain and there are no empty STEMMA QT ports.
+- Is the rotary encoder acting erratically, like "up" is acting like "down"? Make sure it's oriented properly: the row of pins is towards the center of the case, not the outside edge, as pictured above.

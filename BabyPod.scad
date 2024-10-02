@@ -124,7 +124,7 @@ module lcd() {
 module rotary_encoder() {
 	translate([rotary_encoder_x(), LCD_BOARD_DEPTH / 2 - ROTARY_ENCODER_WIDTH / 2, LCD_Z_DELTA])
 	translate([ROTARY_ENCODER_DEPTH / 2, ROTARY_ENCODER_WIDTH / 2, lcd_total_height() + ROTARY_ENCODER_Z_DELTA])
-	rotate([180, 0, 270])
+	rotate([180, 0, 90])
 	import("components/adafruit/5740 ANO Rotary Encoder QT.stl");
 }
 
@@ -449,16 +449,15 @@ module screws() {
 	}
 }
 
-/*
-piezo();
-rtc();
-flash();
+color("red") piezo();
+color("green") rtc();
+color("yellow") flash();
 feather();
-battery();
-lcd();
+color("#8888ff") battery();
 rotary_encoder();
-*/
 
-//text_inlays();
+lcd();
+
+color("red") text_inlays();
 case();
-//baseplate();
+baseplate();
