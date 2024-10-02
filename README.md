@@ -114,7 +114,7 @@ Here is where everything fits in the enclosure. The perimeter of each part has h
 
 [Install CircuitPython 9.1.4 onto the Feather](https://learn.adafruit.com/adafruit-esp32-s3-feather/circuitpython), even though it was probably preinstalled. You want to get the right version and erase any unnecessary files.
 
-1. [Download CircuitPython 9.1.4](https://circuitpython.org/downloads) for your specific board. Get the `.bin` version, not `.uf2`.
+1. [Download CircuitPython 9.1.4](https://circuitpython.org/board/adafruit_feather_esp32s3_4mbflash_2mbpsram/) for your specific board. Get the `.bin` version, not `.uf2`.
 2. Connect the Feather to your computer via USB C.
 3. Press and hold the Boot button, briefly press Reset, and then release the Boot button. This puts the board in a bootloader mode.
 4. In Google Chrome, go to [Adafruit's ESPTool](https://adafruit.github.io/Adafruit_WebSerial_ESPTool/).
