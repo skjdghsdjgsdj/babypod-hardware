@@ -72,7 +72,7 @@ You can print the enclosure in either one or two colors. Whichever you choose:
 * Infill amount and style doesn't matter much because there isn't much to infill.
 * Don't use supports.
 * 0.2mm layer height is best. You can probably print taller layers, but it'll lower the resolution of the USB C ports and light pipe guide.
-* If you set the bottom infill pattern to "Archimedian Chords" on both parts, it'll look prettier. Same if you use PETG and print on a textured plate.
+* If you set the [bottom infill pattern to "Archimedian Chords"](https://help.prusa3d.com/article/infill-patterns_177130#types-of-top-bottom-layer-infill) on both parts, it'll look prettier. Same if you use PETG and print on a [textured plate](https://www.prusa3d.com/product/textured-powder-coated-steel-sheet/).
 
 If you're editing `BabyPod.scad`, your system needs the font "SignPainter" installed.
 
@@ -100,7 +100,7 @@ Here is where everything fits in the enclosure. The perimeter of each part has h
 
 ### `Baseplate.stl`
 
-![Case](docs/img/baseplate.png)
+![Baseplate](docs/img/baseplate.png)
 
 * The blue rectangle is the battery. The cable will exit by the bottom-left. It is press fit.
 * The green board is the RTC. The vertical orientation doesn't matter. It uses four M3x4 screws. The battery faces up and the STEMMA QT ports face down.
@@ -145,11 +145,11 @@ Here is a logical diagram of how everything connects. The FeatherWing isn't pict
 
 ![Fritzing diagram](docs/img/fritzing.png)
 
-* Blue wires are STEMMA QT cables ([I2C](https://learn.adafruit.com/circuitpython-basics-i2c-and-spi/i2c-devices)). These don't get soldered. There is a "QWIIC" connector on the back of the LCD board to which a STEMMA QT cable plugs in.
+* Blue wires are [STEMMA QT](https://learn.adafruit.com/introducing-adafruit-stemma-qt/what-is-stemma-qt) cables ([I2C](https://learn.adafruit.com/circuitpython-basics-i2c-and-spi/i2c-devices)). These don't get soldered. There is a ["QWIIC" connector](https://www.sparkfun.com/qwiic) on the back of the LCD board to which a STEMMA QT cable plugs in. STEMMA QT and QWIIC are functionally identical; the former is what Adafruit calls the connection and the latter is Sparkfun's name.
 * The yellow wire is the only soldered wire on the rotary encoder and connects its `INT` pin to the Feather's `11`.
 * Black wires are all `GND`.
 * The red wire on the Flash SD board gets +3.3V from the Feather's `3V` pin.
-* The red wire on the 
+* The red wire on the piezo goes to `A3`.
 * The green wires are all used for [SPI](https://learn.adafruit.com/circuitpython-basics-i2c-and-spi/spi-devices) communication for the Flash SD card.
 * The battery plugs directly into the Feather's battery terminal.
 * The rotary encoder *dial* itself isn't shown, but it gets soldered to its respective board directly.
