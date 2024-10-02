@@ -141,16 +141,16 @@ Even though there isn't much to copy, it might take a few minutes.
 
 #### Overview
 
-Here is a logical diagram of how everything connects. The FeatherWing isn't pictured and this isn't physically how everything is laid out in the enclosure; this just shows what pins go where.
+Here is a logical diagram of how everything connects. The FeatherWing isn't pictured and this isn't physically how everything is laid out in the enclosure; this just shows what pins go where. Don't start soldering yet!
 
 ![Fritzing diagram](docs/img/fritzing.png)
 
-* Blue wires are STEMMA QT cables. These don't get soldered. There is a "QWIIC" connector on the back of the LCD board to which a STEMMA QT cable plugs in.
+* Blue wires are STEMMA QT cables ([I2C](https://learn.adafruit.com/circuitpython-basics-i2c-and-spi/i2c-devices)). These don't get soldered. There is a "QWIIC" connector on the back of the LCD board to which a STEMMA QT cable plugs in.
 * The yellow wire is the only soldered wire on the rotary encoder and connects its `INT` pin to the Feather's `11`.
 * Black wires are all `GND`.
 * The red wire on the Flash SD board gets +3.3V from the Feather's `3V` pin.
 * The red wire on the 
-* The green wires are all used for SPI communication for the Flash SD card.
+* The green wires are all used for [SPI](https://learn.adafruit.com/circuitpython-basics-i2c-and-spi/spi-devices) communication for the Flash SD card.
 * The battery plugs directly into the Feather's battery terminal.
 * The rotary encoder *dial* itself isn't shown, but it gets soldered to its respective board directly.
 
