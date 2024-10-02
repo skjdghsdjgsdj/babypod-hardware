@@ -151,7 +151,7 @@ Solder the following connections from the respective devices to the FeatherWing 
 | Piezo                | Red wire   | `A3`  |
 | Flash SD card        | `VIN`      | `3V`  |
 | Flash SD card        | `GND`      | `GND` |
-| Flash SD card        | `SCK`      | `SCK  |
+| Flash SD card        | `SCK`      | `SCK` |
 | Flash SD card        | `MISO`     | `MI`  |
 | Flash SD card        | `MOSI`     | `MO`  |
 | Flash SD card        | `CS`       | `10 ` |
@@ -199,7 +199,7 @@ If the test passed, continue on:
 
 - Most obviously, check all your solder connections. It's easy to accidentally solder the wrong pin, or common mistakes like too little or too much solder.
 - Is the battery charged? The battery is 2500mAh and the Feather's charging speed means it can take a long time to fully charge from 0%. Even with a dead battery, the BabyPod should still function when powered by USB.
-- Is the battery plugged into the Feather completely? If you're using a fuel gauge, is the battery fully plugged into that and a separate JST cable going from the fuel gauge's other port to the Feather? Be careful removing the battery connector; it's an extremely tight fit, so gently work it out with pliers or a screwdriver and _never pull on the battery wires!_
+- Is the battery plugged into the Feather completely? Be careful removing the battery connector; it's an extremely tight fit, so gently work it out with pliers or a screwdriver and _never pull on the battery wires!_
 - Did you use an Adafruit battery and Adafruit Feather? If you didn't, then you may have reversed the battery polarity and destroyed the Feather. Smoke may have been another clue.
 
 ### Software-related
