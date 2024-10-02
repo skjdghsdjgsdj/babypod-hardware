@@ -139,6 +139,23 @@ Even though there isn't much to copy, it might take a few minutes.
 
 ### Soldering
 
+#### Overview
+
+Here is a logical diagram of how everything connects. The FeatherWing isn't pictured and this isn't physically how everything is laid out in the enclosure; this just shows what pins go where.
+
+![Fritzing diagram](docs/img/fritzing.png)
+
+* Blue wires are STEMMA QT cables. These don't get soldered. There is a "QWIIC" connector on the back of the LCD board to which a STEMMA QT cable plugs in.
+* The yellow wire is the only soldered wire on the rotary encoder and connects its `INT` pin to the Feather's `11`.
+* Black wires are all `GND`.
+* The red wire on the Flash SD board gets +3.3V from the Feather's `3V` pin.
+* The red wire on the 
+* The green wires are all used for SPI communication for the Flash SD card.
+* The battery plugs directly into the Feather's battery terminal.
+* The rotary encoder *dial* itself isn't shown, but it gets soldered to its respective board directly.
+
+#### Before you start
+
 Before soldering, orient yourself to where everything mounts to the 3D printed parts. You want to use just enough wire to reach each connection point, but not too much excess or you won't be able to fit everything inside the enclosure.
 
 It may help to keep [Adafruit's pinout documentation of the Feather](https://learn.adafruit.com/adafruit-esp32-s3-feather/pinouts) open while you're soldering. Pay very close attention to soldering wires to the FeatherWing proto. Always be aware of which side has the shorter or longer header, and if you're looking at it upside down or right-side up. Triple check which pin you're soldering to before you actually do it!
