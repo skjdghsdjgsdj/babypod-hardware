@@ -4,6 +4,8 @@ This repository is for the hardware and initial setup. For the CircuitPython cod
 
 ## What is it?
 
+![BabyPod](docs/img/hero.jpg)
+
 BabyPod is a remote control for [Baby Buddy](https://github.com/babybuddy/babybuddy). It's named that because it connects to Baby Buddy and has a click wheel like an old iPod.
 
 Why use BabyPod instead of just your phone or something else, or even Baby Buddy in general?
