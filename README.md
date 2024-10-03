@@ -135,7 +135,7 @@ Even though there isn't much to copy, it might take a few minutes.
 
 ### Create `settings.toml`
 
-1. Rename `settings.toml.example` on the `CIRCUITPY` to `settings.toml`. Make sure your OS doesn't sneak a `.txt` extension onto it.
+1. Rename `settings.toml.example` on the `CIRCUITPY` drive to `settings.toml`. Make sure your OS doesn't sneak a `.txt` extension onto it.
 2. Open `settings.toml` in a text editor and modify it as comments in the file show, then save it.
 3. Wait a few seconds, then unplug the Feather from your computer.
 
@@ -329,6 +329,7 @@ If you don't see the offline option, your BabyPod is missing either the RTC or t
 - Is the battery plugged into the Feather completely? Be careful removing the battery connector; it's an extremely tight fit, so gently work it out with pliers or a screwdriver and _never pull on the battery wires!_
 - Did you use an Adafruit battery and Adafruit Feather? If you didn't, then you may have reversed the battery polarity and destroyed the Feather. Smoke may have been another clue.
 - Are all the relevant STEMMA QT connections in use? Every available STEMMA QT port (or QWIIC in the case of the LCD) should be in use. Technically speaking the order of the connections doesn't matter, but do be sure everything is connected in a chain and there are no empty STEMMA QT ports.
+- Is the screen completely blank? Assuming of course everything else is wired correctly, the battery might be fully discharged. During soft shutdown, the screen should still show the charge percent and "⊙ Power".
 
 ### Software-related
 
