@@ -231,7 +231,7 @@ If the test passed, continue on:
 1. Unplug the USB C cable from the Feather.
 2. Plug the battery into the Feather. It will boot up the BabyPod, so be careful as the Feather and other components are now live.
 3. Carefully press together the two 3D printed parts, being sure to align the USB C hole to the Feather.
-4. Screw them together with the countersunk self-tapping M2 screws. Be especially careful not to overtighten!
+4. Screw them together with the countersunk self-tapping M2 screws. Be especially careful not to over-tighten!
 5. Shove the little bit of transparent 1.75mm filament into the hole next to the USB C connector until it is flush with the outside of the case. It acts as a light pipe for the Feather's charge LED.
 
 ## Basic usage
@@ -266,34 +266,36 @@ The last feeding on the main menu, if shown, denotes the last feeding method:
 
 Various messages are shown at startup and during typical usage:
 
-| Message             | Meaning                                                                                                                        |
-|---------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| Starting up...      | Initial code is booting up.                                                                                                    |
-| Connecting...       | Establishing Wi-Fi connection (DHCP, etc.). This doesn't necessarily mean connected to Baby Buddy yet, just the Wi-Fi network. |
-| Going offline       | Wi-Fi connection failed so offline mode was forced.                                                                            |
-| Low battery!        | Battery is less than 15% charged.                                                                                              |
-| Getting feeding...  | Getting most recent feeding from Baby Buddy to show on the main menu                                                           |
-| Setting clock...    | Syncing the RTC; happens if clock was never set or about once daily                                                            |
-| Getting children... | Getting child list from Baby Buddy. The first one is used. This only appears once unless you clear NVRAM.                      |
-| Saving...           | Sending data to Baby Buddy or SD card, depending on whether you're online or offline.                                          |
-| Canceling...        | Deleting the currently active timer                                                                                            |
-| Checking status...  | Checking for a currently running timer, or starting a new one if it doesn't exist                                              |
-| Checking timers...  | Seeing if there's a known timer running so the main menu can be skipped and that timer resumed                                 |
+| Message              | Meaning                                                                                                                        |
+|----------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| Starting up...       | Initial code is booting up.                                                                                                    |
+| Connecting...        | Establishing Wi-Fi connection (DHCP, etc.). This doesn't necessarily mean connected to Baby Buddy yet, just the Wi-Fi network. |
+| Going offline        | Wi-Fi connection failed so offline mode was forced.                                                                            |
+| Low battery!         | Battery is less than 15% charged.                                                                                              |
+| Getting feeding...   | Getting most recent feeding from Baby Buddy to show on the main menu                                                           |
+| Setting clock...     | Syncing the RTC; happens if clock was never set or about once daily                                                            |
+| Getting children...  | Getting child list from Baby Buddy. The first one is used. This only appears once unless you clear NVRAM.                      |
+| Saving...            | Sending data to Baby Buddy or SD card, depending on whether you're online or offline.                                          |
+| Canceling...         | Deleting the currently active timer                                                                                            |
+| Checking status...   | Checking for a currently running timer, or starting a new one if it doesn't exist                                              |
+| Checking timers...   | Seeing if there's a known timer running so the main menu can be skipped and that timer resumed                                 |
+| Checking messages... | Checking notes if there's a message of the day                                                                                 |
 
 ### Sounds
 
 The piezo makes some chimes and beeps to keep you informed. Remember you can turn off the piezo in the settings.
 
-| Sound        | Reason                                                                                                                                                                                                                                                                                                                        |
-|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Startup      | The BabyPod is starting up                                                                                                                                                                                                                                                                                                    |
-| Low battery  | Battery is less than 15% charged                                                                                                                                                                                                                                                                                              |
-| Success      | Saving data was successful, either to Baby Buddy (if online) or to the SD card (if offline)                                                                                                                                                                                                                                   |
-| Error        | Something went wrong, most likely a failed request to Baby Buddy                                                                                                                                                                                                                                                              |
-| Idle warning | The BabyPod is on, but no timer is running and it's been left idle, so you're being reminded to turn off the BabyPod if not in use.                                                                                                                                                                                           |
-| Chime        | Happens every minute during tummy time, or 15 minutes into feeding and then every minute after 30 minutes have elapsed during feeding. The tummy time chime is to keep track of your baby's progress without watching the screen. The feeding timer is to remind you it's still running and about the time to switch breasts. |
-| Info         | The BabyPod is going offline because the Wi-Fi connection failed. You will need to manually go online later; it won't try on its own.                                                                                                                                                                                         |
-| Shutdown     | You held <kbd>⊙ Center</kbd> for three seconds so the BabyPod is shutting down.                                                                                                                                                                                                                                               |
+| Sound              | Reason                                                                                                                                                                                                                                                                                                                        |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Startup            | The BabyPod is starting up                                                                                                                                                                                                                                                                                                    |
+| Low battery        | Battery is less than 15% charged                                                                                                                                                                                                                                                                                              |
+| Success            | Saving data was successful, either to Baby Buddy (if online) or to the SD card (if offline)                                                                                                                                                                                                                                   |
+| Error              | Something went wrong, most likely a failed request to Baby Buddy                                                                                                                                                                                                                                                              |
+| Idle warning       | The BabyPod is on, but no timer is running and it's been left idle, so you're being reminded to turn off the BabyPod if not in use.                                                                                                                                                                                           |
+| Chime              | Happens every minute during tummy time, or 15 minutes into feeding and then every minute after 30 minutes have elapsed during feeding. The tummy time chime is to keep track of your baby's progress without watching the screen. The feeding timer is to remind you it's still running and about the time to switch breasts. |
+| Info               | The BabyPod is going offline because the Wi-Fi connection failed. You will need to manually go online later; it won't try on its own.                                                                                                                                                                                         |
+| Shutdown           | You held <kbd>⊙ Center</kbd> for three seconds so the BabyPod is shutting down.                                                                                                                                                                                                                                               |
+| Message of the Day | There's a message of the day available                                                                                                                                                                                                                                                                                        |
 
 ### Offline usage
 
@@ -319,6 +321,17 @@ Don't go offline unless you need to. By staying online, you sync data regularly 
 When you are online, you can turn off the BabyPod while a timer is running, then turn it back on and the timer resumes as if nothing happened. This is because timers run in Baby Buddy itself. When you are offline, timers run directly on the BabyPod, so turning off the BabyPod will cancel the timer.
 
 If you don't see the offline option, your BabyPod is missing either the RTC or the SD card reader, or they failed to initialize.
+
+### Message of the day
+
+You can push a message of the day (MOTD) to a BabyPod. The message can be up to 20 characters in length. To do this:
+
+1. Create a new note in Baby Buddy with your desired text.
+2. Tag it with "BabyPod MOTD", creating the tag if it doesn't exist.
+
+BabyPod will consume the MOTD by checking notes every few hours for a note with that tag. If it finds one, it shows a modal to the user with a special chime. The note is deleted so it doesn't get consumed twice. If multiple BabyPods connect to the same instance of Baby Buddy, the first one to pull the note wins.
+
+BabyPod will only try to consume MOTDs if online, there's an RTC available, and it's been a while since the last check.
 
 ## Troubleshooting
 
