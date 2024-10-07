@@ -1,6 +1,6 @@
 # BabyPod
 
-This repository is for the hardware and initial setup. For the CircuitPython code that runs on the hardware, see the [`babypod-software`](https://github.com/skjdghsdjgsdj/babypod-software/) repository.
+This repository is for the hardware and initial setup. For the CircuitPython code that runs on the hardware, see the [`babypod-software`](https://github.com/skjdghsdjgsdj/babypod-software/) repository. This documentation assumes you're using the latest commit of `main` from the software repository.
 
 ## What is it?
 
@@ -245,11 +245,13 @@ If the test passed, continue on:
 | <kbd>◀ Left</kbd>     | <ul><li>Go back/cancel</li><li>Abort current timer</li><li>Change settings (home screen only)</li></ul>                                                                                            |
 | <kbd>▶ Right</kbd>    | <ul><li>Accept selection/save</li><li>Dismiss message</li></ul>                                                                                                                                    |
 | <kbd>▲ Up</kbd>       | <ul><li>Move selection up</li><li>Increase number</li></ul>                                                                                                                                        |
-| <kbd>▼ Down</kbd>     | <ul><li>Move selection down</li><li>Decrease number</li></ul>                                                                                                                                      |
+| <kbd>▼ Down</kbd>     | <ul><li>Move selection down</li><li>Decrease number</li><li>Force reset (press and hold)</li></ul>                                                                                                 |
 
-Holding <kbd>⊙ Center</kbd> to turn off the BabyPod only works when it's waiting for input from you, like showing a menu or running a timer. If the BabyPod is busy doing something, like loading data from or sending data to Baby Buddy, wait for the operation to complete.
+Holding <kbd>⊙ Center</kbd> to turn off the BabyPod and holding <kbd>▼ Down</kbd to reset it only work when the BabyPod is waiting for input from you, like showing a menu or running a timer. If the BabyPod is busy doing something, like loading data from or sending data to Baby Buddy, wait for the operation to complete.
 
 The orange LED by the USB C port is illuminated when the battery is charging. If it is not illuminated, the battery is fully charged or the USB C cable isn't inserted fully, is faulty, or is connected to a bad power supply.
+
+The soft power control options with pressing or holding <kbd>⊙ Center</kbd> are only enabled if `USE_SOFT_POWER_CONTROL` is enabled in `settings.toml.`
 
 ### Messages
 
