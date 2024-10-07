@@ -247,7 +247,7 @@ If the test passed, continue on:
 | <kbd>▲ Up</kbd>       | <ul><li>Move selection up</li><li>Increase number</li></ul>                                                                                                                                        |
 | <kbd>▼ Down</kbd>     | <ul><li>Move selection down</li><li>Decrease number</li><li>Force reset (press and hold)</li></ul>                                                                                                 |
 
-Holding <kbd>⊙ Center</kbd> to turn off the BabyPod and holding <kbd>▼ Down</kbd to reset it only work when the BabyPod is waiting for input from you, like showing a menu or running a timer. If the BabyPod is busy doing something, like loading data from or sending data to Baby Buddy, wait for the operation to complete.
+Holding <kbd>⊙ Center</kbd> to turn off the BabyPod and holding <kbd>▼ Down</kbd> to reset it only work when the BabyPod is waiting for input from you, like showing a menu or running a timer. If the BabyPod is busy doing something, like loading data from or sending data to Baby Buddy, wait for the operation to complete.
 
 The orange LED by the USB C port is illuminated when the battery is charging. If it is not illuminated, the battery is fully charged or the USB C cable isn't inserted fully, is faulty, or is connected to a bad power supply.
 
