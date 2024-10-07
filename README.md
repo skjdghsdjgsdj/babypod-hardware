@@ -345,6 +345,7 @@ BabyPod will only try to consume MOTDs if online, there's an RTC available, and 
 - Did you use an Adafruit battery and Adafruit Feather? If you didn't, then you may have reversed the battery polarity and destroyed the Feather. Smoke may have been another clue.
 - Are all the relevant STEMMA QT connections in use? Every available STEMMA QT port (or QWIIC in the case of the LCD) should be in use. Technically speaking the order of the connections doesn't matter, but do be sure everything is connected in a chain and there are no empty STEMMA QT ports.
 - Is the screen completely blank? Assuming of course everything else is wired correctly, the battery might be fully discharged. During soft shutdown, the screen should still show the charge percent and "⊙ Power".
+- Is the charge LED flickering or blinking on and off very quickly? The battery is probably not connected properly or needs replacing. The charge LED flickers when the Feather believes no battery is connected.
 
 ### Software-related
 
