@@ -224,6 +224,12 @@ The plugs on STEMMA QT cables only fit one way. Don't use a lot of force or you 
 
 At this point, you should have all the connections made, except the battery. You can test the BabyPod by plugging in the USB C cable and seeing if it starts up. If you get to the main menu, all your connections are good. You should also hear the piezo beep when it starts up.
 
+Once assembled, it should look similar to this:
+
+![Assembled but open BabyPod](docs/img/assembled.jpg)
+
+In this picture, the battery is connected, but you do that later.
+
 ### Final assembly
 
 If the test passed, continue on:
