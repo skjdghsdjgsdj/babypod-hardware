@@ -257,7 +257,7 @@ Holding <kbd>⊙ Center</kbd> to turn off the BabyPod and holding <kbd>▼ Down<
 
 The orange LED by the USB C port is illuminated when the battery is charging. If it is not illuminated, the battery is fully charged or the USB C cable isn't inserted fully, is faulty, or is connected to a bad power supply.
 
-The soft power control options with pressing or holding <kbd>⊙ Center</kbd> are only enabled if `USE_SOFT_POWER_CONTROL` is enabled in `settings.toml.`
+The soft power control options with pressing or holding <kbd>⊙ Center</kbd> are only enabled if `USE_SOFT_POWER_CONTROL` is enabled in `settings.toml.` Additionally, enabling this option will make the BabyPod shut off automatically after five minutes of inactivity except during timers.
 
 ### Messages
 
