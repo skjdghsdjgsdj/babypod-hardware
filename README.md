@@ -305,6 +305,20 @@ The piezo makes some chimes and beeps to keep you informed. Remember you can tur
 | Shutdown           | You held <kbd>⊙ Center</kbd> for three seconds so the BabyPod is shutting down.                                                                                                                                                                                                                                               |
 | Message of the Day | There's a message of the day available                                                                                                                                                                                                                                                                                        |
 
+### User settings
+
+The user of the BabyPod can configure some of its settings directly through its interface (i.e., not just through `settings.toml`). To access settings, from the home screen, press <kbd>◀ Left</kbd>.
+
+Some options aren't shown if hardware support isn't available or something is configured in `settings.toml`.
+
+| Setting          | Default | Effect                                                                     | Notes                                                                 |
+|------------------|---------|----------------------------------------------------------------------------|-----------------------------------------------------------------------|
+| Play sounds      | On      | Enables (on) or disables (off) sounds played through the piezo             |                                                                       |
+| Off after timers | Off     | Shut down (on) or keep powered on (off) the BabyPod after a timer is saved | Only shown on devices with soft power control enabled                 |
+| Offline          | Off     | Enters (on) or leaves (off) offline mode; see that section below           | Only shown on devices with offline support (hardware RTC and SD card) |
+
+Settings are persisted to NVRAM so they remain in effect across power cycles and battery discharges.
+
 ### Offline usage
 
 You should go offline when:
