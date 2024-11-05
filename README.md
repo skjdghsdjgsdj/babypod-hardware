@@ -1,8 +1,10 @@
 # BabyPod
 
-This repository is for the hardware and initial setup. For the CircuitPython code that runs on the hardware, see the [`babypod-software`](https://github.com/skjdghsdjgsdj/babypod-software/) repository.
+This repository is for the hardware and initial setup. For the CircuitPython code that runs on the hardware, see the [`babypod-software`](https://github.com/skjdghsdjgsdj/babypod-software/) repository. This documentation assumes you're using the latest commit of `main` from the software repository.
 
 ## What is it?
+
+![BabyPod](docs/img/hero.jpg)
 
 BabyPod is a remote control for [Baby Buddy](https://github.com/babybuddy/babybuddy). It's named that because it connects to Baby Buddy and has a click wheel like an old iPod.
 
@@ -103,7 +105,7 @@ Here is where everything fits in the enclosure. The perimeter of each part has h
 ![Baseplate](docs/img/baseplate.png)
 
 * The blue rectangle is the battery. The cable will exit by the bottom-left. It is press fit.
-* The green board is the RTC. The vertical orientation doesn't matter. It uses four M3x4 screws. The battery faces up and the STEMMA QT ports face down.
+* The green board is the [RTC](https://en.wikipedia.org/wiki/Real-time_clock). The vertical orientation doesn't matter. It uses four M3x4 screws. The battery faces up and the STEMMA QT ports face down.
 * The yellow board is the Flash SD board. The components face up and the flat surface faces down. It uses two M2.5x4 screws.
 * The bottom white board is the Feather and on top, held in place by the short headers, is the FeatherWing proto. The Feather is screwed in using two M2.5x4 screws in the front near the USB C port, and in the back (hard to see in the picture) the smaller holes of the Feather use two M2x4 screws. The screws hold just the Feather itself in place. They don't go through both the Feather and the FeatherWing Proto.
 * The piezo is the red circle underneath the yellow Flash SD board. It is press fit like the battery. The hole in the piezo faces down and the wires exit through the hole in the circle.
@@ -133,7 +135,7 @@ Even though there isn't much to copy, it might take a few minutes.
 
 ### Create `settings.toml`
 
-1. Rename `settings.toml.example` on the `CIRCUITPY` to `settings.toml`. Make sure your OS doesn't sneak a `.txt` extension onto it.
+1. Rename `settings.toml.example` on the `CIRCUITPY` drive to `settings.toml`. Make sure your OS doesn't sneak a `.txt` extension onto it.
 2. Open `settings.toml` in a text editor and modify it as comments in the file show, then save it.
 3. Wait a few seconds, then unplug the Feather from your computer.
 
@@ -222,6 +224,12 @@ The plugs on STEMMA QT cables only fit one way. Don't use a lot of force or you 
 
 At this point, you should have all the connections made, except the battery. You can test the BabyPod by plugging in the USB C cable and seeing if it starts up. If you get to the main menu, all your connections are good. You should also hear the piezo beep when it starts up.
 
+Once assembled, it should look similar to this:
+
+![Assembled but open BabyPod](docs/img/assembled.jpg)
+
+In this picture, the battery is connected, but you do that later.
+
 ### Final assembly
 
 If the test passed, continue on:
@@ -229,17 +237,135 @@ If the test passed, continue on:
 1. Unplug the USB C cable from the Feather.
 2. Plug the battery into the Feather. It will boot up the BabyPod, so be careful as the Feather and other components are now live.
 3. Carefully press together the two 3D printed parts, being sure to align the USB C hole to the Feather.
-4. Screw them together with the countersunk self-tapping M2 screws. Be especially careful not to overtighten!
+4. Screw them together with the countersunk self-tapping M2 screws. Be especially careful not to over-tighten!
 5. Shove the little bit of transparent 1.75mm filament into the hole next to the USB C connector until it is flush with the outside of the case. It acts as a light pipe for the Feather's charge LED.
+
+## Basic usage
+
+### Controls
+
+| Button                | Effect                                                                                                                                                                                             |
+|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <kbd>⊙ Center</kbd>   | <ul><li>Power on (brief press when BabyPod is off)</li><li>Power off (press and hold 3 seconds)</lil><li>Accept current selection</li><li>Toggle checkbox on/off</li><li>Dismiss message</li></ul> |
+| <kbd>↻ Rotation</kbd> | <ul><li>Move selection up/down</li><li>Increase/decrease number</li></ul>                                                                                                                          |
+| <kbd>◀ Left</kbd>     | <ul><li>Go back/cancel</li><li>Abort current timer</li><li>Change settings (home screen only)</li></ul>                                                                                            |
+| <kbd>▶ Right</kbd>    | <ul><li>Accept selection/save</li><li>Dismiss message</li></ul>                                                                                                                                    |
+| <kbd>▲ Up</kbd>       | <ul><li>Move selection up</li><li>Increase number</li></ul>                                                                                                                                        |
+| <kbd>▼ Down</kbd>     | <ul><li>Move selection down</li><li>Decrease number</li><li>Force reset (press and hold)</li></ul>                                                                                                 |
+
+Holding <kbd>⊙ Center</kbd> to turn off the BabyPod and holding <kbd>▼ Down</kbd> to reset it only work when the BabyPod is waiting for input from you, like showing a menu or running a timer. If the BabyPod is busy doing something, like loading data from or sending data to Baby Buddy, wait for the operation to complete.
+
+The orange LED by the USB C port is illuminated when the battery is charging. If it is not illuminated, the battery is fully charged or the USB C cable isn't inserted fully, is faulty, or is connected to a bad power supply.
+
+The soft power control options with pressing or holding <kbd>⊙ Center</kbd> are only enabled if `USE_SOFT_POWER_CONTROL` is enabled in `settings.toml.` Additionally, enabling this option will make the BabyPod shut off automatically after five minutes of inactivity except during timers.
+
+### Messages
+
+The percentage at top-right is the battery level.
+
+The last feeding on the main menu, if shown, denotes the last feeding method:
+
+| Label | Meaning      |
+|-------|--------------|
+| `R`   | Right breast |
+| `L`   | Left breast  |
+| `RL`  | Both breasts |
+| `B`   | Bottle       |
+
+Various messages are shown at startup and during typical usage:
+
+| Message              | Meaning                                                                                                                        |
+|----------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| Starting up...       | Initial code is booting up.                                                                                                    |
+| Connecting...        | Establishing Wi-Fi connection (DHCP, etc.). This doesn't necessarily mean connected to Baby Buddy yet, just the Wi-Fi network. |
+| Going offline        | Wi-Fi connection failed so offline mode was forced.                                                                            |
+| Low battery!         | Battery is less than 15% charged.                                                                                              |
+| Getting feeding...   | Getting most recent feeding from Baby Buddy to show on the main menu                                                           |
+| Setting clock...     | Syncing the RTC; happens if clock was never set or about once daily                                                            |
+| Getting children...  | Getting child list from Baby Buddy. The first one is used. This only appears once unless you clear NVRAM.                      |
+| Saving...            | Sending data to Baby Buddy or SD card, depending on whether you're online or offline.                                          |
+| Canceling...         | Deleting the currently active timer                                                                                            |
+| Checking status...   | Checking for a currently running timer, or starting a new one if it doesn't exist                                              |
+| Checking timers...   | Seeing if there's a known timer running so the main menu can be skipped and that timer resumed                                 |
+| Checking messages... | Checking notes if there's a message of the day                                                                                 |
+
+### Sounds
+
+The piezo makes some chimes and beeps to keep you informed. Remember you can turn off the piezo in the settings.
+
+| Sound              | Reason                                                                                                                                                                                                                                                                                                                        |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Startup            | The BabyPod is starting up                                                                                                                                                                                                                                                                                                    |
+| Low battery        | Battery is less than 15% charged                                                                                                                                                                                                                                                                                              |
+| Success            | Saving data was successful, either to Baby Buddy (if online) or to the SD card (if offline)                                                                                                                                                                                                                                   |
+| Error              | Something went wrong, most likely a failed request to Baby Buddy                                                                                                                                                                                                                                                              |
+| Idle warning       | The BabyPod is on, but no timer is running and it's been left idle, so you're being reminded to turn off the BabyPod if not in use.                                                                                                                                                                                           |
+| Chime              | Happens every minute during tummy time, or 15 minutes into feeding and then every minute after 30 minutes have elapsed during feeding. The tummy time chime is to keep track of your baby's progress without watching the screen. The feeding timer is to remind you it's still running and about the time to switch breasts. |
+| Info               | The BabyPod is going offline because the Wi-Fi connection failed. You will need to manually go online later; it won't try on its own.                                                                                                                                                                                         |
+| Shutdown           | You held <kbd>⊙ Center</kbd> for three seconds so the BabyPod is shutting down.                                                                                                                                                                                                                                               |
+| Message of the Day | There's a message of the day available                                                                                                                                                                                                                                                                                        |
+
+### User settings
+
+The user of the BabyPod can configure some of its settings directly through its interface (i.e., not just through `settings.toml`). To access settings, from the home screen, press <kbd>◀ Left</kbd>.
+
+Some options aren't shown if hardware support isn't available or something is configured in `settings.toml`.
+
+| Setting          | Default | Effect                                                                     | Notes                                                                 |
+|------------------|---------|----------------------------------------------------------------------------|-----------------------------------------------------------------------|
+| Play sounds      | On      | Enables (on) or disables (off) sounds played through the piezo             |                                                                       |
+| Off after timers | Off     | Shut down (on) or keep powered on (off) the BabyPod after a timer is saved | Only shown on devices with soft power control enabled                 |
+| Offline          | Off     | Enters (on) or leaves (off) offline mode; see that section below           | Only shown on devices with offline support (hardware RTC and SD card) |
+
+Settings are persisted to NVRAM so they remain in effect across power cycles and battery discharges.
+
+### Offline usage
+
+You should go offline when:
+
+* Using BabyPod away from home
+* You don't have an internet connection
+* Baby Buddy is down
+* Your Wi-Fi connection fails (this switches to offline automatically)
+
+To go offline:
+
+1. On the main menu, press <kbd>◀ Left</kbd> to enter settings.
+2. Scroll down to Offline and press <kbd>⊙ Center</kbd> to check it.
+3. Press <kbd>▶ Right</kbd> to save.
+
+The main menu will now show ◀☐ at the bottom-right indicating that you're offline.
+
+To go back online, repeat the same steps as above but uncheck the Offline checkbox. The BabyPod will show a progress bar as it reconnects to Baby Buddy and replays everything that happened while you were offline. Once complete, the main menu will now show ◀✓ to show that you're online.
+
+Don't go offline unless you need to. By staying online, you sync data regularly to Baby Buddy.
+
+When you are online, you can turn off the BabyPod while a timer is running, then turn it back on and the timer resumes as if nothing happened. This is because timers run in Baby Buddy itself. When you are offline, timers run directly on the BabyPod, so turning off the BabyPod will cancel the timer.
+
+If you don't see the offline option, your BabyPod is missing either the RTC or the SD card reader, or they failed to initialize.
+
+### Message of the day
+
+You can push a message of the day (MOTD) to a BabyPod. The message can be up to 20 characters in length. To do this:
+
+1. Create a new note in Baby Buddy with your desired text.
+2. Tag it with "BabyPod MOTD", creating the tag if it doesn't exist.
+
+BabyPod will consume the MOTD by checking notes every few hours for a note with that tag. If it finds one, it shows a modal to the user with a special chime. The note is deleted so it doesn't get consumed twice. If multiple BabyPods connect to the same instance of Baby Buddy, the first one to pull the note wins.
+
+BabyPod will only try to consume MOTDs if online, there's an RTC available, and it's been a while since the last check.
 
 ## Troubleshooting
 
-### Power-related
+### Power and wiring-related
 
 - Most obviously, check all your solder connections. It's easy to accidentally solder the wrong pin, or common mistakes like too little or too much solder.
 - Is the battery charged? The battery is 2500mAh and the Feather's charging speed means it can take a long time to fully charge from 0%. Even with a dead battery, the BabyPod should still function when powered by USB.
 - Is the battery plugged into the Feather completely? Be careful removing the battery connector; it's an extremely tight fit, so gently work it out with pliers or a screwdriver and _never pull on the battery wires!_
 - Did you use an Adafruit battery and Adafruit Feather? If you didn't, then you may have reversed the battery polarity and destroyed the Feather. Smoke may have been another clue.
+- Are all the relevant STEMMA QT connections in use? Every available STEMMA QT port (or QWIIC in the case of the LCD) should be in use. Technically speaking the order of the connections doesn't matter, but do be sure everything is connected in a chain and there are no empty STEMMA QT ports.
+- Is the screen completely blank? Assuming of course everything else is wired correctly, the battery might be fully discharged. During soft shutdown, the screen should still show the charge percent and "⊙ Power".
+- Is the charge LED flickering or blinking on and off very quickly? The battery is probably not connected properly or needs replacing. The charge LED flickers when the Feather believes no battery is connected.
 
 ### Software-related
 
@@ -247,11 +373,13 @@ If the test passed, continue on:
 - Is the code crashing? [Connect to a serial console and watch the output.](https://learn.adafruit.com/welcome-to-circuitpython/kattni-connecting-to-the-serial-console) Note the code disables the auto-reload when you write a file which is different from CircuitPython's default operation. In a serial console, you can press `Ctrl-C` to stop the code and then `Ctrl-D` to reboot which will capture all the output from the moment it boots up. If you're using macOS, then [tio](https://formulae.brew.sh/formula/tio) makes it easy to use serial consoles in the terminal; the device is `/dev/tty.usbmodem*`.
 - Does the menu show up but you get various errors when you actually try to _do_ something, like recording a feeding or changing? Your `settings.toml` is probably wrong, either for the Wi-Fi credentials, Wi-Fi channel if you specified one, or Baby Buddy's URL or authorization token. The serial console should help you here.
 - Are you using a recent version of Baby Buddy for your server? Or perhaps your version is _too_ new and there's an API-breaking change?
+- Are you getting errors about incompatible `.mpy` files? You need to install the right version of CircuitPython (9.1.4).
+- Does setting the clock fail? You omitted the adafruit.io credentials or got them wrong in `settings.toml`.
 
 ### Other things to check
 
 - Is the LCD contrast adjusted? The Sparkfun LCD contrast is adjusted through code.
 - When plugging in a USB C cable, is it snapping fully into the port on the Feather, or is the enclosure preventing it from going all the way in?
 - Does your USB C cable support both data and power? Test it with another device to be sure.
-- Are all the relevant STEMMA QT connections in use? Every available STEMMA QT port (or QWIIC in the case of the LCD) should be in use. Technically speaking the order of the connections doesn't matter, but do be sure everything is connected in a chain and there are no empty STEMMA QT ports.
 - Is the rotary encoder acting erratically, like "up" is acting like "down"? Make sure it's oriented properly: the row of pins is towards the center of the case, not the outside edge, as pictured above.
+- Is the RTC failing to initialize or acting weird? Make sure the CR1220 button cell battery is installed. If it's just acting erratically or failing to initialize, the battery may be missing or not making good contact. If the clock keeps drifting or getting set every time you start up, the battery is probably dead.
