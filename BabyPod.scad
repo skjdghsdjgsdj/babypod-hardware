@@ -72,6 +72,7 @@ BREAKOUTS_STANDOFF_HEIGHT = 4;
 function feather_x() = rotary_encoder_x() + FEATHER_DEPTH / 2 + ROTARY_ENCODER_DEPTH / 2;
 function lcd_total_height() = LCD_BOARD_HEIGHT + LCD_DISPLAY_HEIGHT;
 function rotary_encoder_x() = LCD_BOARD_WIDTH + ROTARY_ENCODER_X_DELTA;
+function rotary_encoder_y() = LCD_BOARD_DEPTH / 2 - ROTARY_ENCODER_WIDTH / 2;
 function usb_c_x() = feather_x() - FEATHER_DEPTH / 2;
 function usb_c_z() = FEATHER_Z_DELTA + FEATHER_PCB_HEIGHT + USB_C_Z_DELTA;
 function piezo_x() = LCD_BOARD_WIDTH - FLASH_WIDTH / 2;
@@ -122,7 +123,7 @@ module lcd() {
 }
 
 module rotary_encoder() {
-	translate([rotary_encoder_x(), LCD_BOARD_DEPTH / 2 - ROTARY_ENCODER_WIDTH / 2, LCD_Z_DELTA])
+	translate([rotary_encoder_x(), rotary_encoder_y(), LCD_Z_DELTA])
 	translate([ROTARY_ENCODER_DEPTH / 2, ROTARY_ENCODER_WIDTH / 2, lcd_total_height() + ROTARY_ENCODER_Z_DELTA])
 	rotate([180, 0, 90])
 	import("components/adafruit/5740 ANO Rotary Encoder QT.stl");
