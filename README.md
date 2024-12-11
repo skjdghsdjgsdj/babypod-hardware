@@ -112,6 +112,8 @@ Here is where everything fits in the enclosure. The perimeter of each part has h
 
 ## Assembly
 
+You want to install CircuitPython and set up the software *before* assembling the hardware.
+
 ### CircuitPython setup
 
 [Install CircuitPython 9.1.4 onto the Feather](https://learn.adafruit.com/adafruit-esp32-s3-feather/circuitpython), even though it was probably preinstalled. You want to get the right version and erase any unnecessary files.
@@ -119,25 +121,23 @@ Here is where everything fits in the enclosure. The perimeter of each part has h
 1. [Download CircuitPython 9.1.4](https://circuitpython.org/board/adafruit_feather_esp32s3_4mbflash_2mbpsram/) for your specific board. Get the `.bin` version, not `.uf2`.
 2. Connect the Feather to your computer via USB C.
 3. Press and hold the Boot button, briefly press Reset, and then release the Boot button. This puts the board in a bootloader mode.
-4. In Google Chrome, go to [Adafruit's ESPTool](https://adafruit.github.io/Adafruit_WebSerial_ESPTool/).
+4. In Google Chrome, go to [Adafruit's ESPTool](https://adafruit.github.io/Adafruit_WebSerial_ESPTool/). Firefox and some other browsers don't work because the tool needs WebSerial support.
 5. Click "Connect" and select the Feather. The device's name will vary, but ultimately you should see a successful connection message.
 6. Click Erase and wait about 15 seconds until you get a success message.
 7. Click the first "Choose a file..." button and select the `.bin` CircuitPython image you downloaded, then click "Program."
-8. When prompted to do so, press the Reset button on the Feather. A few moments later, a drive named `CIRCUITPY` should mount itself on your computer. Keep the Feather plugged in.
+8. When prompted to do so, press the Reset button on the Feather. A few moments later, a drive named `CIRCUITPY` should show up on your computer.
+
+Keep the Feather plugged in for the next steps.
 
 ### Load the BabyPod software
 
-1. Download the [latest release of the BabyPod software](https://github.com/skjdghsdjgsdj/babypod-software/releases).
-2. Extract the release zip or tarball.
-3. Copy everything from the extracted release release to the `CIRCUITPY` drive, overwriting anything already on the drive.
+1. Download the [latest release of the BabyPod software](https://github.com/skjdghsdjgsdj/babypod-software/releases) and extract the zip file to a new folder somewhere.
+2. In the extracted files, rename `settings.toml.example` to `settings.toml`. Make sure your OS doesn't sneak a `.txt` extension onto it.
+3. [Create a free account](https://learn.adafruit.com/welcome-to-adafruit-io/getting-started-with-adafruit-io) on [adafruit.io](https://io.adafruit.com/). You'll need your username and API key in the next step. You can get those when you're logged in by clicking the [yellow key icon at the top-right of the page](https://io.adafruit.com/api/docs/#authentication).
+4. Open `settings.toml` in a text editor and modify it as comments in the file show, then save it.
+5. Copy everything inside the new folder (not the folder itself) including your renamed `settings.toml` file to the `CIRCUITPY` drive. Overwrite anything already on the drive.
 
-Even though there isn't much to copy, it might take a few minutes.
-
-### Create `settings.toml`
-
-1. Rename `settings.toml.example` on the `CIRCUITPY` drive to `settings.toml`. Make sure your OS doesn't sneak a `.txt` extension onto it.
-2. Open `settings.toml` in a text editor and modify it as comments in the file show, then save it.
-3. Wait a few seconds, then unplug the Feather from your computer.
+Even though there isn't much to copy, it might take a few minutes. At this point, all the software is ready to go, and once you've assembled the hardware, it should connect to your Wi-Fi, log into Baby Buddy, and run normally.
 
 ### Soldering
 
@@ -271,6 +271,7 @@ The last feeding on the main menu, if shown, denotes the last feeding method:
 | `L`   | Left breast  |
 | `RL`  | Both breasts |
 | `B`   | Bottle       |
+| `S`   | Solid food   |
 
 Various messages are shown at startup and during typical usage:
 
@@ -340,8 +341,6 @@ To go back online, repeat the same steps as above but uncheck the Offline checkb
 
 Don't go offline unless you need to. By staying online, you sync data regularly to Baby Buddy.
 
-When you are online, you can turn off the BabyPod while a timer is running, then turn it back on and the timer resumes as if nothing happened. This is because timers run in Baby Buddy itself. When you are offline, timers run directly on the BabyPod, so turning off the BabyPod will cancel the timer.
-
 If you don't see the offline option, your BabyPod is missing either the RTC or the SD card reader, or they failed to initialize.
 
 ### Message of the day
@@ -353,33 +352,35 @@ You can push a message of the day (MOTD) to a BabyPod. The message can be up to 
 
 BabyPod will consume the MOTD by checking notes every few hours for a note with that tag. If it finds one, it shows a modal to the user with a special chime. The note is deleted so it doesn't get consumed twice. If multiple BabyPods connect to the same instance of Baby Buddy, the first one to pull the note wins.
 
-BabyPod will only try to consume MOTDs if online, there's an RTC available, and it's been a while since the last check.
+BabyPod will only try to consume MOTDs if online, there's an RTC available, and it's been a while since the last check. Remember the character LCD only supports a small subset of characters so don't try Unicode emojis or anything outside the lower ASCII character set.
 
 ## Troubleshooting
 
 ### Power and wiring-related
 
 - Most obviously, check all your solder connections. It's easy to accidentally solder the wrong pin, or common mistakes like too little or too much solder.
-- Is the battery charged? The battery is 2500mAh and the Feather's charging speed means it can take a long time to fully charge from 0%. Even with a dead battery, the BabyPod should still function when powered by USB.
+- Is the battery charged? The battery is 2500mAh and the Feather's charging speed means it can take a long time to fully charge from 0%. Even with a dead battery, the BabyPod should still function when powered by USB. If you don't see the orange charge LED illuminated by the USB C port then the board isn't getting power.
 - Is the battery plugged into the Feather completely? Be careful removing the battery connector; it's an extremely tight fit, so gently work it out with pliers or a screwdriver and _never pull on the battery wires!_
-- Did you use an Adafruit battery and Adafruit Feather? If you didn't, then you may have reversed the battery polarity and destroyed the Feather. Smoke may have been another clue.
+- Did you use an Adafruit battery and Adafruit Feather? If you didn't, then you may have reversed the battery polarity and destroyed the Feather. Adafruit tends to use the opposite polarity as most batteries sold on Amazon and other places.
 - Are all the relevant STEMMA QT connections in use? Every available STEMMA QT port (or QWIIC in the case of the LCD) should be in use. Technically speaking the order of the connections doesn't matter, but do be sure everything is connected in a chain and there are no empty STEMMA QT ports.
-- Is the screen completely blank? Assuming of course everything else is wired correctly, the battery might be fully discharged. During soft shutdown, the screen should still show the charge percent and "⊙ Power".
+- Is the screen completely blank? Assuming of course everything else is wired correctly, the battery might be fully discharged. During soft shutdown, the screen should still show the charge percent and "⊙ Power". If the LCD fails to initialize in software, it may appear blank too; see below for troubleshooting that.
 - Is the charge LED flickering or blinking on and off very quickly? The battery is probably not connected properly or needs replacing. The charge LED flickers when the Feather believes no battery is connected.
 
 ### Software-related
 
+- Does random crap like corrupted characters show up on the screen? Check that all the STEMMA QT connections are secure, not just to the LCD but to the Feather, RTC, and rotary encoder too.
 - Did you install CircuitPython 9 and load all the code, including the relevant libraries? Have you tried an older version of CircuitPython (still 9.x.x) in case there was a breaking change?
 - Is the code crashing? [Connect to a serial console and watch the output.](https://learn.adafruit.com/welcome-to-circuitpython/kattni-connecting-to-the-serial-console) Note the code disables the auto-reload when you write a file which is different from CircuitPython's default operation. In a serial console, you can press `Ctrl-C` to stop the code and then `Ctrl-D` to reboot which will capture all the output from the moment it boots up. If you're using macOS, then [tio](https://formulae.brew.sh/formula/tio) makes it easy to use serial consoles in the terminal; the device is `/dev/tty.usbmodem*`.
 - Does the menu show up but you get various errors when you actually try to _do_ something, like recording a feeding or changing? Your `settings.toml` is probably wrong, either for the Wi-Fi credentials, Wi-Fi channel if you specified one, or Baby Buddy's URL or authorization token. The serial console should help you here.
 - Are you using a recent version of Baby Buddy for your server? Or perhaps your version is _too_ new and there's an API-breaking change?
 - Are you getting errors about incompatible `.mpy` files? You need to install the right version of CircuitPython (9.1.4).
-- Does setting the clock fail? You omitted the adafruit.io credentials or got them wrong in `settings.toml`.
+- Does setting the clock fail? You omitted the `adafruit.io` credentials or got them wrong in `settings.toml`. If you rotated your key on `adafruit.io`, you need to update it in `settings.toml` too.
+- Maybe there's a bug. Let me rephrase that: there are most definitely bugs and maybe you ran into one. Check the [GitHub issues for the software](https://github.com/skjdghsdjgsdj/babypod-software/issues) and [submit a new issue](https://github.com/skjdghsdjgsdj/babypod-software/issues/new) if you don't see yours covered.
 
 ### Other things to check
 
-- Is the LCD contrast adjusted? The Sparkfun LCD contrast is adjusted through code.
+- Is the LCD contrast adjusted? The Sparkfun LCD contrast is adjusted through code so you'll need to poke around in the CircuitPython REPL to adjust it. The Adafruit LCD that's also supported uses a potentiometer to adjust the contrast.
 - When plugging in a USB C cable, is it snapping fully into the port on the Feather, or is the enclosure preventing it from going all the way in?
-- Does your USB C cable support both data and power? Test it with another device to be sure.
+- Does your USB C cable support both data and power? Test it with another device to be sure. Avoid USB A to USB cables and try to use C-to-C, assuming your computer has a USB C port too.
 - Is the rotary encoder acting erratically, like "up" is acting like "down"? Make sure it's oriented properly: the row of pins is towards the center of the case, not the outside edge, as pictured above.
-- Is the RTC failing to initialize or acting weird? Make sure the CR1220 button cell battery is installed. If it's just acting erratically or failing to initialize, the battery may be missing or not making good contact. If the clock keeps drifting or getting set every time you start up, the battery is probably dead.
+- Is the RTC failing to initialize or acting weird? Make sure the CR1220 button cell battery is installed. If it's just acting erratically or failing to initialize, the battery may be missing or not making good contact. If the clock keeps drifting or getting set every time you start up, the battery is probably dead. If the timezone is consistently off by an hour or a multiple of hours, then `adafruit.io` might be getting your timezone wrong.
