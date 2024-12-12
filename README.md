@@ -41,8 +41,6 @@ Deviate from the parts list at your own risk, but _do not get a different batter
 | [Adafruit PCF8523 Real Time Clock Breakout Board - STEMMA QT / Qwiic](https://www.adafruit.com/product/5189) | 1        | $4.95      |
 | **Total**                                                                                                    |          | **$91.55** |
 
-Note the headers are the *short headers* that Adafruit sells, not the full height ones that come with most boards. Do not use full height headers or the boards won't fit in the enclosure!
-
 You will also need the following supplies. The manufacturer doesn't matter but some examples are linked below:
 
 * A [CR1220 button cell battery](https://www.adafruit.com/product/380)	
@@ -197,7 +195,7 @@ If you need to, you can change the order of the steps below if shoving everythin
 5. Press the piezo into place in its circle on the baseplate with the hole facing down and the wire protruding through the cutout in the circle. You can keep the white bit of tape on.
 6. Screw the Flash SD board into place above the piezo with two M2.5x4 screws with the components facing up.
 7. Put the CR1220 battery into the RTC; note the polarity. Screw the RTC into place with four M3x4 screws with the battery facing up. The direction doesn't matter.
-8. Screw the Feather into place with the USB C port facing towards the cutout in the case and the female headers facing up. Use two M2.5x4 screws for the larger holes and two M2x4 screws for the smaller ones.
+8. Screw the Feather into place with the USB C port facing towards the cutout in the case and the board's components facing up. Use two M2.5x4 screws for the larger holes and two M2x4 screws for the smaller ones.
 9. Plug the 50mm STEMMA QT cable into the Feather's port and into the nearest port on the RTC, then connect the STEMMA QT cable from the assembled case with the rotary encoder into the other port on the RTC.
 10. Press the battery into its retainer with the cable by the bottom-left, assuming the Feather's USB C port is facing you. Don't plug in the battery's cable into the Feather yet.
 
