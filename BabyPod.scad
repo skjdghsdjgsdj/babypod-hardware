@@ -335,7 +335,18 @@ module baseplate() {
 		);
 		
 		translate([piezo_x(), piezo_y(), -SURFACE])
-		cylinder(d = 2, h = SURFACE, $fn = 36);
+		union() {
+			cylinder(d = 2, h = SURFACE, $fn = 36);
+			
+			radius = 4;
+			for (i = [0 : 5]) {
+				angle = i / 6 * 360;
+				x_delta = sin(angle) * radius;
+				y_delta = cos(angle) * radius;
+				translate([x_delta, y_delta, 0])
+				cylinder(d = 2, h = SURFACE, $fn = 36);
+			}
+		}
 	}
 	
 	render()
