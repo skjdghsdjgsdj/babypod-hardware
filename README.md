@@ -112,9 +112,9 @@ You want to install CircuitPython and set up the software *before* assembling th
 
 ### CircuitPython setup
 
-[Install CircuitPython 9.1.4 onto the Feather](https://learn.adafruit.com/adafruit-esp32-s3-feather/circuitpython), even though it was probably preinstalled. You want to get the right version and erase any unnecessary files.
+[Install the latest stable release of CircuitPython 9 onto the Feather](https://learn.adafruit.com/adafruit-esp32-s3-feather/circuitpython), even though it was probably preinstalled. You want to get the right version and erase any unnecessary files.
 
-1. [Download CircuitPython 9.1.4](https://circuitpython.org/board/adafruit_feather_esp32s3_4mbflash_2mbpsram/) for your specific board. Get the `.bin` version, not `.uf2`.
+1. [Download CircuitPython 9](https://circuitpython.org/board/adafruit_feather_esp32s3_4mbflash_2mbpsram/) for your specific board. Get the `.bin` version, not `.uf2`.
 2. Connect the Feather to your computer via USB C.
 3. Press and hold the Boot button, briefly press Reset, and then release the Boot button. This puts the board in a bootloader mode.
 4. In Google Chrome, go to [Adafruit's ESPTool](https://adafruit.github.io/Adafruit_WebSerial_ESPTool/). Firefox and some other browsers don't work because the tool needs WebSerial support.
@@ -244,7 +244,7 @@ Hint: to take apart the BabyPod, there are tiny divots on the left and right of 
 - Is the code crashing? [Connect to a serial console and watch the output.](https://learn.adafruit.com/welcome-to-circuitpython/kattni-connecting-to-the-serial-console) Note the code disables the auto-reload when you write a file which is different from CircuitPython's default operation. In a serial console, you can press `Ctrl-C` to stop the code and then `Ctrl-D` to reboot which will capture all the output from the moment it boots up. If you're using macOS, then [tio](https://formulae.brew.sh/formula/tio) makes it easy to use serial consoles in the terminal; the device is `/dev/tty.usbmodem*`.
 - Does the menu show up but you get various errors when you actually try to _do_ something, like recording a feeding or changing? Your `settings.toml` is probably wrong, either for the Wi-Fi credentials, Wi-Fi channel if you specified one, or Baby Buddy's URL or authorization token. The serial console should help you here.
 - Are you using a recent version of Baby Buddy for your server? Or perhaps your version is _too_ new and there's an API-breaking change?
-- Are you getting errors about incompatible `.mpy` files? You need to install the right version of CircuitPython (9.1.4).
+- Are you getting errors about incompatible `.mpy` files? You need to install the right version of CircuitPython (9.x.x).
 - Does setting the clock fail? You omitted the `adafruit.io` credentials or got them wrong in `settings.toml`. If you rotated your key on `adafruit.io`, you need to update it in `settings.toml` too.
 - Maybe there's a bug. Let me rephrase that: there are most definitely bugs and maybe you ran into one. Check the [GitHub issues for the software](https://github.com/skjdghsdjgsdj/babypod-software/issues) and [submit a new issue](https://github.com/skjdghsdjgsdj/babypod-software/issues/new) if you don't see yours covered.
 
