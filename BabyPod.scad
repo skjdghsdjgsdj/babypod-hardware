@@ -246,7 +246,14 @@ module case() {
 			case_standoff(LCD_Z_DELTA - 10.1, 2.4);
 		}
 	}
-
+	
+	FEATHER_RESET_X_DELTA = 17.75;
+	FEATHER_RESET_Y_DELTA = 10.75;
+	
+	render()
+	translate([feather_x() - FEATHER_DEPTH + FEATHER_RESET_X_DELTA, FEATHER_Y_DELTA + FEATHER_RESET_Y_DELTA, 0])
+	case_standoff(components_total_height() - FEATHER_Z_DELTA - 5, 1.5);
+	
 	render()
 	difference() {
 		translate([-SURFACE - CASE_EXTRA_WIDTH / 2, -SURFACE - CASE_EXTRA_DEPTH / 2, 0])
@@ -256,6 +263,9 @@ module case() {
 			components_total_height() + SURFACE,
 			CASE_RADIUS
 		);
+		
+		translate([feather_x() - FEATHER_DEPTH + FEATHER_RESET_X_DELTA, FEATHER_Y_DELTA + FEATHER_RESET_Y_DELTA, components_total_height()])
+		cylinder(d = 1.5, h = SURFACE, $fn = 36);
 		
 		translate([-CASE_EXTRA_WIDTH / 2, -CASE_EXTRA_DEPTH / 2, 0])
 		rounded_cube(
