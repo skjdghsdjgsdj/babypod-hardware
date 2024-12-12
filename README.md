@@ -365,6 +365,8 @@ BabyPod will only try to consume MOTDs if online, there's an RTC available, and 
 - Are all the relevant STEMMA QT connections in use? Every available STEMMA QT port (or QWIIC in the case of the LCD) should be in use. Technically speaking the order of the connections doesn't matter, but do be sure everything is connected in a chain and there are no empty STEMMA QT ports.
 - Is the screen completely blank? Assuming of course everything else is wired correctly, the battery might be fully discharged. During soft shutdown, the screen should still show the charge percent and "⊙ Power". If the LCD fails to initialize in software, it may appear blank too; see below for troubleshooting that.
 - Is the charge LED flickering or blinking on and off very quickly? The battery is probably not connected properly or needs replacing. The charge LED flickers when the Feather believes no battery is connected.
+- Is pressing and holding the Center button not turning off the BabyPod, or does pressing it when the BabyPod is off not wake it back up? Make sure `USE_SOFT_POWER_CONTROL` is set to `1` in `settings.toml`.
+- Similarly, is the BabyPod shutting off automatically after a few minutes, but you have a physical power switch so it won't wake back up? Set `USE_SOFT_POWER_CONTROL` to `0` in `settings.toml`.
 
 ### Software-related
 
@@ -379,6 +381,7 @@ BabyPod will only try to consume MOTDs if online, there's an RTC available, and 
 
 ### Other things to check
 
+- Is the BabyPod booting up normally, getting to the main menu, but then after a few seconds says "Rebooting" and does so? The Down button is being held. If you aren't touching it, the tolerance between the rotary encoder and the enclosure might be too tight. Try to adjust it by putting thin washers on the standoffs that hold the rotary encoder.
 - Is the LCD contrast adjusted? The Sparkfun LCD contrast is adjusted through code so you'll need to poke around in the CircuitPython REPL to adjust it. The Adafruit LCD that's also supported uses a potentiometer to adjust the contrast.
 - When plugging in a USB C cable, is it snapping fully into the port on the Feather, or is the enclosure preventing it from going all the way in?
 - Does your USB C cable support both data and power? Test it with another device to be sure. Avoid USB A to USB cables and try to use C-to-C, assuming your computer has a USB C port too.
