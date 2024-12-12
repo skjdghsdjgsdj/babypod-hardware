@@ -15,6 +15,8 @@ Why use BabyPod instead of just your phone or something else, or even Baby Buddy
 * **Quick access:** the most commonly used things are shown first, and extra data can be added later. For example, if you record a diaper change, you can log if it was wet and/or dry, but it doesn't ask for color because usually it'll be the same and you can just add it later directly in Baby Buddy if not. Print and build multiple BabyPods if you want and leave them in places you frequent, like your baby's nursery, a place where you feed, etc. For multiple children, you can print and build multiple BabyPods and assign each one to a specific child.
 * **Open source:** change it to do what you want. As long as you don't sell it, I don't care what you do with it. Contributing back would be nice!
 
+Because this is just a remote control, **you need to [install Baby Buddy](https://docs.baby-buddy.net/setup/deployment/) somewhere** beforehand, like to your computer if it's on 24/7, a home server, a Raspberry Pi, AWS/GCP/Digital Ocean/Clever Cloud, or something else. This guide assumes you've already got Baby Buddy running and now you want a remote control for it.
+
 ## Hardware
 
 To build a BabyPod, you 3D print some parts, stuff it with some electronics with easy soldering, and load the software.
@@ -108,7 +110,7 @@ Here is where everything fits in the enclosure. The perimeter of each part has h
 
 ## Assembly
 
-You want to install CircuitPython and set up the software *before* assembling the hardware.
+You want to install CircuitPython and set up the software *before* assembling the hardware. Remember you also already need a [running instance of Baby Buddy](https://docs.baby-buddy.net/setup/deployment/)!
 
 ### CircuitPython setup
 
@@ -221,38 +223,44 @@ Head over to the [`babypod-software`](https://github.com/skjdghsdjgsdj/babypod-s
 
 ## Troubleshooting
 
-Shove a paperclip in the hole under the rotary encoder to press the Feather's reset button. This is a hardware reset that should always work. You can reset in software by pressing and holding the Down button too if the BabyPod is listening for user input.
+Shove a paperclip in the hole under the rotary encoder to press the Feather's reset button. This is a hardware reset that will always work as long as the Feather has power. Additionally you can reset the BabyPod by pressing and holding the Down button, but this only works if the BabyPod is ready and waiting for user input.
 
 Hint: to take apart the BabyPod, there are tiny divots on the left and right of the enclosure. You can hook your fingernails in there for leverage.
 
 ### Power and wiring-related
 
 - Most obviously, check all your solder connections. It's easy to accidentally solder the wrong pin, or common mistakes like too little or too much solder.
-- Is the battery charged? The battery is 2500mAh and the Feather's charging speed means it can take a long time to fully charge from 0%. Even with a dead battery, the BabyPod should still function when powered by USB. If you don't see the orange charge LED illuminated by the USB C port then the board isn't getting power.
-- Is the battery plugged into the Feather completely? Be careful removing the battery connector; it's an extremely tight fit, so gently work it out with pliers or a screwdriver and _never pull on the battery wires!_
-- Did you use an Adafruit battery and Adafruit Feather? If you didn't, then you may have reversed the battery polarity and destroyed the Feather. Adafruit tends to use the opposite polarity as most batteries sold on Amazon and other places.
+- Is the battery charged? The battery is 2500mAh and the Feather's slow charging speed means it can take a long time to fully charge from 0%. Even with a dead or even disconnected battery, the BabyPod should still function when powered by USB. If you don't see the orange charge LED illuminated by the USB C port then the board isn't getting power.
+- Is the battery plugged into the Feather completely? Be careful removing the battery connector; it's an extremely tight fit, so gently work it out with pliers or a screwdriver and _never pull on the battery wires!_ The battery percentage on the screen is nonsensical without a battery plugged in: it often shows 100% despite no battery being present.
+- Did you use an Adafruit-brand battery and did you buy it from Adafruit, Digikey, or Mouser directly? If you didn't, then your battery probably has the wrong polarity and would have destroyed the Feather and possibly other components the moment it got plugged in.
 - Are all the relevant STEMMA QT connections in use? Every available STEMMA QT port (or QWIIC in the case of the LCD) should be in use. Technically speaking the order of the connections doesn't matter, but do be sure everything is connected in a chain and there are no empty STEMMA QT ports.
-- Is the screen completely blank? Assuming of course everything else is wired correctly, the battery might be fully discharged. During soft shutdown, the screen should still show the charge percent and "⊙ Power". If the LCD fails to initialize in software, it may appear blank too; see below for troubleshooting that.
-- Is the charge LED flickering or blinking on and off very quickly? The battery is probably not connected properly or needs replacing. The charge LED flickers when the Feather believes no battery is connected.
+- Is the screen completely blank? Assuming of course everything else is wired correctly, the battery might be fully discharged. During soft shutdown, the screen should still show the charge percent and "⊙ Power". If the LCD fails to initialize in software, it may appear blank too even if the backlight is on; see below for troubleshooting that.
+- Is the charge LED flickering? The battery is probably not connected properly or needs replacing. The charge LED flickers when the Feather believes no battery is connected.
 - Is pressing and holding the Center button not turning off the BabyPod, or does pressing it when the BabyPod is off not wake it back up? Make sure `USE_SOFT_POWER_CONTROL` is set to `1` in `settings.toml`.
 - Similarly, is the BabyPod shutting off automatically after a few minutes, but you have a physical power switch so it won't wake back up? Set `USE_SOFT_POWER_CONTROL` to `0` in `settings.toml`.
+- Is the BabyPod waking up spontaneously without you touching it? Make sure the `INT` pin is wired properly to the Feather's `11` pin. A loose connection could trigger false interrupts. Also make sure there's no moisture in the rotary encoder that could be causing a short and that the center button isn't stuck down. Additionally, pressing and holding the center button turns off the BabyPod but _continuing_ to hold it can cause it to wake back up immediately.
 
 ### Software-related
 
-- Does random crap like corrupted characters show up on the screen? Check that all the STEMMA QT connections are secure, not just to the LCD but to the Feather, RTC, and rotary encoder too.
+- Do you have at least one child in Baby Buddy? The BabyPod auto-selects the first child it sees, and if you have none, will crash.
+- Does your API user have enough access in Baby Buddy?
 - Did you install CircuitPython 9 and load all the code, including the relevant libraries? Have you tried an older version of CircuitPython (still 9.x.x) in case there was a breaking change?
 - Is the code crashing? [Connect to a serial console and watch the output.](https://learn.adafruit.com/welcome-to-circuitpython/kattni-connecting-to-the-serial-console) Note the code disables the auto-reload when you write a file which is different from CircuitPython's default operation. In a serial console, you can press `Ctrl-C` to stop the code and then `Ctrl-D` to reboot which will capture all the output from the moment it boots up. If you're using macOS, then [tio](https://formulae.brew.sh/formula/tio) makes it easy to use serial consoles in the terminal; the device is `/dev/tty.usbmodem*`.
+In the console do you get errors about I2C problems or missing pullup resistors? Make sure all the STEMMA QT connections are good. Swap the cables with new ones if need be.
+- Does random crap like corrupted characters show up on the screen? Check that all the STEMMA QT connections are secure, not just to the LCD but to the Feather, RTC, and rotary encoder too.
 - Does the menu show up but you get various errors when you actually try to _do_ something, like recording a feeding or changing? Your `settings.toml` is probably wrong, either for the Wi-Fi credentials, Wi-Fi channel if you specified one, or Baby Buddy's URL or authorization token. The serial console should help you here.
 - Are you using a recent version of Baby Buddy for your server? Or perhaps your version is _too_ new and there's an API-breaking change?
 - Are you getting errors about incompatible `.mpy` files? You need to install the right version of CircuitPython (9.x.x).
 - Does setting the clock fail? You omitted the `adafruit.io` credentials or got them wrong in `settings.toml`. If you rotated your key on `adafruit.io`, you need to update it in `settings.toml` too.
-- Maybe there's a bug. Let me rephrase that: there are most definitely bugs and maybe you ran into one. Check the [GitHub issues for the software](https://github.com/skjdghsdjgsdj/babypod-software/issues) and [submit a new issue](https://github.com/skjdghsdjgsdj/babypod-software/issues/new) if you don't see yours covered.
+- Maybe there's a bug. Let me rephrase that: there are most definitely bugs and maybe you ran into one. Check the [GitHub issues for the software](https://github.com/skjdghsdjgsdj/babypod-software/issues) and [submit a new issue](https://github.com/skjdghsdjgsdj/babypod-software/issues/new) if you don't see yours covered. Pull requests are greatly welcomed if you see a problem and have a fix!
 
 ### Other things to check
 
-- Is the BabyPod booting up normally, getting to the main menu, but then after a few seconds says "Rebooting" and does so? The Down button is being held. If you aren't touching it, the tolerance between the rotary encoder and the enclosure might be too tight. Try to adjust it by putting thin washers on the standoffs that hold the rotary encoder.
-- Is the LCD contrast adjusted? The Sparkfun LCD contrast is adjusted through code so you'll need to poke around in the CircuitPython REPL to adjust it. The Adafruit LCD that's also supported uses a potentiometer to adjust the contrast.
+- Is the BabyPod booting up normally, getting to the main menu, but then after a few seconds says "Rebooting" and does so? The Down button is being held. Assuming you aren't touching it, the tolerance between the rotary encoder and the enclosure might be too tight. Try to adjust it by putting thin washers on the standoffs that hold the rotary encoder.
+- Is the LCD contrast adjusted? The Sparkfun LCD contrast, used in current BabyPod builds, is adjusted through code so you'll need to poke around in the CircuitPython REPL to adjust it. The code supports an Adafruit LCD backpack too, and that uses a potentiometer to adjust the contrast.
 - When plugging in a USB C cable, is it snapping fully into the port on the Feather, or is the enclosure preventing it from going all the way in?
-- Does your USB C cable support both data and power? Test it with another device to be sure. Avoid USB A to USB cables and try to use C-to-C, assuming your computer has a USB C port too.
+- Does your USB C cable support both data and power? Test it with another device to be sure. Avoid USB A to USB cables and try to use USB C-to-C, assuming your computer has a USB C port too.
 - Is the rotary encoder acting erratically, like "up" is acting like "down"? Make sure it's oriented properly: the row of pins is towards the center of the case, not the outside edge, as pictured above.
-- Is the RTC failing to initialize or acting weird? Make sure the CR1220 button cell battery is installed. If it's just acting erratically or failing to initialize, the battery may be missing or not making good contact. If the clock keeps drifting or getting set every time you start up, the battery is probably dead. If the timezone is consistently off by an hour or a multiple of hours, then `adafruit.io` might be getting your timezone wrong.
+- Is the RTC failing to initialize or acting weird? Make sure the CR1220 button cell battery is installed and that the polarity is correct.
+- If the clock keeps drifting or getting set every time you start up, the battery in the RTC is probably dead.
+- If the RTC's timezone is consistently off by an hour or a multiple of 60 minutes precisely, then `adafruit.io` might be getting your timezone wrong.
