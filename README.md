@@ -27,21 +27,19 @@ Note that you can get most of these parts from the manufacturer directly like [A
 
 Deviate from the parts list at your own risk, but _do not get a different battery!_ Adafruit batteries have polarities that match their own boards, and using a battery off Amazon or elsewhere may not match and destroy your board or even start a fire!
 
-| Part                                                                                                         | Quantity | Price  |
-|--------------------------------------------------------------------------------------------------------------|----------|--------|
-| [Adafruit ESP32-S3 Feather with 4MB Flash 2MB PSRAM](https://www.adafruit.com/product/5477)                  | 1        | $17.50 |
-| [Sparkfun 20x4 SerLCD](https://www.sparkfun.com/products/16398)                                              | 1        | $26.95 |
-| [Adafruit ANO Rotary Navigation Encoder to I2C Stemma QT Adapter](https://www.adafruit.com/product/5740)     | 1        | $4.95  |
-| [ANO Directional Navigation and Scroll Wheel Rotary Encoder](https://www.adafruit.com/product/5001)          | 1        | $8.95  |
-| [Lithium Ion Polymer Battery - 3.7v 2500mAh](https://www.adafruit.com/product/328)                           | 1        | $14.95 |
-| [STEMMA QT / Qwiic JST SH 4-pin Cable - 100mm Long](https://www.adafruit.com/product/4210)                   | 2        | $0.95  |
-| [STEMMA QT / Qwiic JST SH 4-pin Cable - 50mm Long](https://www.adafruit.com/product/4399)                    | 1        | $0.95  |
-| [Small Enclosed Piezo w/Wires](https://www.adafruit.com/product/1740)                                        | 1        | $0.95  |
-| [Adafruit SPI Flash SD Card - XTSD 512 MB](https://www.adafruit.com/product/4899)                            | 1        | $9.50  |
-| [Adafruit PCF8523 Real Time Clock Breakout Board - STEMMA QT / Qwiic](https://www.adafruit.com/product/5189) | 1        | $4.95  |
-| [Short Feather Male Headers - 12-pin and 16-pin Male Header Set](https://www.adafruit.com/product/3002)      | 1        | $0.50  |
-| [Short Headers Kit for Feather - 12-pin + 16-pin Female Headers](https://www.adafruit.com/product/2940)      | 1        | $1.50  |
-| [FeatherWing Proto - Prototyping Add-on For All Feather Boards](https://www.adafruit.com/product/2884)       | 1        | $4.95  |
+| Part                                                                                                         | Quantity | Price      |
+|--------------------------------------------------------------------------------------------------------------|----------|------------|
+| [Adafruit ESP32-S3 Feather with 4MB Flash 2MB PSRAM](https://www.adafruit.com/product/5477)                  | 1        | $17.50     |
+| [Sparkfun 20x4 SerLCD](https://www.sparkfun.com/products/16398)                                              | 1        | $26.95     |
+| [Adafruit ANO Rotary Navigation Encoder to I2C Stemma QT Adapter](https://www.adafruit.com/product/5740)     | 1        | $4.95      |
+| [ANO Directional Navigation and Scroll Wheel Rotary Encoder](https://www.adafruit.com/product/5001)          | 1        | $8.95      |
+| [Lithium Ion Polymer Battery - 3.7v 2500mAh](https://www.adafruit.com/product/328)                           | 1        | $14.95     |
+| [STEMMA QT / Qwiic JST SH 4-pin Cable - 100mm Long](https://www.adafruit.com/product/4210)                   | 2        | $0.95      |
+| [STEMMA QT / Qwiic JST SH 4-pin Cable - 50mm Long](https://www.adafruit.com/product/4399)                    | 1        | $0.95      |
+| [Small Enclosed Piezo w/Wires](https://www.adafruit.com/product/1740)                                        | 1        | $0.95      |
+| [Adafruit SPI Flash SD Card - XTSD 512 MB](https://www.adafruit.com/product/4899)                            | 1        | $9.50      |
+| [Adafruit PCF8523 Real Time Clock Breakout Board - STEMMA QT / Qwiic](https://www.adafruit.com/product/5189) | 1        | $4.95      |
+| **Total**                                                                                                    |          | **$91.55** |
 
 Note the headers are the *short headers* that Adafruit sells, not the full height ones that come with most boards. Do not use full height headers or the boards won't fit in the enclosure!
 
@@ -61,7 +59,7 @@ You will also need the following supplies. The manufacturer doesn't matter but s
 * 1.75mm *transparent* 3D printing filament, ~6mm worth; this acts as a light pipe and you won't actually print using it
 
 And lastly, tools:
-* Screwdriver that works with the screws you picked
+* Small screwdriver
 * Wire cutters/strippers
 * Soldering iron
 * A 3D printer
@@ -73,7 +71,7 @@ You can print the enclosure in either one or two colors. Whichever you choose:
 
 * Infill amount and style doesn't matter much because there isn't much to infill.
 * Don't use supports.
-* 0.2mm layer height is best. You can probably print taller layers, but it'll lower the resolution of the USB C ports and light pipe guide.
+* 0.2mm layer height is best. Avoid variable height layers because it'll make the LCD and rotary encoder insets look weird.
 * If you set the [bottom infill pattern to "Archimedian Chords"](https://help.prusa3d.com/article/infill-patterns_177130#types-of-top-bottom-layer-infill) on both parts, it'll look prettier. Same if you use PETG and print on a [textured plate](https://www.prusa3d.com/product/textured-powder-coated-steel-sheet/).
 
 If you're editing `BabyPod.scad`, your system needs the font "SignPainter" installed.
@@ -107,7 +105,7 @@ Here is where everything fits in the enclosure. The perimeter of each part has h
 * The blue rectangle is the battery. The cable will exit by the bottom-left. It is press fit.
 * The green board is the [RTC](https://en.wikipedia.org/wiki/Real-time_clock). The vertical orientation doesn't matter. It uses four M3x4 screws. The battery faces up and the STEMMA QT ports face down.
 * The yellow board is the Flash SD board. The components face up and the flat surface faces down. It uses two M2.5x4 screws.
-* The bottom white board is the Feather and on top, held in place by the short headers, is the FeatherWing proto. The Feather is screwed in using two M2.5x4 screws in the front near the USB C port, and in the back (hard to see in the picture) the smaller holes of the Feather use two M2x4 screws. The screws hold just the Feather itself in place. They don't go through both the Feather and the FeatherWing Proto.
+* The white board is the Feather. It is screwed in using two M2.5x4 screws in the front near the USB C port, and in the back the smaller holes of the Feather use two M2x4 screws.
 * The piezo is the red circle underneath the yellow Flash SD board. It is press fit like the battery. The hole in the piezo faces down and the wires exit through the hole in the circle.
 
 ## Assembly
@@ -143,70 +141,54 @@ Even though there isn't much to copy, it might take a few minutes. At this point
 
 #### Overview
 
-Here is a logical diagram of how everything connects. The FeatherWing isn't pictured and this isn't physically how everything is laid out in the enclosure; this just shows what pins go where. Don't start soldering yet!
+Here is a logical diagram of how everything connects. This isn't physically how everything is laid out in the enclosure but just shows what pins go where. Don't start soldering yet!
 
 ![Fritzing diagram](docs/img/fritzing.png)
 
-* Blue wires are [STEMMA QT](https://learn.adafruit.com/introducing-adafruit-stemma-qt/what-is-stemma-qt) cables ([I2C](https://learn.adafruit.com/circuitpython-basics-i2c-and-spi/i2c-devices)). These don't get soldered. There is a ["QWIIC" connector](https://www.sparkfun.com/qwiic) on the back of the LCD board to which a STEMMA QT cable plugs in. STEMMA QT and QWIIC are functionally identical; the former is what Adafruit calls the connection and the latter is Sparkfun's name.
+* Blue wires are [STEMMA QT](https://learn.adafruit.com/introducing-adafruit-stemma-qt/what-is-stemma-qt) cables ([I2C](https://learn.adafruit.com/circuitpython-basics-i2c-and-spi/i2c-devices)). These don't get soldered. On boards with two STEMMA QT connectors, the connections are interchangeable. The LCD's connector is labeled "QWIIC" which is just Sparkfun's name for the same connector.
 * The yellow wire is the only soldered wire on the rotary encoder and connects its `INT` pin to the Feather's `11`.
-* Black wires are all `GND`.
-* The red wire on the Flash SD board gets +3.3V from the Feather's `3V` pin.
-* The red wire on the piezo goes to `A3`.
+* Black wires are all `GND` and red wires are all +3.3V. The black wire is the only soldered wire on the RTC.
+* The orange wire on the piezo goes to `A3`.
 * The green wires are all used for [SPI](https://learn.adafruit.com/circuitpython-basics-i2c-and-spi/spi-devices) communication for the Flash SD card.
 * The battery plugs directly into the Feather's battery terminal.
 * The rotary encoder *dial* itself isn't shown, but it gets soldered to its respective board directly.
 
-#### Before you start
+Before soldering, orient yourself to where everything mounts to the 3D printed parts. You want to use just enough wire to reach each connection point, but not too much excess or you won't be able to fit everything inside the enclosure. It may help to keep [Adafruit's pinout documentation of the Feather](https://learn.adafruit.com/adafruit-esp32-s3-feather/pinouts) open while you're soldering. Triple check which pin you're soldering to before you actually do it!
 
-Before soldering, orient yourself to where everything mounts to the 3D printed parts. You want to use just enough wire to reach each connection point, but not too much excess or you won't be able to fit everything inside the enclosure.
+Many of the boards ship with a strip of headers included. You won't use them.
 
-It may help to keep [Adafruit's pinout documentation of the Feather](https://learn.adafruit.com/adafruit-esp32-s3-feather/pinouts) open while you're soldering. Pay very close attention to soldering wires to the FeatherWing proto. Always be aware of which side has the shorter or longer header, and if you're looking at it upside down or right-side up. Triple check which pin you're soldering to before you actually do it!
-
-There are a few important points to keep in mind when using the FeatherWing Proto:
-
-* Look at the [pinout](https://learn.adafruit.com/featherwing-proto-and-doubler/proto-pinout). The headers get soldered to the outermost set of pins in the white bordered areas. The white printed area faces up.
-* The leftmost column of pins that has a white border around it is the +3.3V bus. You can use any of those solder points to get +3.3V power.
-* Similarly, the column of pins immediately to the right of the +3.3V bus are all ground pins. Solder to any of them for a ground connection.
-* The rows of pins immediately below the top header and immediately above the bottom header share connections with the Feather's underlying pins. For example, the top-right pin goes to `SDA` via the male header into the Feather's female header, and the pin on the FeatherWing immediately below that one is shared with that pin, so it too goes with `SDA`.
-* The pins between the headers in the middle of the board aren't connected to anything and are meant for prototyping, hence the name of the product. That is, they *do not connect to the Feather and you should not solder to them for assembling the BabyPod!*
-
-Many of the boards ship with headers included. Don't solder those!
-
-#### Solder rotary encoder
+#### Soldering
 
 Solder the rotary encoder dial to its breakout board. It only fits one way. Be careful not to skip any connections.
 
-#### Solder headers
+Then solder the following connections from the respective devices to their targets:
 
-1. Solder the short female headers to the top of the Feather (i.e., the side with all the components on it).
-2. [Solder the short male headers to the bottom of the FeatherWing Proto.](https://learn.adafruit.com/featherwing-proto-and-doubler/assembly). The printed text on the FeatherWing must be on top and the long pins of the headers and their plastic retainer on the bottom.
-
-#### Solder connections to the FeatherWing Proto
-
-Solder the following connections from the respective devices to the FeatherWing Proto:
-
-| Device               | Pin/Wire   | To    |
-|----------------------|------------|-------|
-| Piezo                | Black wire | `GND` |
-| Piezo                | Red wire   | `A3`  |
-| Flash SD card        | `VIN`      | `3V`  |
-| Flash SD card        | `GND`      | `GND` |
-| Flash SD card        | `SCK`      | `SCK` |
-| Flash SD card        | `MISO`     | `MI`  |
-| Flash SD card        | `MOSI`     | `MO`  |
-| Flash SD card        | `CS`       | `10 ` |
-| Rotary encoder board | `INT`      | `11`  |
+| Device               | Pin/Wire   | To                   |
+|----------------------|------------|----------------------|
+| Piezo                | Black wire | `GND` on the RTC     |
+| Piezo                | Red wire   | `A3` on the Feather  |
+| Flash SD card        | `VIN`      | `3V` on the Feather  |
+| Flash SD card        | `GND`      | `GND` on the Feather |
+| Flash SD card        | `SCK`      | `SCK` on the Feather |
+| Flash SD card        | `MISO`     | `MI` on the Feather  |
+| Flash SD card        | `MOSI`     | `MO` on the Feather  |
+| Flash SD card        | `CS`       | `10` on the Feather  |
+| Rotary encoder board | `INT`      | `11` on the Feather  |
 
 The piezo wires are very thin, so be careful. Less solder is best.
 
-You will not solder any wires to the LCD nor to the RTC, and only one wire gets soldered to the rotary encoder.
+Note that all the soldered wires are between the Feather and the Flash SD card with two exceptions:
+
+* The rotary encoder's `INT` pin goes to the Feather.
+* The piezo's black ground wire goes to the RTC.
 
 ### Mount components
 
-When screwing in components, use just enough force to keep things in place. Don't over-tighten the screws or you'll strip
-the non-existent threads in the 3D printed parts and need to print them again.
+When screwing in components, use just enough force to keep things in place. Don't over-tighten the screws or you'll strip the non-existent threads in the 3D printed parts and need to print them again. Repeatedly screwing into the same standoff may also strip it, even if it's not over-tightened, and you'll need to reprint.
 
 The plugs on STEMMA QT cables only fit one way. Don't use a lot of force or you can easily bend one of the thin pins in their ports.
+
+If you need to, you can change the order of the steps below if shoving everything into the enclosure is finicky.
 
 1. Connect the LCD to the rotary encoder using one of the 100mm STEMMA QT cables. It doesn't matter which port on the rotary encoder you use. On the other STEMMA QT port on the rotary encoder, plug in another 100mm STEMMA QT cable. It'll later connect to other components, but not yet.
 2. Screw the rotary encoder into place with four M2.5x4 screws. The set of pins on it, including where you soldered the `INT` wire, should face towards the cutout for the LCD and the star with the Adafruit logo by the outer edge of the case with the STEMMA QT connectors pointing to the top and bottom of the case.
@@ -218,143 +200,32 @@ The plugs on STEMMA QT cables only fit one way. Don't use a lot of force or you 
 8. Screw the Feather into place with the USB C port facing towards the cutout in the case and the female headers facing up. Use two M2.5x4 screws for the larger holes and two M2x4 screws for the smaller ones.
 9. Plug the 50mm STEMMA QT cable into the Feather's port and into the nearest port on the RTC, then connect the STEMMA QT cable from the assembled case with the rotary encoder into the other port on the RTC.
 10. Press the battery into its retainer with the cable by the bottom-left, assuming the Feather's USB C port is facing you. Don't plug in the battery's cable into the Feather yet.
-11. Press the FeatherWing Proto into the Feather's female headers. Be careful the pins are aligned and you're not off-by-one.
 
 ### Testing before final assembly
 
-At this point, you should have all the connections made, except the battery. You can test the BabyPod by plugging in the USB C cable and seeing if it starts up. If you get to the main menu, all your connections are good. You should also hear the piezo beep when it starts up.
+At this point, you should have all the connections made except the battery. You can test the BabyPod by plugging in the USB C cable and seeing if it starts up. If you hear a beep and the main menu shows up then your connections are likely good.
 
-Once assembled, it should look similar to this:
-
-![Assembled but open BabyPod](docs/img/assembled.jpg)
-
-In this picture, the battery is connected, but you do that later.
+If you don't hear a beep but everything else seems to work, make sure the piezo is soldered properly per the connections above and that the RTC's STEMMA QT connections are solid.
 
 ### Final assembly
 
 If the test passed, continue on:
 
 1. Unplug the USB C cable from the Feather.
-2. Plug the battery into the Feather. It will boot up the BabyPod, so be careful as the Feather and other components are now live.
-3. Carefully press together the two 3D printed parts, being sure to align the USB C hole to the Feather.
-4. Screw them together with the countersunk self-tapping M2 screws. Be especially careful not to over-tighten!
-5. Shove the little bit of transparent 1.75mm filament into the hole next to the USB C connector until it is flush with the outside of the case. It acts as a light pipe for the Feather's charge LED.
+2. Plug the battery into the Feather. The BabyPod will boot up.
+3. Carefully press together the two 3D printed parts, being sure to align the USB C hole to the Feather. Make sure the reset hole guide is unobstructed and there are no wires stuck underneath it.
+4. Screw the backplate and the enclosure together with the countersunk self-tapping M2 screws. Be especially careful not to over-tighten!
+5. Shove the little bit of transparent 1.75mm filament into the hole next to the USB C connector until it is flush with the outside of the case. It acts as a light pipe for the Feather's charge LED. You might want to use pliers. If you want, carefully apply a tiny drop of superglue to hold it in place, but friction alone is probably sufficient.
 
 ## Basic usage
 
-### Controls
-
-| Button                | Effect                                                                                                                                                                                             |
-|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| <kbd>⊙ Center</kbd>   | <ul><li>Power on (brief press when BabyPod is off)</li><li>Power off (press and hold 3 seconds)</lil><li>Accept current selection</li><li>Toggle checkbox on/off</li><li>Dismiss message</li></ul> |
-| <kbd>↻ Rotation</kbd> | <ul><li>Move selection up/down</li><li>Increase/decrease number</li></ul>                                                                                                                          |
-| <kbd>◀ Left</kbd>     | <ul><li>Go back/cancel</li><li>Abort current timer</li><li>Change settings (home screen only)</li></ul>                                                                                            |
-| <kbd>▶ Right</kbd>    | <ul><li>Accept selection/save</li><li>Dismiss message</li></ul>                                                                                                                                    |
-| <kbd>▲ Up</kbd>       | <ul><li>Move selection up</li><li>Increase number</li></ul>                                                                                                                                        |
-| <kbd>▼ Down</kbd>     | <ul><li>Move selection down</li><li>Decrease number</li><li>Force reset (press and hold)</li></ul>                                                                                                 |
-
-Holding <kbd>⊙ Center</kbd> to turn off the BabyPod and holding <kbd>▼ Down</kbd> to reset it only work when the BabyPod is waiting for input from you, like showing a menu or running a timer. If the BabyPod is busy doing something, like loading data from or sending data to Baby Buddy, wait for the operation to complete.
-
-The orange LED by the USB C port is illuminated when the battery is charging. If it is not illuminated, the battery is fully charged or the USB C cable isn't inserted fully, is faulty, or is connected to a bad power supply.
-
-The soft power control options with pressing or holding <kbd>⊙ Center</kbd> are only enabled if `USE_SOFT_POWER_CONTROL` is enabled in `settings.toml.` Additionally, enabling this option will make the BabyPod shut off automatically after five minutes of inactivity except during timers.
-
-### Messages
-
-The percentage at top-right is the battery level.
-
-The last feeding on the main menu, if shown, denotes the last feeding method:
-
-| Label | Meaning      |
-|-------|--------------|
-| `R`   | Right breast |
-| `L`   | Left breast  |
-| `RL`  | Both breasts |
-| `B`   | Bottle       |
-| `S`   | Solid food   |
-
-Various messages are shown at startup and during typical usage:
-
-| Message              | Meaning                                                                                                                        |
-|----------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| Starting up...       | Initial code is booting up.                                                                                                    |
-| Connecting...        | Establishing Wi-Fi connection (DHCP, etc.). This doesn't necessarily mean connected to Baby Buddy yet, just the Wi-Fi network. |
-| Going offline        | Wi-Fi connection failed so offline mode was forced.                                                                            |
-| Low battery!         | Battery is less than 15% charged.                                                                                              |
-| Getting feeding...   | Getting most recent feeding from Baby Buddy to show on the main menu                                                           |
-| Setting clock...     | Syncing the RTC; happens if clock was never set or about once daily                                                            |
-| Getting children...  | Getting child list from Baby Buddy. The first one is used. This only appears once unless you clear NVRAM.                      |
-| Saving...            | Sending data to Baby Buddy or SD card, depending on whether you're online or offline.                                          |
-| Canceling...         | Deleting the currently active timer                                                                                            |
-| Checking status...   | Checking for a currently running timer, or starting a new one if it doesn't exist                                              |
-| Checking timers...   | Seeing if there's a known timer running so the main menu can be skipped and that timer resumed                                 |
-| Checking messages... | Checking notes if there's a message of the day                                                                                 |
-
-### Sounds
-
-The piezo makes some chimes and beeps to keep you informed. Remember you can turn off the piezo in the settings.
-
-| Sound              | Reason                                                                                                                                                                                                                                                                                                                        |
-|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Startup            | The BabyPod is starting up                                                                                                                                                                                                                                                                                                    |
-| Low battery        | Battery is less than 15% charged                                                                                                                                                                                                                                                                                              |
-| Success            | Saving data was successful, either to Baby Buddy (if online) or to the SD card (if offline)                                                                                                                                                                                                                                   |
-| Error              | Something went wrong, most likely a failed request to Baby Buddy                                                                                                                                                                                                                                                              |
-| Idle warning       | The BabyPod is on, but no timer is running and it's been left idle, so you're being reminded to turn off the BabyPod if not in use.                                                                                                                                                                                           |
-| Chime              | Happens every minute during tummy time, or 15 minutes into feeding and then every minute after 30 minutes have elapsed during feeding. The tummy time chime is to keep track of your baby's progress without watching the screen. The feeding timer is to remind you it's still running and about the time to switch breasts. |
-| Info               | The BabyPod is going offline because the Wi-Fi connection failed. You will need to manually go online later; it won't try on its own.                                                                                                                                                                                         |
-| Shutdown           | You held <kbd>⊙ Center</kbd> for three seconds so the BabyPod is shutting down.                                                                                                                                                                                                                                               |
-| Message of the Day | There's a message of the day available                                                                                                                                                                                                                                                                                        |
-
-### User settings
-
-The user of the BabyPod can configure some of its settings directly through its interface (i.e., not just through `settings.toml`). To access settings, from the home screen, press <kbd>◀ Left</kbd>.
-
-Some options aren't shown if hardware support isn't available or something is configured in `settings.toml`.
-
-| Setting          | Default | Effect                                                                     | Notes                                                                 |
-|------------------|---------|----------------------------------------------------------------------------|-----------------------------------------------------------------------|
-| Play sounds      | On      | Enables (on) or disables (off) sounds played through the piezo             |                                                                       |
-| Off after timers | Off     | Shut down (on) or keep powered on (off) the BabyPod after a timer is saved | Only shown on devices with soft power control enabled                 |
-| Offline          | Off     | Enters (on) or leaves (off) offline mode; see that section below           | Only shown on devices with offline support (hardware RTC and SD card) |
-
-Settings are persisted to NVRAM so they remain in effect across power cycles and battery discharges.
-
-### Offline usage
-
-You should go offline when:
-
-* Using BabyPod away from home
-* You don't have an internet connection
-* Baby Buddy is down
-* Your Wi-Fi connection fails (this switches to offline automatically)
-
-To go offline:
-
-1. On the main menu, press <kbd>◀ Left</kbd> to enter settings.
-2. Scroll down to Offline and press <kbd>⊙ Center</kbd> to check it.
-3. Press <kbd>▶ Right</kbd> to save.
-
-The main menu will now show ◀☐ at the bottom-right indicating that you're offline.
-
-To go back online, repeat the same steps as above but uncheck the Offline checkbox. The BabyPod will show a progress bar as it reconnects to Baby Buddy and replays everything that happened while you were offline. Once complete, the main menu will now show ◀✓ to show that you're online.
-
-Don't go offline unless you need to. By staying online, you sync data regularly to Baby Buddy.
-
-If you don't see the offline option, your BabyPod is missing either the RTC or the SD card reader, or they failed to initialize.
-
-### Message of the day
-
-You can push a message of the day (MOTD) to a BabyPod. The message can be up to 20 characters in length. To do this:
-
-1. Create a new note in Baby Buddy with your desired text.
-2. Tag it with "BabyPod MOTD", creating the tag if it doesn't exist.
-
-BabyPod will consume the MOTD by checking notes every few hours for a note with that tag. If it finds one, it shows a modal to the user with a special chime. The note is deleted so it doesn't get consumed twice. If multiple BabyPods connect to the same instance of Baby Buddy, the first one to pull the note wins.
-
-BabyPod will only try to consume MOTDs if online, there's an RTC available, and it's been a while since the last check. Remember the character LCD only supports a small subset of characters so don't try Unicode emojis or anything outside the lower ASCII character set.
+Head over to the [`babypod-software`](https://github.com/skjdghsdjgsdj/babypod-software/) repository for how to use the BabyPod.
 
 ## Troubleshooting
+
+Shove a paperclip in the hole under the rotary encoder to press the Feather's reset button. This is a hardware reset that should always work. You can reset in software by pressing and holding the Down button too if the BabyPod is listening for user input.
+
+Hint: to take apart the BabyPod, there are tiny divots on the left and right of the enclosure. You can hook your fingernails in there for leverage.
 
 ### Power and wiring-related
 
