@@ -147,15 +147,6 @@ module feather() {
 	rotate([0, 0, 90])
 	union() {
 		import("components/adafruit/5323 Feather ESP32-S3.stl");
-		
-		translate([6.4, 0.05 * 25.4, -3.5 + FEATHER_PCB_HEIGHT])
-		header(16);
-		
-		translate([16.5, FEATHER_DEPTH - 0.05 * 25.4, -3.5 + FEATHER_PCB_HEIGHT])
-		header(12);
-		
-		translate([0, 0, 7.8])
-		import("components/adafruit/2884 Proto FeatherWing.stl");
 	}
 }
 
