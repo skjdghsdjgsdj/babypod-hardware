@@ -104,7 +104,7 @@ Here is where everything fits in the enclosure. The perimeter of each part has h
 * The green board is the [RTC](https://en.wikipedia.org/wiki/Real-time_clock). The vertical orientation doesn't matter. It uses four M3x4 screws. The battery faces up and the STEMMA QT ports face down.
 * The yellow board is the Flash SD board. The components face up and the flat surface faces down. It uses two M2.5x4 screws.
 * The white board is the Feather. It is screwed in using two M2.5x4 screws in the front near the USB C port, and in the back the smaller holes of the Feather use two M2x4 screws.
-* The piezo is the red circle underneath the yellow Flash SD board. It is press fit like the battery. The hole in the piezo faces down and the wires exit through the hole in the circle.
+* The piezo isn't visible. It is under the yellow Flash SD board. It is press fit like the battery. The hole in the piezo faces down and the wires exit through the hole in the circle.
 
 ## Assembly
 
