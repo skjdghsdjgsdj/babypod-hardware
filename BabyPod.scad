@@ -18,6 +18,7 @@ USB_C_WIDTH = 9.4;
 USB_C_DEPTH = 4;
 USB_C_Z_DELTA = 1.6;
 
+USE_CHARGE_HOLE = false;
 CHARGE_LED_HOLE_DIAMETER = 1.6; // just big enough to shove in 1.75mm filament piece
 
 PIEZO_DIAMETER = 13;
@@ -235,7 +236,7 @@ module case() {
 	for (x = [0.1 * 25.4, LCD_BOARD_WIDTH - 0.1 * 25.4]) {
 		for (y = [0.1 * 25.4, LCD_BOARD_DEPTH - 0.1 * 25.4]) {
 			translate([x, y, 0])
-			case_standoff(LCD_Z_DELTA - LCD_BOARD_HEIGHT - 2, 2.4);
+			case_standoff(LCD_Z_DELTA - LCD_BOARD_HEIGHT - 2, 2.4, thickness = 3, flared_base = 4);
 		}
 	}
 	
@@ -299,9 +300,11 @@ module case() {
 		
 		usb_c();
 		
-		translate([usb_c_x() + USB_C_WIDTH / 2 + 1.5, 0, usb_c_z()])
-		rotate([90, 0, 20])
-		cylinder(d = CHARGE_LED_HOLE_DIAMETER, h = 10, $fn = 36);
+		if (USE_CHARGE_HOLE) {
+			translate([usb_c_x() + USB_C_WIDTH / 2 + 1.5, 0, usb_c_z()])
+			rotate([90, 0, 20])
+			cylinder(d = CHARGE_LED_HOLE_DIAMETER, h = 10, $fn = 36);
+		}
 		
 		screws();
 		
@@ -320,7 +323,7 @@ module text_inlays() {
 		components_total_height() + SURFACE - 0.5
 	])
 	linear_extrude(0.5)
-	text("BabyPod", size = 10.5, font = "SignPainter", halign = "center", valign = "center", $fn = 100);
+	text("BabyPod", size = 9, font = "SignPainter", halign = "center", valign = "center", $fn = 100);
 }
 
 module baseplate() {
@@ -431,19 +434,28 @@ module baseplate() {
 	}
 }
 
-module case_standoff(height, inner_diameter) {
+module case_standoff(height, inner_diameter, thickness = 2, flared_base = 0) {
 	translate([0, 0, components_total_height() - height])
-	standoff(height, inner_diameter);
+	standoff(height, inner_diameter, thickness);
+	
+	if (flared_base > 0) {
+		translate([0, 0, components_total_height() - flared_base])
+		render()
+		difference() {
+			cylinder(d2 = inner_diameter + thickness + flared_base, d1 = inner_diameter + thickness, h = flared_base, $fn = 36);
+			cylinder(d = inner_diameter, h = flared_base, $fn = 36);
+		}
+	}
 }
 			
 module baseplate_standoff(height, inner_diameter) {
 	standoff(height, inner_diameter);
 }
 
-module standoff(height, inner_diameter) {
+module standoff(height, inner_diameter, thickness = 2) {
 	render()
 	difference() {
-		cylinder(d = inner_diameter + 2, h = height, $fn = 36);
+		cylinder(d = inner_diameter + thickness, h = height, $fn = 36);
 		cylinder(d = inner_diameter, h = height, $fn = 36);
 	}
 }
