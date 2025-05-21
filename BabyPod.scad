@@ -18,7 +18,7 @@ USB_C_WIDTH = 9.4;
 USB_C_DEPTH = 4;
 USB_C_Z_DELTA = 1.6;
 
-USE_CHARGE_HOLE = false;
+USE_CHARGE_HOLE = true;
 CHARGE_LED_HOLE_DIAMETER = 1.6; // just big enough to shove in 1.75mm filament piece
 
 PIEZO_DIAMETER = 13;
